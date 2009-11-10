@@ -45,15 +45,15 @@ $(PROGRAM_RELEASE): $(OBJS_RELEASE)
 	$(CXX) $(OBJS_RELEASE) $(LDFLAGS) -o $@
 
 $(OBJS_TEST): build/test/obj/%.o: src/%.cpp
-	@mkdir -p build/test/obj
+	@mkdir -p `obj=$@; echo $${obj%/*}`
 	$(CXX) $(CXXFLAGS) $(CXXFLAGS_TEST) -o $@ -c $<
 
 $(OBJS_DEBUG): build/debug/obj/%.o: src/%.cpp
-	@mkdir -p build/debug/obj
+	@mkdir -p `obj=$@; echo $${obj%/*}`
 	$(CXX) $(CXXFLAGS) $(CXXFLAGS_DEBUG) -o $@ -c $<
 
 $(OBJS_RELEASE): build/release/obj/%.o: src/%.cpp
-	@mkdir -p build/release/obj
+	@mkdir -p `obj=$@; echo $${obj%/*}`
 	$(CXX) $(CXXFLAGS) $(CXXFLAGS_RELEASE) -o $@ -c $<
 
 clean:

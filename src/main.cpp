@@ -1,6 +1,7 @@
 #ifndef __TEST
 
 #include <iostream>
+#include "Shrimp/Application.h"
 
 int main() {
   std::cout << "Hello, World!" << std::endl;
