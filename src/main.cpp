@@ -1,11 +1,13 @@
 #ifndef __TEST
 
+#include <stdlib.h>
 #include <iostream>
 #include "Shrimp/Application.h"
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
-  return 0;
+  Shrimp::Application application;
+  application.Run();
+  return EXIT_SUCCESS;
 }
 
 #else

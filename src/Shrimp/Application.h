@@ -3,6 +3,8 @@
 
 namespace Shrimp {
   class Application {
+  public:
+    void Run();
   };
 }
 
