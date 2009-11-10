@@ -20,9 +20,9 @@ OBJS_TEST    = $(SRC_NAMES:%.cpp=build/test/obj/%.o)
 OBJS_DEBUG   = $(SRC_NAMES:%.cpp=build/debug/obj/%.o)
 OBJS_RELEASE = $(SRC_NAMES:%.cpp=build/release/obj/%.o)
 
-.PHONY: clean test debug release
+.PHONY: test debug release depend clean
 
-first: debug test
+first: test
 
 test: $(PROGRAM_TEST)
 	./$(PROGRAM_TEST)
@@ -32,8 +32,9 @@ debug: $(PROGRAM_DEBUG)
 release: $(PROGRAM_RELEASE)
 
 depend:
-	$(CXX) -Isrc -MM -MG $(shell find src -name "*.cpp") | \
-	sed -e 's/^.*\.o: \(.*\)\.cpp/\1.o: \1.cpp/' > makefile.depend
+	(cd src; $(CXX) -I. -MM -MG $(SRC_NAMES) | \
+	sed -e 's/^.*\.o: \(.*\)\.cpp/build\/test\/obj\/\1.o \
+	build\/debug\/obj\/\1.o build\/release\/obj\/\1.o: \1.cpp/' > ../makefile.depend)
 
 $(PROGRAM_TEST): $(OBJS_TEST)
 	$(CXX) $(OBJS_TEST) $(LDFLAGS) $(shell gtest-config --ldflags --libs) -o $@
