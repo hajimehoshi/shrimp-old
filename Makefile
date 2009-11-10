@@ -22,12 +22,12 @@ OBJS_RELEASE = $(SRC_NAMES:%.cpp=build/release/obj/%.o)
 
 .PHONY: clean test debug release
 
-first: debug
+first: debug test
 
 test: $(PROGRAM_TEST)
 	./$(PROGRAM_TEST)
 
-debug: $(PROGRAM_DEBUG) test
+debug: $(PROGRAM_DEBUG)
 
 release: $(PROGRAM_RELEASE)
 
