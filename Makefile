@@ -58,7 +58,6 @@ $(OBJS_RELEASE): build/release/obj/%.o: src/%.cpp
 
 clean:
 	rm -rf build
-	rm -f $(PROGRAM_TEST) $(PROGRAM_DEBUG) $(PROGRAM_RELEASE)
 	rm -f makefile.depend
 	find . -name "*~" | xargs rm -f
 
