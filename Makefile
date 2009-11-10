@@ -32,9 +32,9 @@ debug: $(PROGRAM_DEBUG)
 release: $(PROGRAM_RELEASE)
 
 depend:
-	(cd src; $(CXX) -I. -MM -MG $(SRC_NAMES) | \
-	sed -e 's/^.*\.o: \(.*\)\.cpp/build\/test\/obj\/\1.o \
-	build\/debug\/obj\/\1.o build\/release\/obj\/\1.o: \1.cpp/' > ../makefile.depend)
+	$(CXX) -Isrc -MM -MG $(shell find src -name "*.cpp") | \
+	sed -e 's/^.*\.o: src\/\(.*\)\.cpp/build\/test\/obj\/\1.o \
+	build\/debug\/obj\/\1.o build\/release\/obj\/\1.o: src\/\1.cpp/' > makefile.depend
 
 $(PROGRAM_TEST): $(OBJS_TEST)
 	$(CXX) $(OBJS_TEST) $(LDFLAGS) $(shell gtest-config --ldflags --libs) -o $@
