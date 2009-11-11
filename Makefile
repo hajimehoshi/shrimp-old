@@ -1,12 +1,14 @@
 CXX = g++
 
-CXXFLAGS = $(shell gtest-config --cppflags --cxxflags) -Isrc -W -Wall -mno-cygwin
+CXXFLAGS = $(shell gtest-config --cppflags --cxxflags) -Isrc -mno-cygwin -mwindows
 CXXFLAGS += -DUNICODE -D_UNICODE
-CXXFLAGS_TEST    = -D__TEST
-CXXFLAGS_DEBUG   = -D__DEBUG -mwindows 
-CXXFLAGS_RELEASE = -D__RELEASE -mwindows -O2
+CXXFLAGS += -W -Wall -Wpointer-arith -Wno-unused-parameter
+# CXXFLAGS += -pedantic
+CXXFLAGS_TEST    = -D__TEST -mconsole
+CXXFLAGS_DEBUG   = -D__DEBUG
+CXXFLAGS_RELEASE = -D__RELEASE -finline-functions -O2
 
-LDFLAGS = -W -Wall
+LDFLAGS = -W -Wall -mwindows
 
 PROGRAM_NAME = Shrimp
 
@@ -28,6 +30,7 @@ test: $(PROGRAM_TEST)
 	./$(PROGRAM_TEST)
 
 debug: $(PROGRAM_DEBUG)
+	./$(PROGRAM_DEBUG)
 
 release: $(PROGRAM_RELEASE)
 

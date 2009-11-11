@@ -1,10 +1,11 @@
 #include "Shrimp/Application.h"
-#include <iostream>
+#include "Shrimp/Views/MainWindow.h"
 
 namespace Shrimp {
 
   void Application::Run() {
-    std::cout << "Hello, World!" << std::endl;
+    Views::MainWindow mainWindow;
+    mainWindow.Show();
   }
 
 }

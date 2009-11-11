@@ -1,10 +1,13 @@
 #ifndef __TEST
 
 #include <stdlib.h>
-#include <iostream>
+#include <windows.h>
 #include "Shrimp/Application.h"
 
-int main() {
+int WINAPI WinMain(HINSTANCE hInstance,
+                   HINSTANCE hPrevInstance,
+                   LPSTR lpCmdLine,
+                   int showCmd) {
   Shrimp::Application application;
   application.Run();
   return EXIT_SUCCESS;
