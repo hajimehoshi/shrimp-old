@@ -8,7 +8,10 @@ CXXFLAGS_TEST    = -D__TEST -mconsole
 CXXFLAGS_DEBUG   = -D__DEBUG
 CXXFLAGS_RELEASE = -D__RELEASE -finline-functions -O2
 
-LDFLAGS = -W -Wall -mwindows
+LDFLAGS = -W -Wall -mno-cygwin -mwindows
+LDFLAGS_TEST    = -mconsole
+LDFLAGS_DEBUG   =
+LDFLAGS_RELEASE =
 
 PROGRAM_NAME = Shrimp
 
@@ -40,13 +43,13 @@ depend:
 	build\/debug\/obj\/\1.o build\/release\/obj\/\1.o: src\/\1.cpp/' > makefile.depend
 
 $(PROGRAM_TEST): $(OBJS_TEST)
-	$(CXX) $(OBJS_TEST) $(LDFLAGS) $(shell gtest-config --ldflags --libs) -o $@
+	$(CXX) $(OBJS_TEST) $(LDFLAGS) $(LDFLAGS_TEST) $(shell gtest-config --ldflags --libs) -o $@
 
 $(PROGRAM_DEBUG): $(OBJS_DEBUG)
-	$(CXX) $(OBJS_DEBUG) $(LDFLAGS) -o $@
+	$(CXX) $(OBJS_DEBUG) $(LDFLAGS) $(LDFLAGS_DEBUG) -o $@
 
 $(PROGRAM_RELEASE): $(OBJS_RELEASE)
-	$(CXX) $(OBJS_RELEASE) $(LDFLAGS) -o $@
+	$(CXX) $(OBJS_RELEASE) $(LDFLAGS) $(LDFLAGS_RELEASE) -o $@
 
 $(OBJS_TEST): build/test/obj/%.o: src/%.cpp
 	@mkdir -p `obj=$@; echo $${obj%/*}`
