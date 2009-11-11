@@ -12,26 +12,26 @@ namespace Shrimp {
       wc.cbClsExtra = 0;
       wc.cbWndExtra = 0;
       wc.hInstance = hInstance;
-      wc.hIcon = (HICON)LoadImage(NULL, MAKEINTRESOURCE(IDI_APPLICATION),
-                                  IMAGE_ICON, 0, 0,
-                                  LR_DEFAULTSIZE | LR_SHARED);
-      wc.hIconSm = wc.hIcon;
-      wc.hCursor = (HCURSOR)LoadImage(NULL, MAKEINTRESOURCE(IDC_ARROW),
-                                      IMAGE_CURSOR, 0, 0,
-                                      LR_DEFAULTSIZE | LR_SHARED);
-      wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+      wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+      wc.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
+      wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+      wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
       wc.lpszMenuName = NULL;
       wc.lpszClassName = _T("Default Class Name");
       if (RegisterClassEx(&wc) == 0) {
         // exit?
       }
-      this->Handle = CreateWindow(wc.lpszClassName, _T("Sample Program"),
+      this->Handle = CreateWindow(wc.lpszClassName,
+                                  _T("Sample Program"),
                                   WS_OVERLAPPEDWINDOW,
                                   CW_USEDEFAULT,
                                   CW_USEDEFAULT,
                                   CW_USEDEFAULT,
                                   CW_USEDEFAULT,
-                                  NULL, NULL, hInstance, NULL);
+                                  NULL,
+                                  NULL,
+                                  hInstance,
+                                  NULL);
       if (this->Handle == NULL) {
         // exit?
       }
