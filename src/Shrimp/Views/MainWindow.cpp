@@ -3,8 +3,8 @@
 namespace Shrimp {
   namespace Views {
 
-    MainWindow::MainWindow() : Handle(NULL) {
-      HINSTANCE hInstance = GetModuleHandle(NULL);
+    MainWindow::MainWindow() : Handle(0) {
+      HINSTANCE hInstance = GetModuleHandle(0);
       WNDCLASSEX wc;
       ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);
@@ -13,13 +13,13 @@ namespace Shrimp {
       wc.cbClsExtra = 0;
       wc.cbWndExtra = 0;
       wc.hInstance = hInstance;
-      wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-      wc.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
-      wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+      wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+      wc.hIconSm = LoadIcon(0, IDI_WINLOGO);
+      wc.hCursor = LoadCursor(0, IDC_ARROW);
       wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
-      wc.lpszMenuName = NULL;
+      wc.lpszMenuName = 0;
       wc.lpszClassName = _T("MainWindow");
-      if (RegisterClassEx(&wc) == 0) {
+      if (!RegisterClassEx(&wc)) {
         // exit?
       }
       this->Handle = CreateWindow(wc.lpszClassName,
@@ -29,11 +29,11 @@ namespace Shrimp {
                                   CW_USEDEFAULT,
                                   CW_USEDEFAULT,
                                   CW_USEDEFAULT,
-                                  NULL,
-                                  NULL,
+                                  0,
+                                  0,
                                   hInstance,
-                                  NULL);
-      if (this->Handle == NULL) {
+                                  0);
+      if (!this->Handle) {
         // exit?
       }
     }
