@@ -4,9 +4,6 @@
 
 namespace Shrimp {
 
-  Application::Application() {
-  }
-
   void Application::Run() {
     Views::MainWindow mainWindow;
     mainWindow.Show();

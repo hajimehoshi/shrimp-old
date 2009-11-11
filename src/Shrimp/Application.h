@@ -6,7 +6,7 @@ namespace Shrimp {
   public:
     void Run();
   private:
-    Application();
+    Application() { }
     Application(const Application& rhs);
     Application& operator=(const Application& rhs);
   public:
