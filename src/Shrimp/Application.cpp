@@ -4,7 +4,7 @@
 
 namespace Shrimp {
 
-  void Application::Run() {
+  int Application::Run() {
     Views::MainWindow mainWindow;
     mainWindow.Show();
     MSG msg;
@@ -12,6 +12,7 @@ namespace Shrimp {
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
+    return msg.wParam;
   }
 
 }

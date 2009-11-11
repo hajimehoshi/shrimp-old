@@ -4,7 +4,7 @@
 namespace Shrimp {
   class Application {
   public:
-    void Run();
+    int Run();
   private:
     Application() { }
     Application(const Application& rhs);

@@ -9,8 +9,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
                    LPSTR lpCmdLine,
                    int showCmd) {
   Shrimp::Application& application = Shrimp::Application::GetInstance();
-  application.Run();
-  return EXIT_SUCCESS;
+  return application.Run();;
 }
 
 #else
