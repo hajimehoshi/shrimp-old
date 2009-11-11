@@ -3,7 +3,7 @@
 namespace Shrimp {
   namespace Views {
 
-    MainWindow::MainWindow() {
+    MainWindow::MainWindow() : Handle(NULL) {
       HINSTANCE hInstance = GetModuleHandle(NULL);
       WNDCLASSEX wc;
       wc.cbSize = sizeof(wc);
