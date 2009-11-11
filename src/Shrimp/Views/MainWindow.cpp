@@ -40,11 +40,6 @@ namespace Shrimp {
     void MainWindow::Show() {
       ShowWindow(this->Handle, SW_SHOW);
       UpdateWindow(this->Handle);
-      MSG msg;
-      while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-      }
     }
 
     LRESULT CALLBACK MainWindow::WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
