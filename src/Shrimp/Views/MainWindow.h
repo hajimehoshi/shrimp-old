@@ -11,6 +11,8 @@ namespace Shrimp {
       MainWindow();
       void Show();
     private:
+      MainWindow(const MainWindow& rhs);
+      MainWindow& operator=(const MainWindow& rhs);
       HWND Handle;
     private:
       static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
