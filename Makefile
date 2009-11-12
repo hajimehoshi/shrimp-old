@@ -11,7 +11,7 @@ CXXFLAGS_RELEASE = -D__RELEASE -finline-functions -O2
 LDFLAGS = -W -Wall -mno-cygwin -mwindows
 LDFLAGS_TEST    = -mconsole
 LDFLAGS_DEBUG   =
-LDFLAGS_RELEASE =
+LDFLAGS_RELEASE = -O2
 
 PROGRAM_NAME = Shrimp
 
