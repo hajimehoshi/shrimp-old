@@ -1,5 +1,5 @@
-#ifndef SHRIMP_VIEWS_WNDPROC
-#define SHRIMP_VIEWS_WNDPROC
+#ifndef SHRIMP_VIEWS_WNDPROC_H
+#define SHRIMP_VIEWS_WNDPROC_H
 
 #include <cassert>
 #include <windows.h>

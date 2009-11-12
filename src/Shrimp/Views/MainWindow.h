@@ -1,5 +1,5 @@
-#ifndef SHRIMP_VIEWS_MAINWINDOW
-#define SHRIMP_VIEWS_MAINWINDOW
+#ifndef SHRIMP_VIEWS_MAINWINDOW_H
+#define SHRIMP_VIEWS_MAINWINDOW_H
 
 #include <windows.h>
 #include <tchar.h>
