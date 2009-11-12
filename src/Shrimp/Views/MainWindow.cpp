@@ -7,29 +7,69 @@ namespace Shrimp {
     MainWindow::MainWindow() : Handle(0) {
       const MainWindowWC& mainWindowWC = MainWindowWC::GetInstance();
       const WNDCLASSEX& wc = mainWindowWC.GetWndClass();
-      this->Handle = CreateWindow(wc.lpszClassName,
-                                  _T("Shrimp"),
-                                  WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                                  CW_USEDEFAULT,
-                                  CW_USEDEFAULT,
-                                  CW_USEDEFAULT,
-                                  CW_USEDEFAULT,
-                                  0,
-                                  0,
-                                  GetModuleHandle(0),
-                                  this);
-      if (!this->Handle) {
-        // exit?
-      }
+      CreateWindow(wc.lpszClassName,
+                   _T("Shrimp"),
+                   WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                   CW_USEDEFAULT,
+                   CW_USEDEFAULT,
+                   CW_USEDEFAULT,
+                   CW_USEDEFAULT,
+                   0,
+                   0,
+                   GetModuleHandle(0),
+                   this);
+      // this->Handle is set on processing WM_NCCREATE
+      assert(this->Handle);
     }
 
     void MainWindow::Show() {
+      assert(this->Handle);
       ShowWindow(this->Handle, SW_SHOW);
       UpdateWindow(this->Handle);
     }
 
-    void MainWindow::OnClick() {
-      MessageBox(this->Handle, _T("はい"), _T("Shrimp"), MB_ICONINFORMATION);
+    LRESULT MainWindow::ProcessWindowMessage(UINT msg, WPARAM wp, LPARAM lp) {
+      switch (msg) {
+      case WM_PAINT:
+        {
+          LPCTSTR text = _T("ほげ");
+          PAINTSTRUCT ps;
+          BeginPaint(this->Handle, &ps);
+          TextOut(ps.hdc, 10, 20, text, _tcslen(text));
+          EndPaint(this->Handle, &ps);
+          return 0;
+        }
+      case WM_LBUTTONDOWN:
+        {
+          MessageBox(this->Handle, _T("はい"), _T("Shrimp"), MB_ICONINFORMATION);
+          return 0;
+        }
+      case WM_DESTROY:
+        {
+          PostQuitMessage(0);
+          return 0;
+        }
+      }
+      return DefWindowProc(this->Handle, msg, wp, lp);
+    }
+
+    LRESULT CALLBACK MainWindow::WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
+      if (msg == WM_NCCREATE) {
+        MainWindow* const mainWindow =
+          reinterpret_cast<MainWindow*>((reinterpret_cast<CREATESTRUCT*>(lp))->lpCreateParams);
+        assert(mainWindow);
+        mainWindow->Handle = hWnd;
+        SetWindowLongPtr(hWnd, GWLP_USERDATA,
+                         reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(mainWindow)));
+      } else {
+        MainWindow* const mainWindow =
+          reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+        if (!mainWindow) {
+          return 1;
+        }
+        return mainWindow->ProcessWindowMessage(msg, wp, lp);
+      }
+      return DefWindowProc(hWnd, msg, wp, lp);
     }
 
     MainWindow::MainWindowWC::MainWindowWC() {
@@ -50,38 +90,6 @@ namespace Shrimp {
       if (!RegisterClassEx(&wc)) {
         // exit?
       }
-    }
-
-    LRESULT CALLBACK MainWindow::MainWindowWC::WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
-      LPCTSTR text = _T("ほげ");
-      PAINTSTRUCT ps;
-      if (msg == WM_NCCREATE) {
-        MainWindow* const mainWindow =
-          reinterpret_cast<MainWindow*>((reinterpret_cast<CREATESTRUCT*>(lp))->lpCreateParams);
-        assert(mainWindow);
-        SetWindowLongPtr(hWnd, GWLP_USERDATA,
-                         reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(mainWindow)));
-      } else {
-        MainWindow* const mainWindow =
-          reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-        if (!mainWindow) {
-          return 1;
-        }
-        switch (msg) {
-        case WM_PAINT:
-          BeginPaint(hWnd, &ps);
-          TextOut(ps.hdc, 10, 20, text, _tcslen(text));
-          EndPaint(hWnd, &ps);
-          return 0;
-        case WM_LBUTTONDOWN:
-          mainWindow->OnClick();
-          return 0;
-        case WM_DESTROY:
-          PostQuitMessage(0);
-          return 0;
-        }
-      }
-      return DefWindowProc(hWnd, msg, wp, lp);
     }
 
   }

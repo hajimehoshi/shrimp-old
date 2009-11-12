@@ -14,9 +14,10 @@ namespace Shrimp {
     private:
       MainWindow(const MainWindow& rhs);
       MainWindow& operator=(const MainWindow& rhs);
-      void OnClick();
+      LRESULT ProcessWindowMessage(UINT msg, WPARAM wp, LPARAM lp);
       HWND Handle;
     private:
+      static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
 
       class MainWindowWC {
       public:
@@ -33,8 +34,6 @@ namespace Shrimp {
           static const MainWindowWC instance;
           return instance;
         }
-      private:
-        static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
       };
 
     };
