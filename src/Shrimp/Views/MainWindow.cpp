@@ -56,7 +56,7 @@ namespace Shrimp {
           reinterpret_cast<MainWindow*>((reinterpret_cast<CREATESTRUCT*>(lp))->lpCreateParams);
         assert(mainWindow);
         SetWindowLongPtr(hWnd, GWLP_USERDATA,
-        reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(mainWindow)));
+                         reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(mainWindow)));
         return DefWindowProc(hWnd, msg, wp, lp);
       } else {
         MainWindow* const mainWindow =
