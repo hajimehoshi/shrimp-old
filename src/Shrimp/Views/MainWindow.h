@@ -3,11 +3,14 @@
 
 #include <windows.h>
 #include <tchar.h>
+#include "Shrimp/Views/WndProc.h"
 
 namespace Shrimp {
   namespace Views {
 
     class MainWindow {
+      template<class T> friend
+        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
     public:
       MainWindow();
       void Show();
@@ -17,7 +20,6 @@ namespace Shrimp {
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wp, LPARAM lp);
       HWND Handle;
     private:
-      static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
 
       class MainWindowWC {
       public:

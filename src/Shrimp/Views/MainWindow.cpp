@@ -1,5 +1,5 @@
-#include "Shrimp/Views/MainWindow.h"
 #include <cassert>
+#include "Shrimp/Views/MainWindow.h"
 
 namespace Shrimp {
   namespace Views {
@@ -18,7 +18,7 @@ namespace Shrimp {
                    0,
                    GetModuleHandle(0),
                    this);
-      // this->Handle is set on processing WM_NCCREATE
+      // this->Handle is set on processing WM_NCCREATE in WndProc
       assert(this->Handle);
     }
 
@@ -53,31 +53,12 @@ namespace Shrimp {
       return DefWindowProc(this->Handle, msg, wp, lp);
     }
 
-    LRESULT CALLBACK MainWindow::WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
-      if (msg == WM_NCCREATE) {
-        MainWindow* const mainWindow =
-          reinterpret_cast<MainWindow*>((reinterpret_cast<CREATESTRUCT*>(lp))->lpCreateParams);
-        assert(mainWindow);
-        mainWindow->Handle = hWnd;
-        SetWindowLongPtr(hWnd, GWLP_USERDATA,
-                         reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(mainWindow)));
-      } else {
-        MainWindow* const mainWindow =
-          reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-        if (!mainWindow) {
-          return 1;
-        }
-        return mainWindow->ProcessWindowMessage(msg, wp, lp);
-      }
-      return DefWindowProc(hWnd, msg, wp, lp);
-    }
-
     MainWindow::MainWindowWC::MainWindowWC() {
       WNDCLASSEX& wc = MainWindowWC::WndClass;
       ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);
       wc.style = CS_HREDRAW | CS_VREDRAW;
-      wc.lpfnWndProc = WndProc;
+      wc.lpfnWndProc = &WndProc<MainWindow>;
       wc.cbClsExtra = 0;
       wc.cbWndExtra = 0;
       wc.hInstance = GetModuleHandle(0);
