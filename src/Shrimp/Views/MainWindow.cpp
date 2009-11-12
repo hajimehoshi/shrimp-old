@@ -28,6 +28,10 @@ namespace Shrimp {
       UpdateWindow(this->Handle);
     }
 
+    void MainWindow::OnClick() {
+      MessageBox(this->Handle, _T("はい"), _T("Shrimp"), MB_ICONINFORMATION);
+    }
+
     MainWindow::MainWindowWC::MainWindowWC() {
       WNDCLASSEX& wc = MainWindowWC::WndClass;
       ZeroMemory(&wc, sizeof(wc));
@@ -57,7 +61,6 @@ namespace Shrimp {
         assert(mainWindow);
         SetWindowLongPtr(hWnd, GWLP_USERDATA,
                          reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(mainWindow)));
-        return DefWindowProc(hWnd, msg, wp, lp);
       } else {
         MainWindow* const mainWindow =
           reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -69,15 +72,16 @@ namespace Shrimp {
           BeginPaint(hWnd, &ps);
           TextOut(ps.hdc, 10, 20, text, _tcslen(text));
           EndPaint(hWnd, &ps);
-          break;
+          return 0;
+        case WM_LBUTTONDOWN:
+          mainWindow->OnClick();
+          return 0;
         case WM_DESTROY:
           PostQuitMessage(0);
-          break;
-        default:
-          return DefWindowProc(hWnd, msg, wp, lp);
+          return 0;
         }
       }
-      return 0;
+      return DefWindowProc(hWnd, msg, wp, lp);
     }
 
   }

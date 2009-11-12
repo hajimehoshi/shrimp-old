@@ -14,6 +14,7 @@ namespace Shrimp {
     private:
       MainWindow(const MainWindow& rhs);
       MainWindow& operator=(const MainWindow& rhs);
+      void OnClick();
       HWND Handle;
     private:
 
