@@ -8,18 +8,18 @@
 namespace Shrimp {
   namespace Views {
 
-    template<class T>
+    template<class TControl>
       LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
       if (msg == WM_NCCREATE) {
-        T* const control =
-          reinterpret_cast<T*>((reinterpret_cast<CREATESTRUCT*>(lp))->lpCreateParams);
+        TControl* const control =
+          reinterpret_cast<TControl*>((reinterpret_cast<CREATESTRUCT*>(lp))->lpCreateParams);
         assert(control);
         control->Handle = hWnd;
         SetWindowLongPtr(hWnd, GWLP_USERDATA,
                          reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(control)));
       } else {
-        T* const control =
-          reinterpret_cast<T*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+        TControl* const control =
+          reinterpret_cast<TControl*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
         if (!control) {
           return 1;
         }
