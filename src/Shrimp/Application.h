@@ -11,8 +11,8 @@ namespace Shrimp {
     Application& operator=(const Application& rhs);
   public:
     static Application& GetInstance() {
-      static Application Instance;
-      return Instance;
+      static Application instance;
+      return instance;
     }
   };
 }

@@ -6,7 +6,7 @@ CXXFLAGS += -W -Wall -Wpointer-arith -Wno-unused-parameter
 # CXXFLAGS += -pedantic
 CXXFLAGS_TEST    = -D__TEST -mconsole
 CXXFLAGS_DEBUG   = -D__DEBUG
-CXXFLAGS_RELEASE = -D__RELEASE -finline-functions -O2
+CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -finline-functions -O2
 
 LDFLAGS = -W -Wall -mno-cygwin -mwindows
 LDFLAGS_TEST    = -mconsole

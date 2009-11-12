@@ -6,6 +6,7 @@
 
 namespace Shrimp {
   namespace Views {
+
     class MainWindow {
     public:
       MainWindow();
@@ -15,8 +16,28 @@ namespace Shrimp {
       MainWindow& operator=(const MainWindow& rhs);
       HWND Handle;
     private:
-      static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
+
+      class MainWindowWC {
+      public:
+        const WNDCLASSEX& GetWndClass() const {
+          return this->WndClass;
+        }
+      private:
+        MainWindowWC();
+        MainWindowWC(const MainWindowWC& rhs);
+        MainWindowWC& operator=(const MainWindowWC& rhs);
+        WNDCLASSEX WndClass;
+      public:
+        static const MainWindowWC& GetInstance() {
+          static const MainWindowWC instance;
+          return instance;
+        }
+      private:
+        static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
+      };
+
     };
+
   }
 }
 
