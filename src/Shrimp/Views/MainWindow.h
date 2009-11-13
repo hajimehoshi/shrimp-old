@@ -10,14 +10,14 @@ namespace Shrimp {
 
     class MainWindow {
       template<class T> friend
-        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
+        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
       MainWindow();
       void Show();
     private:
       MainWindow(const MainWindow& rhs);
       MainWindow& operator=(const MainWindow& rhs);
-      LRESULT ProcessWindowMessage(UINT msg, WPARAM wp, LPARAM lp);
+      LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND Handle;
     private:
 

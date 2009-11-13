@@ -28,7 +28,7 @@ namespace Shrimp {
       UpdateWindow(this->Handle);
     }
 
-    LRESULT MainWindow::ProcessWindowMessage(UINT msg, WPARAM wp, LPARAM lp) {
+    LRESULT MainWindow::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
       switch (msg) {
       case WM_PAINT:
         {
@@ -50,7 +50,7 @@ namespace Shrimp {
           return 0;
         }
       }
-      return DefWindowProc(this->Handle, msg, wp, lp);
+      return DefWindowProc(this->Handle, msg, wParam, lParam);
     }
 
     MainWindow::MainWindowWC::MainWindowWC() {
