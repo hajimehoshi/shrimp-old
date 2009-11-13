@@ -3,15 +3,15 @@ CXX = g++
 CXXFLAGS = -Isrc -mno-cygwin -mwindows
 CXXFLAGS += -DUNICODE -D_UNICODE
 CXXFLAGS += -W -Wall -Wpointer-arith -Wno-unused-parameter
-# CXXFLAGS += -pedantic
 CXXFLAGS_TEST    = -D__TEST $(shell gtest-config --cppflags --cxxflags) -mconsole
-CXXFLAGS_DEBUG   = -D__DEBUG
-CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -finline-functions -O2
+CXXFLAGS_DEBUG   = -D__DEBUG -ansi -pedantic -fno-rtti
+CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -ansi -pedantic
+CXXFLAGS_RELEASE += -fno-rtti -finline-functions -O3
 
 LDFLAGS = -W -Wall -mno-cygwin -mwindows
 LDFLAGS_TEST    = $(shell gtest-config --ldflags --libs) -mconsole
 LDFLAGS_DEBUG   =
-LDFLAGS_RELEASE = -O2
+LDFLAGS_RELEASE = -O3
 
 PROGRAM_NAME = Shrimp
 
