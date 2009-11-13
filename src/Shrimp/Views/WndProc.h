@@ -20,10 +20,9 @@ namespace Shrimp {
       } else {
         TControl* const control =
           reinterpret_cast<TControl*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-        if (!control) {
-          return 1;
+        if (control) {
+          return control->ProcessWindowMessage(msg, wp, lp);
         }
-        return control->ProcessWindowMessage(msg, wp, lp);
       }
       return DefWindowProc(hWnd, msg, wp, lp);
     }
