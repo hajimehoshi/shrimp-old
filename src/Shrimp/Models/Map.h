@@ -31,7 +31,11 @@ namespace Shrimp {
         return this->Width;
       }
       inline void RemoveObserver(IObserver& observer) {
-        this->Observers.remove(&observer);
+        std::list<IObserver*>::iterator it =
+          std::find(this->Observers.begin(), this->Observers.end(), &observer);
+        if (it != this->Observers.end()) {
+          this->Observers.erase(it);
+        }
       }
       void SetHeight(int height);
       void SetName(const std::string& name);
