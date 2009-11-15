@@ -30,25 +30,4 @@ namespace Shrimp {
   }
 }
 
-#if __TEST
-
-#include <gtest/gtest.h>
-
-namespace Shrimp {
-  namespace Models {
-
-    TEST(Map, Map) {
-      Map map("Foo", 20, 15);
-      ASSERT_EQ("Foo", map.GetName());
-      ASSERT_EQ(20, map.GetWidth());
-      ASSERT_EQ(15, map.GetHeight());
-    }
-
-  }
-
-}
-
-#endif
-
-
 #endif
