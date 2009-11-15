@@ -5,6 +5,15 @@ namespace Shrimp {
 
     Map::Map(std::string name, int width, int height)
       : Name(name), Width(width), Height(height) {
+      for (int i = 0; i < 2; ++i) {
+        this->Layers[i] = new Tile[this->Width * this->Height];
+      }
+    }
+
+    Map::~Map() {
+      for (int i = 0; i < 2; ++i) {
+        delete[] this->Layers[i];
+      }
     }
 
     void Map::NotifyObservers(const std::string& property) {
@@ -29,6 +38,13 @@ namespace Shrimp {
       }
     }
 
+    void Map::SetTile(int layer, int x, int y, const Tile& tile) {
+      if (this->Layers[layer][x + y * this->Width] != tile) {
+        this->Layers[layer][x + y * this->Width] = tile;
+        this->NotifyObservers("Tile");
+      }
+    }
+
     void Map::SetWidth(int width) {
       if (this->Width != width) {
         this->Width = width;
@@ -46,7 +62,7 @@ namespace Shrimp {
 namespace Shrimp {
   namespace Models {
 
-    TEST(Map, Name) {
+    TEST(MapTest, Name) {
       Map map("Foo", 20, 15);
       MockObserver observer;
       map.AddObserver(observer);
@@ -64,7 +80,7 @@ namespace Shrimp {
       ASSERT_EQ("Name", observer.GetLastNotifiedProperty());
     }
 
-    TEST(Map, Width) {
+    TEST(MapTest, Width) {
       Map map("Foo", 20, 15);
       MockObserver observer;
       map.AddObserver(observer);
@@ -82,7 +98,7 @@ namespace Shrimp {
       ASSERT_EQ("Width", observer.GetLastNotifiedProperty());
     }
 
-    TEST(Map, Height) {
+    TEST(MapTest, Height) {
       Map map("Foo", 20, 15);
       MockObserver observer;
       map.AddObserver(observer);
@@ -98,6 +114,24 @@ namespace Shrimp {
       map.SetHeight(16);
       ASSERT_EQ(16, map.GetHeight());
       ASSERT_EQ("Height", observer.GetLastNotifiedProperty());
+    }
+
+    TEST(MapTest, Tile) {
+      Map map("Foo", 20, 15);
+      MockObserver observer;
+      map.AddObserver(observer);
+
+      ASSERT_TRUE(Tile(0, 0) == map.GetTile(0, 1, 2));
+
+      observer.Clear();
+      map.SetTile(0, 1, 2, Tile(0, 0));
+      ASSERT_TRUE(Tile(0, 0) == map.GetTile(0, 1, 2));
+      ASSERT_TRUE(observer.GetLastNotifiedProperty().empty());
+
+      observer.Clear();
+      map.SetTile(0, 1, 2, Tile(3, 4));
+      ASSERT_TRUE(Tile(3, 4) == map.GetTile(0, 1, 2));
+      ASSERT_EQ("Tile", observer.GetLastNotifiedProperty());
     }
 
   }

@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 #include "Shrimp/IObserver.h"
+#include "Shrimp/Models/Tile.h"
 
 namespace Shrimp {
   namespace Models {
@@ -11,6 +12,7 @@ namespace Shrimp {
     class Map {
     public:
       Map(std::string name, int width, int height);
+      ~Map();
       inline void AddObserver(IObserver& observer) {
         this->Observers.push_back(&observer);
       }
@@ -20,6 +22,9 @@ namespace Shrimp {
       inline const std::string& GetName() const {
         return this->Name;
       }
+      inline const Tile& GetTile(int layer, int x, int y) const {
+        return this->Layers[layer][x + y * this->Width];
+      }
       inline int GetWidth() const {
         return this->Width;
       }
@@ -28,6 +33,7 @@ namespace Shrimp {
       }
       void SetHeight(int height);
       void SetName(const std::string& name);
+      void SetTile(int layer, int x, int y, const Tile& tile);
       void SetWidth(int width);
     private:
       Map(const Map& map);
@@ -36,6 +42,7 @@ namespace Shrimp {
       std::string Name;
       int Width;
       int Height;
+      Tile* Layers[2];
       std::list<IObserver*> Observers;
     };
 
