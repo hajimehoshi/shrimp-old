@@ -4,9 +4,8 @@ CXXFLAGS = -Isrc -mno-cygwin -mwindows
 CXXFLAGS += -DUNICODE -D_UNICODE
 CXXFLAGS += -W -Wall -Wpointer-arith -Wno-unused-parameter
 CXXFLAGS_TEST    = -D__TEST $(shell gtest-config --cppflags --cxxflags) -mconsole
-CXXFLAGS_DEBUG   = -D__DEBUG -ansi -pedantic -fno-rtti
-CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -ansi -pedantic
-CXXFLAGS_RELEASE += -fno-rtti -finline-functions -O3
+CXXFLAGS_DEBUG   = -D__DEBUG -fno-rtti
+CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -fno-rtti -finline-functions -O3
 
 LDFLAGS = -W -Wall -mno-cygwin -mwindows
 LDFLAGS_TEST    = $(shell gtest-config --ldflags --libs) -mconsole

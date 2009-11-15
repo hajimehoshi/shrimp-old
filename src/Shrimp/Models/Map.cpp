@@ -5,13 +5,13 @@ namespace Shrimp {
 
     Map::Map(std::string name, int width, int height)
       : Name(name), Width(width), Height(height) {
-      for (int i = 0; i < 2; ++i) {
+      for (int i = 0; i < LayerCount; ++i) {
         this->Layers[i] = new Tile[this->Width * this->Height];
       }
     }
 
     Map::~Map() {
-      for (int i = 0; i < 2; ++i) {
+      for (int i = 0; i < LayerCount; ++i) {
         delete[] this->Layers[i];
       }
     }
@@ -55,7 +55,7 @@ namespace Shrimp {
   }
 }
 
-#if __TEST
+#ifdef __TEST
 
 #include <gtest/gtest.h>
 
@@ -135,7 +135,6 @@ namespace Shrimp {
     }
 
   }
-
 }
 
 #endif

@@ -11,6 +11,8 @@ namespace Shrimp {
 
     class Map {
     public:
+      static const int LayerCount = 2;
+    public:
       Map(std::string name, int width, int height);
       ~Map();
       inline void AddObserver(IObserver& observer) {
@@ -42,7 +44,7 @@ namespace Shrimp {
       std::string Name;
       int Width;
       int Height;
-      Tile* Layers[2];
+      Tile* Layers[LayerCount];
       std::list<IObserver*> Observers;
     };
 

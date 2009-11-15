@@ -33,8 +33,8 @@ namespace Shrimp {
     std::string LastNotifiedProperty;
   };
 
-#endif
-  
 }
+
+#endif
 
 #endif

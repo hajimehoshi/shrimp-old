@@ -32,7 +32,7 @@ namespace Shrimp {
       switch (msg) {
       case WM_PAINT:
         {
-          LPCTSTR text = _T("ほげ");
+          const TCHAR* text = _T("ほげ");
           PAINTSTRUCT ps;
           BeginPaint(this->Handle, &ps);
           TextOut(ps.hdc, 10, 20, text, _tcslen(text));
