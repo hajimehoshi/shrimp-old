@@ -3,7 +3,7 @@
 namespace Shrimp {
   namespace Models {
 
-    Map::Map(std::string name, int width, int height)
+    Map::Map(const std::string& name, int width, int height)
       : Name(name), Width(width), Height(height) {
       for (int i = 0; i < LayerCount; ++i) {
         this->Layers[i] = new Tile[this->Width * this->Height];

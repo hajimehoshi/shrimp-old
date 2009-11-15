@@ -13,7 +13,7 @@ namespace Shrimp {
     public:
       static const int LayerCount = 2;
     public:
-      Map(std::string name, int width, int height);
+      Map(const std::string& name, int width, int height);
       ~Map();
       inline void AddObserver(IObserver& observer) {
         this->Observers.push_back(&observer);
