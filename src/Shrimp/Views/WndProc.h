@@ -3,7 +3,6 @@
 
 #include <cassert>
 #include <windows.h>
-#include <tchar.h>
 
 namespace Shrimp {
   namespace Views {

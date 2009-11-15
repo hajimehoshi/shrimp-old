@@ -1,7 +1,7 @@
-#include "Shrimp/Application.h"
 #ifdef __TEST
 # include <gtest/gtest.h>
 #endif
+#include "Shrimp/Application.h"
 
 int main(int argc, char** argv) {
 #ifdef __TEST
