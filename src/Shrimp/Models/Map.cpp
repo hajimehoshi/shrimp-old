@@ -20,8 +20,8 @@ namespace Shrimp {
       if (this->Height != height) {
         this->Height = height;
         for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
-           it != this->Observers.end();
-           ++it) {
+             it != this->Observers.end();
+             ++it) {
           (*it)->OnHeightUpdated();
         }
       }
@@ -31,8 +31,8 @@ namespace Shrimp {
       if (this->Name != name) {
         this->Name = name;
         for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
-           it != this->Observers.end();
-           ++it) {
+             it != this->Observers.end();
+             ++it) {
           (*it)->OnNameUpdated();
         }
       }
@@ -42,8 +42,8 @@ namespace Shrimp {
       if (this->Layers[layer][x + y * this->Width] != tile) {
         this->Layers[layer][x + y * this->Width] = tile;
         for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
-           it != this->Observers.end();
-           ++it) {
+             it != this->Observers.end();
+             ++it) {
           (*it)->OnTileUpdated();
         }
       }
@@ -53,8 +53,8 @@ namespace Shrimp {
       if (this->Width != width) {
         this->Width = width;
         for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
-           it != this->Observers.end();
-           ++it) {
+             it != this->Observers.end();
+             ++it) {
           (*it)->OnWidthUpdated();
         }
       }
@@ -88,18 +88,18 @@ namespace Shrimp {
       virtual void OnHeightUpdated() {
         this->IsCalledOnHeightUpdated = true;
       }
+      bool IsCalledOnHeightUpdated;
       virtual void OnNameUpdated() {
         this->IsCalledOnNameUpdated = true;
       }
+      bool IsCalledOnNameUpdated;
       virtual void OnTileUpdated() {
         this->IsCalledOnTileUpdated = true;
       }
+      bool IsCalledOnTileUpdated;
       virtual void OnWidthUpdated() {
         this->IsCalledOnWidthUpdated = true;
       }
-      bool IsCalledOnHeightUpdated;
-      bool IsCalledOnNameUpdated;
-      bool IsCalledOnTileUpdated;
       bool IsCalledOnWidthUpdated;
     };
 
