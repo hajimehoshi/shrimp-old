@@ -13,7 +13,8 @@ namespace Shrimp {
     public:
       MapCollection();
       void Add(Map& map);
-      Map& GetMap(int index) const;
+      Map& GetMap(int index);
+      const Map& GetMap(int index) const;
       int GetMapCount() const;
     private:
       MapCollection(const MapCollection& mapCollection);

@@ -10,7 +10,11 @@ namespace Shrimp {
       this->Maps.push_back(&map);
     }
 
-    Map& MapCollection::GetMap(int index) const {
+    const Map& MapCollection::GetMap(int index) const {
+      return this->GetMap(index);
+    }
+
+    Map& MapCollection::GetMap(int index) {
       assert(0 <= index);
       assert(index < this->GetMapCount());
       return *(this->Maps[index]);
