@@ -10,27 +10,18 @@ namespace Shrimp {
     class IMapCollectionObserver;
 
     class MapCollection {
-    public:
-      enum NodeType {
-        NodeTypeMap,
-        NodeTypeRecycleBin,
-        NodeTypeProject,
-      };
     private:
       struct Node {
         int Id;
         int ParentId;
-        MapCollection::NodeType NodeType;
         Models::Map* Map;
         Node(int id,
              int parentId,
-             MapCollection::NodeType nodeType,
              Models::Map* map);
       };
     public:
       MapCollection();
       ~MapCollection();
-      MapCollection::NodeType GetNodeType(int id) const;
       void Add(int parentId, Map* const map);
       int GetChildNodeCount(int id) const;
       int GetProjectNodeId() const;

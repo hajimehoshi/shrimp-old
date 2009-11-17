@@ -6,9 +6,8 @@ namespace Shrimp {
 
     MapCollection::Node::Node(int id,
                               int parentId,
-                              MapCollection::NodeType nodeType,
                               Models::Map* map)
-      : Id(id), ParentId(parentId), NodeType(nodeType), Map(map) {
+      : Id(id), ParentId(parentId), Map(map) {
     }
 
     MapCollection::MapCollection()
@@ -18,13 +17,13 @@ namespace Shrimp {
 
       id = this->GenerateNextId();
       assert(id == 0);
-      node = new Node(id, -1, NodeTypeProject, 0);
+      node = new Node(id, -1, 0);
       this->Nodes.insert(std::make_pair(id, node));
       this->ProjectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
-      node = new Node(id, -1, NodeTypeRecycleBin, 0);
+      node = new Node(id, -1, 0);
       this->Nodes.insert(std::make_pair(id, node));
       this->RecycleBinNodeId = id;
     }
@@ -40,7 +39,7 @@ namespace Shrimp {
 
     void MapCollection::Add(int parentId, Map* const map) {
       int id = this->GenerateNextId();
-      Node* node = new Node(id, parentId, NodeTypeMap, map);
+      Node* node = new Node(id, parentId, map);
       this->Nodes.insert(std::make_pair(id, node));
     }
 
@@ -55,12 +54,6 @@ namespace Shrimp {
         }
       }
       return count;
-    }
-
-    MapCollection::NodeType MapCollection::GetNodeType(int id) const {
-      std::map<int, Node*>::const_iterator it = this->Nodes.find(id);
-      assert(it != this->Nodes.end());
-      return (*it).second->NodeType;
     }
 
     int MapCollection::GetProjectNodeId() const {
@@ -91,10 +84,6 @@ namespace Shrimp {
       MapCollection mapCollection;
       ASSERT_EQ(0, mapCollection.GetProjectNodeId());
       ASSERT_EQ(1, mapCollection.GetRecycleBinNodeId());
-      ASSERT_EQ(MapCollection::NodeTypeProject,
-                mapCollection.GetNodeType(0));
-      ASSERT_EQ(MapCollection::NodeTypeRecycleBin,
-                mapCollection.GetNodeType(1));
     }
 
     TEST(MapCollectionTest, Add) {
