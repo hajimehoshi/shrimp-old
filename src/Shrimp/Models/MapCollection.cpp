@@ -14,18 +14,19 @@ namespace Shrimp {
     MapCollection::MapCollection()
       : NextId(0) {
       int id;
+      Node* node;
 
       id = this->GenerateNextId();
       assert(id == 0);
-      Node* projectNode = new Node(id, -1, NodeTypeProject, 0);
-      this->Nodes.insert(std::make_pair(id, projectNode));
-      this->ProjectNode = projectNode;
+      node = new Node(id, -1, NodeTypeProject, 0);
+      this->Nodes.insert(std::make_pair(id, node));
+      this->ProjectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
-      Node* recycleBinNode = new Node(id, -1, NodeTypeRecycleBin, 0);
-      this->Nodes.insert(std::make_pair(id, recycleBinNode));
-      this->RecycleBinNode = recycleBinNode;
+      node = new Node(id, -1, NodeTypeRecycleBin, 0);
+      this->Nodes.insert(std::make_pair(id, node));
+      this->RecycleBinNodeId = id;
     }
 
     MapCollection::~MapCollection() {
@@ -44,11 +45,11 @@ namespace Shrimp {
     }
 
     int MapCollection::GetProjectNodeId() const {
-      return this->ProjectNode->Id;
+      return this->ProjectNodeId;
     }
 
     int MapCollection::GetRecycleBinNodeId() const {
-      return this->RecycleBinNode->Id;
+      return this->RecycleBinNodeId;
     }
 
     int MapCollection::GenerateNextId() {

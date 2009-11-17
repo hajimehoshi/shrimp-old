@@ -39,8 +39,8 @@ namespace Shrimp {
       int GenerateNextId();
       int NextId;
       std::map<int, Node*> Nodes;
-      Node* ProjectNode;
-      Node* RecycleBinNode;
+      int ProjectNodeId;
+      int RecycleBinNodeId;
     };
 
     class IMapCollectionObserver {
