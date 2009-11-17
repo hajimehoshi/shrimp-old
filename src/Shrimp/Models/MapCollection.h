@@ -1,7 +1,7 @@
 #ifndef SHRIMP_MODELS_MAPCOLLECTION_H
 #define SHRIMP_MODELS_MAPCOLLECTION_H
 
-#include <vector>
+#include <map>
 #include "Shrimp/Models/Map.h"
 
 namespace Shrimp {
@@ -11,15 +11,35 @@ namespace Shrimp {
 
     class MapCollection {
     public:
+      enum NodeType {
+        NodeTypeMap,
+        NodeTypeRecycleBin,
+        NodeTypeProject,
+      };
+    private:
+      struct Node {
+        int Id;
+        int ParentId;
+        MapCollection::NodeType NodeType;
+        Models::Map* Map;
+        Node(int id,
+             int parentId,
+             MapCollection::NodeType nodeType,
+             Models::Map* map);
+      };
+    public:
       MapCollection();
-      void Add(Map& map);
-      Map& GetMap(int index);
-      const Map& GetMap(int index) const;
-      int GetMapCount() const;
+      ~MapCollection();
+      MapCollection::NodeType GetNodeType(int id) const;
+      int GetRootNodeCount() const;
+      void GetRootNodeIds(int* rootNodeIds) const;
     private:
       MapCollection(const MapCollection& mapCollection);
-      MapCollection& operator=(const MapCollection& mapCollection);
-      std::vector<Map*> Maps;
+      MapCollection& operator=(const MapCollection& rhs);
+      int GenerateNextId();
+      int NextId;
+      std::map<int, Node*> Nodes;
+      int RootNodeIds[2];
     };
 
     class IMapCollectionObserver {
