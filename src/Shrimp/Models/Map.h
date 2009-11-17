@@ -1,7 +1,7 @@
 #ifndef SHRIMP_MODELS_MAP_H
 #define SHRIMP_MODELS_MAP_H
 
-#include <list>
+#include <set>
 #include <string>
 #include "Shrimp/Models/Tile.h"
 
@@ -17,7 +17,7 @@ namespace Shrimp {
       Map(const std::string& name, int width, int height);
       ~Map();
       inline void AddObserver(IMapObserver& observer) {
-        this->Observers.push_back(&observer);
+        this->Observers.insert(&observer);
       }
       inline int GetHeight() const {
         return this->Height;
@@ -32,8 +32,7 @@ namespace Shrimp {
         return this->Width;
       }
       inline void RemoveObserver(IMapObserver& observer) {
-        std::list<IMapObserver*>::iterator it =
-          std::find(this->Observers.begin(), this->Observers.end(), &observer);
+        std::set<IMapObserver*>::iterator it = this->Observers.find(&observer);
         if (it != this->Observers.end()) {
           this->Observers.erase(it);
         }
@@ -49,7 +48,7 @@ namespace Shrimp {
       int Width;
       int Height;
       Tile* Layers[LayerCount];
-      std::list<IMapObserver*> Observers;
+      std::set<IMapObserver*> Observers;
     };
 
     class IMapObserver {

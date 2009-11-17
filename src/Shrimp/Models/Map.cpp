@@ -19,7 +19,7 @@ namespace Shrimp {
     void Map::SetHeight(int height) {
       if (this->Height != height) {
         this->Height = height;
-        for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
+        for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
              it != this->Observers.end();
              ++it) {
           (*it)->OnHeightUpdated();
@@ -30,7 +30,7 @@ namespace Shrimp {
     void Map::SetName(const std::string& name) {
       if (this->Name != name) {
         this->Name = name;
-        for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
+        for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
              it != this->Observers.end();
              ++it) {
           (*it)->OnNameUpdated();
@@ -41,7 +41,7 @@ namespace Shrimp {
     void Map::SetTile(int layer, int x, int y, const Tile& tile) {
       if (this->Layers[layer][x + y * this->Width] != tile) {
         this->Layers[layer][x + y * this->Width] = tile;
-        for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
+        for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
              it != this->Observers.end();
              ++it) {
           (*it)->OnTileUpdated();
@@ -52,7 +52,7 @@ namespace Shrimp {
     void Map::SetWidth(int width) {
       if (this->Width != width) {
         this->Width = width;
-        for (std::list<IMapObserver*>::iterator it = this->Observers.begin();
+        for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
              it != this->Observers.end();
              ++it) {
           (*it)->OnWidthUpdated();
