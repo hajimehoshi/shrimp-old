@@ -31,6 +31,8 @@ namespace Shrimp {
       MapCollection();
       ~MapCollection();
       MapCollection::NodeType GetNodeType(int id) const;
+      void Add(int parentId, Map* const map);
+      int GetChildNodeCount(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
     private:
