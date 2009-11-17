@@ -37,9 +37,9 @@ namespace Shrimp {
       this->Nodes.clear();
     }
 
-    void MapCollection::Add(int parentId, Map* const map) {
+    void MapCollection::Add(int parentId, Map& map) {
       int id = this->GenerateNextId();
-      Node* node = new Node(id, parentId, map);
+      Node* node = new Node(id, parentId, &map);
       this->Nodes.insert(std::make_pair(id, node));
     }
 
@@ -100,19 +100,19 @@ namespace Shrimp {
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(3));
 
-      mapCollection.Add(projectNodeId, &map1);
+      mapCollection.Add(projectNodeId, map1);
       ASSERT_EQ(1, mapCollection.GetChildNodeCount(projectNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(3));
 
-      mapCollection.Add(projectNodeId, &map2);
+      mapCollection.Add(projectNodeId, map2);
       ASSERT_EQ(2, mapCollection.GetChildNodeCount(projectNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(3));
 
-      mapCollection.Add(3, &map3);
+      mapCollection.Add(3, map3);
       ASSERT_EQ(2, mapCollection.GetChildNodeCount(projectNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));

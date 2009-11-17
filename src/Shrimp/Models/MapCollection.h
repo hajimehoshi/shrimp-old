@@ -22,7 +22,7 @@ namespace Shrimp {
     public:
       MapCollection();
       ~MapCollection();
-      void Add(int parentId, Map* const map);
+      void Add(int parentId, Map& map);
       int GetChildNodeCount(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
