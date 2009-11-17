@@ -16,14 +16,16 @@ namespace Shrimp {
       int id;
 
       id = this->GenerateNextId();
-      Node* recycleBinNode = new Node(id, -1, NodeTypeRecycleBin, 0);
-      this->Nodes.insert(std::make_pair(id, recycleBinNode));
-      RootNodeIds[0] = id;
-
-      id = this->GenerateNextId();
+      assert(id == 0);
       Node* projectNode = new Node(id, -1, NodeTypeProject, 0);
       this->Nodes.insert(std::make_pair(id, projectNode));
-      RootNodeIds[1] = id;
+      this->ProjectNode = projectNode;
+
+      id = this->GenerateNextId();
+      assert(id == 1);
+      Node* recycleBinNode = new Node(id, -1, NodeTypeRecycleBin, 0);
+      this->Nodes.insert(std::make_pair(id, recycleBinNode));
+      this->RecycleBinNode = recycleBinNode;
     }
 
     MapCollection::~MapCollection() {
@@ -41,14 +43,12 @@ namespace Shrimp {
       return (*it).second->NodeType;
     }
 
-    int MapCollection::GetRootNodeCount() const {
-      return sizeof(this->RootNodeIds) / sizeof(this->RootNodeIds[0]);
+    int MapCollection::GetProjectNodeId() const {
+      return this->ProjectNode->Id;
     }
 
-    void MapCollection::GetRootNodeIds(int* rootNodeIds) const {
-      for (int i = 0; i < this->GetRootNodeCount(); ++i) {
-        rootNodeIds[i] = this->RootNodeIds[i];
-      }
+    int MapCollection::GetRecycleBinNodeId() const {
+      return this->RecycleBinNode->Id;
     }
 
     int MapCollection::GenerateNextId() {
@@ -70,18 +70,12 @@ namespace Shrimp {
     TEST(MapCollectionTest, RootNodes) {
       MapCollection mapCollection;
 
-      int rootNodeCount = mapCollection.GetRootNodeCount();
-      ASSERT_EQ(2, rootNodeCount);
+      ASSERT_EQ(0, mapCollection.GetProjectNodeId());
+      ASSERT_EQ(1, mapCollection.GetRecycleBinNodeId());
 
-      int* rootNodeIds = new int[rootNodeCount];
-      mapCollection.GetRootNodeIds(rootNodeIds);
-      ASSERT_EQ(0, rootNodeIds[0]);
-      ASSERT_EQ(1, rootNodeIds[1]);
-      delete[] rootNodeIds;
-
-      ASSERT_EQ(MapCollection::NodeTypeRecycleBin,
-                mapCollection.GetNodeType(0));
       ASSERT_EQ(MapCollection::NodeTypeProject,
+                mapCollection.GetNodeType(0));
+      ASSERT_EQ(MapCollection::NodeTypeRecycleBin,
                 mapCollection.GetNodeType(1));
     }
 

@@ -31,15 +31,16 @@ namespace Shrimp {
       MapCollection();
       ~MapCollection();
       MapCollection::NodeType GetNodeType(int id) const;
-      int GetRootNodeCount() const;
-      void GetRootNodeIds(int* rootNodeIds) const;
+      int GetProjectNodeId() const;
+      int GetRecycleBinNodeId() const;
     private:
       MapCollection(const MapCollection& mapCollection);
       MapCollection& operator=(const MapCollection& rhs);
       int GenerateNextId();
       int NextId;
       std::map<int, Node*> Nodes;
-      int RootNodeIds[2];
+      Node* ProjectNode;
+      Node* RecycleBinNode;
     };
 
     class IMapCollectionObserver {
