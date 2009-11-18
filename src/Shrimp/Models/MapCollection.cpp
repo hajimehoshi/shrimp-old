@@ -15,13 +15,13 @@ namespace Shrimp {
 
       id = this->GenerateNextId();
       assert(id == 0);
-      node = new Node(-1, 0);
+      node = new Node(Node::InvalidId, 0);
       this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->ProjectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
-      node = new Node(-1, 0);
+      node = new Node(Node::InvalidId, 0);
       this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->RecycleBinNodeId = id;
     }
