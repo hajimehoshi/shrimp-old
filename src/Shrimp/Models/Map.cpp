@@ -5,6 +5,8 @@ namespace Shrimp {
 
     Map::Map(const std::string& name, int width, int height)
       : Name(name), Width(width), Height(height) {
+      assert(0 < this->Width);
+      assert(0 < this->Height);
       for (int i = 0; i < LayerCount; ++i) {
         this->Layers[i] = new Tile[this->Width * this->Height];
       }
@@ -17,6 +19,7 @@ namespace Shrimp {
     }
 
     void Map::SetHeight(int height) {
+      assert(0 < height);
       if (this->Height != height) {
         this->Height = height;
         for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
@@ -39,6 +42,12 @@ namespace Shrimp {
     }
 
     void Map::SetTile(int layer, int x, int y, const Tile& tile) {
+      assert(0 <= layer);
+      assert(layer < LayerCount);
+      assert(0 <= x);
+      assert(x < this->Width);
+      assert(0 <= y);
+      assert(y < this->Height);
       if (this->Layers[layer][x + y * this->Width] != tile) {
         this->Layers[layer][x + y * this->Width] = tile;
         for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
@@ -50,6 +59,7 @@ namespace Shrimp {
     }
 
     void Map::SetWidth(int width) {
+      assert(0 < width);
       if (this->Width != width) {
         this->Width = width;
         for (std::set<IMapObserver*>::iterator it = this->Observers.begin();
