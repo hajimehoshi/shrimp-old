@@ -26,6 +26,7 @@ namespace Shrimp {
       ~MapCollection();
       void Add(int parentId, Map& map);
       const std::set<int>& GetChildIds(int id) const;
+      Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
     private:

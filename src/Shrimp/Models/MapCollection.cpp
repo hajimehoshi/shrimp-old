@@ -48,6 +48,10 @@ namespace Shrimp {
       return this->GetNode(id)->ChildIds;
     }
 
+    Map& MapCollection::GetMap(int id) const {
+      return *(this->GetNode(id)->Map);
+    }
+
     int MapCollection::GetProjectNodeId() const {
       return this->ProjectNodeId;
     }
@@ -125,11 +129,12 @@ namespace Shrimp {
       ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
       ASSERT_TRUE(mapCollection.GetChildIds(4).empty());
 
-      /*
-      const Map& tmpMap1 = mapCollection.GetMap(0);
+      const Map& tmpMap1 = mapCollection.GetMap(2);
       ASSERT_EQ(&map1, &tmpMap1);
-      const Map& tmpMap2 = mapCollection.GetMap(1);
-      ASSERT_EQ(&map2, &tmpMap2);*/
+      const Map& tmpMap2 = mapCollection.GetMap(3);
+      ASSERT_EQ(&map2, &tmpMap2);
+      const Map& tmpMap3 = mapCollection.GetMap(4);
+      ASSERT_EQ(&map3, &tmpMap3);
     }
 
   }
