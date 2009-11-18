@@ -41,19 +41,11 @@ namespace Shrimp {
       int id = this->GenerateNextId();
       Node* node = new Node(id, parentId, &map);
       this->Nodes.insert(std::make_pair(id, node));
+      this->GetNode(parentId)->ChildIds.push_back(id);
     }
 
     int MapCollection::GetChildNodeCount(int id) const {
-      // TODO: optimize following codes!
-      int count = 0;
-      for (std::map<int, Node*>::const_iterator it = this->Nodes.begin();
-           it != this->Nodes.end();
-           ++it) {
-        if ((*it).second->ParentId == id) {
-          count++;
-        }
-      }
-      return count;
+      return this->GetNode(id)->ChildIds.size();
     }
 
     int MapCollection::GetProjectNodeId() const {
@@ -68,6 +60,12 @@ namespace Shrimp {
       const int nextId = this->NextId;
       this->NextId++;
       return nextId;
+    }
+
+    MapCollection::Node* MapCollection::GetNode(int id) const {
+      std::map<int, Node*>::const_iterator it = this->Nodes.find(id);
+      assert(it != this->Nodes.end());
+      return (*it).second;      
     }
 
   }
@@ -97,14 +95,11 @@ namespace Shrimp {
 
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(projectNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(3));
 
       mapCollection.Add(projectNodeId, map1);
       ASSERT_EQ(1, mapCollection.GetChildNodeCount(projectNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(3));
 
       mapCollection.Add(projectNodeId, map2);
       ASSERT_EQ(2, mapCollection.GetChildNodeCount(projectNodeId));
@@ -117,6 +112,7 @@ namespace Shrimp {
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
       ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
       ASSERT_EQ(1, mapCollection.GetChildNodeCount(3));
+      ASSERT_EQ(0, mapCollection.GetChildNodeCount(4));
 
       /*
       const Map& tmpMap1 = mapCollection.GetMap(0);

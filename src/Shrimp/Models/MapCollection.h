@@ -2,6 +2,7 @@
 #define SHRIMP_MODELS_MAPCOLLECTION_H
 
 #include <map>
+#include <list>
 #include "Shrimp/Models/Map.h"
 
 namespace Shrimp {
@@ -15,6 +16,7 @@ namespace Shrimp {
         int Id;
         int ParentId;
         Models::Map* Map;
+        std::list<int> ChildIds;
         Node(int id,
              int parentId,
              Models::Map* map);
@@ -30,6 +32,7 @@ namespace Shrimp {
       MapCollection(const MapCollection& mapCollection);
       MapCollection& operator=(const MapCollection& rhs);
       int GenerateNextId();
+      Node* GetNode(int id) const;
       int NextId;
       std::map<int, Node*> Nodes;
       int ProjectNodeId;
