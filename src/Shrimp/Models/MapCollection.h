@@ -13,13 +13,10 @@ namespace Shrimp {
     class MapCollection {
     private:
       struct Node {
-        int Id;
         int ParentId;
         Models::Map* Map;
         std::set<int> ChildIds;
-        Node(int id,
-             int parentId,
-             Models::Map* map);
+        Node(int parentId, Models::Map* map);
       };
     public:
       MapCollection();

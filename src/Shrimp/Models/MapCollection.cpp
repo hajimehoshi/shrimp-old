@@ -4,10 +4,8 @@
 namespace Shrimp {
   namespace Models {
 
-    MapCollection::Node::Node(int id,
-                              int parentId,
-                              Models::Map* map)
-      : Id(id), ParentId(parentId), Map(map) {
+    MapCollection::Node::Node(int parentId, Models::Map* map)
+      : ParentId(parentId), Map(map) {
     }
 
     MapCollection::MapCollection()
@@ -17,14 +15,14 @@ namespace Shrimp {
 
       id = this->GenerateNextId();
       assert(id == 0);
-      node = new Node(id, -1, 0);
-      this->Nodes.insert(std::make_pair(id, node));
+      node = new Node(-1, 0);
+      this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->ProjectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
-      node = new Node(id, -1, 0);
-      this->Nodes.insert(std::make_pair(id, node));
+      node = new Node(-1, 0);
+      this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->RecycleBinNodeId = id;
     }
 
@@ -39,8 +37,8 @@ namespace Shrimp {
 
     void MapCollection::Add(int parentId, Map& map) {
       int id = this->GenerateNextId();
-      Node* node = new Node(id, parentId, &map);
-      this->Nodes.insert(std::make_pair(id, node));
+      Node* node = new Node(parentId, &map);
+      this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->ChildIds.insert(id);
     }
 
@@ -94,26 +92,24 @@ namespace Shrimp {
       Map map2("Bar", 21, 16);
       Map map3("Baz", 22, 17);
 
-      const int projectNodeId = mapCollection.GetProjectNodeId();
-      const int recycleBinNodeId = mapCollection.GetRecycleBinNodeId();
       std::set<int> expectedIds;
 
-      ASSERT_TRUE(mapCollection.GetChildIds(projectNodeId).empty());
-      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
 
-      mapCollection.Add(projectNodeId, map1);
+      mapCollection.Add(0, map1);
       expectedIds.clear();
       expectedIds.insert(2);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(projectNodeId));
-      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
 
-      mapCollection.Add(projectNodeId, map2);
+      mapCollection.Add(0, map2);
       expectedIds.clear();
       expectedIds.insert(2);
       expectedIds.insert(3);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(projectNodeId));
-      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(3).empty());
 
@@ -121,8 +117,8 @@ namespace Shrimp {
       expectedIds.clear();
       expectedIds.insert(2);
       expectedIds.insert(3);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(projectNodeId));
-      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
       expectedIds.clear();
       expectedIds.insert(4);
