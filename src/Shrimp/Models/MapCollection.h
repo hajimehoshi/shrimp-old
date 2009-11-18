@@ -23,10 +23,18 @@ namespace Shrimp {
       MapCollection();
       ~MapCollection();
       void Add(int parentId, Map& map);
+      inline void AddObserver(IMapCollectionObserver& observer) {
+        this->Observers.insert(&observer);
+      }
       const std::set<int>& GetChildIds(int id) const;
       Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
+      inline void RemoveObserver(IMapCollectionObserver& observer) {
+        std::set<IMapCollectionObserver*>::iterator it = this->Observers.find(&observer);
+        assert(it != this->Observers.end());
+        this->Observers.erase(it);
+      }
     private:
       MapCollection(const MapCollection& mapCollection);
       MapCollection& operator=(const MapCollection& rhs);
@@ -34,11 +42,19 @@ namespace Shrimp {
       Node* GetNode(int id) const;
       int NextId;
       std::map<int, Node*> Nodes;
+      std::set<IMapCollectionObserver*> Observers;
       int ProjectNodeId;
       int RecycleBinNodeId;
     };
 
     class IMapCollectionObserver {
+    public:
+      IMapCollectionObserver() { }
+      virtual ~IMapCollectionObserver() = 0;
+      virtual void OnItemAdded() { }
+    private:
+      IMapCollectionObserver(const IMapCollectionObserver& mapObserver);
+      IMapCollectionObserver& operator=(const IMapCollectionObserver& rhs);
     };
 
   }

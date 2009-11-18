@@ -70,6 +70,9 @@ namespace Shrimp {
       return it->second;
     }
 
+    IMapCollectionObserver::~IMapCollectionObserver() {
+    }
+
   }
 }
 
@@ -80,6 +83,21 @@ namespace Shrimp {
 namespace Shrimp {
   namespace Models {
 
+    class MockMapCollectionObserver : public IMapCollectionObserver {
+    public:
+      MockMapCollectionObserver() {
+        this->Clear();
+      }
+      virtual ~MockMapCollectionObserver() { }
+      void Clear() {
+        this->IsCalledOnItemAdded = false;
+      }
+      virtual void OnItemAdded() {
+        this->IsCalledOnItemAdded = true;
+      }
+      bool IsCalledOnItemAdded;
+    };
+
     TEST(MapCollectionTest, RootNodes) {
       MapCollection mapCollection;
       ASSERT_EQ(0, mapCollection.GetProjectNodeId());
@@ -88,6 +106,9 @@ namespace Shrimp {
 
     TEST(MapCollectionTest, Add) {
       MapCollection mapCollection;
+      MockMapCollectionObserver mapCollectionObserver;
+      mapCollection.AddObserver(mapCollectionObserver);
+
       Map map1("Foo", 20, 15);
       Map map2("Bar", 21, 16);
       Map map3("Baz", 22, 17);

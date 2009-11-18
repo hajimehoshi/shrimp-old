@@ -33,9 +33,8 @@ namespace Shrimp {
       }
       inline void RemoveObserver(IMapObserver& observer) {
         std::set<IMapObserver*>::iterator it = this->Observers.find(&observer);
-        if (it != this->Observers.end()) {
-          this->Observers.erase(it);
-        }
+        assert(it != this->Observers.end());
+        this->Observers.erase(it);
       }
       void SetHeight(int height);
       void SetName(const std::string& name);
