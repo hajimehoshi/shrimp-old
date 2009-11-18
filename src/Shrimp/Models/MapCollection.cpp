@@ -32,7 +32,7 @@ namespace Shrimp {
       for (std::map<int, Node*>::iterator it = this->Nodes.begin();
            it != this->Nodes.end();
            ++it) {
-        delete (*it).second;
+        delete it->second;
       }
       this->Nodes.clear();
     }
@@ -41,11 +41,11 @@ namespace Shrimp {
       int id = this->GenerateNextId();
       Node* node = new Node(id, parentId, &map);
       this->Nodes.insert(std::make_pair(id, node));
-      this->GetNode(parentId)->ChildIds.push_back(id);
+      this->GetNode(parentId)->ChildIds.insert(id);
     }
 
-    int MapCollection::GetChildNodeCount(int id) const {
-      return this->GetNode(id)->ChildIds.size();
+    const std::set<int>& MapCollection::GetChildIds(int id) const {
+      return this->GetNode(id)->ChildIds;
     }
 
     int MapCollection::GetProjectNodeId() const {
@@ -65,7 +65,7 @@ namespace Shrimp {
     MapCollection::Node* MapCollection::GetNode(int id) const {
       std::map<int, Node*>::const_iterator it = this->Nodes.find(id);
       assert(it != this->Nodes.end());
-      return (*it).second;      
+      return it->second;
     }
 
   }
@@ -92,27 +92,38 @@ namespace Shrimp {
 
       const int projectNodeId = mapCollection.GetProjectNodeId();
       const int recycleBinNodeId = mapCollection.GetRecycleBinNodeId();
+      std::set<int> expectedIds;
 
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(projectNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
+      ASSERT_TRUE(mapCollection.GetChildIds(projectNodeId).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
 
       mapCollection.Add(projectNodeId, map1);
-      ASSERT_EQ(1, mapCollection.GetChildNodeCount(projectNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
+      expectedIds.clear();
+      expectedIds.insert(2);
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(projectNodeId));
+      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
 
       mapCollection.Add(projectNodeId, map2);
-      ASSERT_EQ(2, mapCollection.GetChildNodeCount(projectNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(3));
+      expectedIds.clear();
+      expectedIds.insert(2);
+      expectedIds.insert(3);
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(projectNodeId));
+      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(3).empty());
 
       mapCollection.Add(3, map3);
-      ASSERT_EQ(2, mapCollection.GetChildNodeCount(projectNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(recycleBinNodeId));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(2));
-      ASSERT_EQ(1, mapCollection.GetChildNodeCount(3));
-      ASSERT_EQ(0, mapCollection.GetChildNodeCount(4));
+      expectedIds.clear();
+      expectedIds.insert(2);
+      expectedIds.insert(3);
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(projectNodeId));
+      ASSERT_TRUE(mapCollection.GetChildIds(recycleBinNodeId).empty());
+      ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+      expectedIds.clear();
+      expectedIds.insert(4);
+      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
+      ASSERT_TRUE(mapCollection.GetChildIds(4).empty());
 
       /*
       const Map& tmpMap1 = mapCollection.GetMap(0);

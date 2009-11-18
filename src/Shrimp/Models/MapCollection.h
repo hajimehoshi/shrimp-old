@@ -16,7 +16,7 @@ namespace Shrimp {
         int Id;
         int ParentId;
         Models::Map* Map;
-        std::list<int> ChildIds;
+        std::set<int> ChildIds;
         Node(int id,
              int parentId,
              Models::Map* map);
@@ -25,7 +25,7 @@ namespace Shrimp {
       MapCollection();
       ~MapCollection();
       void Add(int parentId, Map& map);
-      int GetChildNodeCount(int id) const;
+      const std::set<int>& GetChildIds(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
     private:
