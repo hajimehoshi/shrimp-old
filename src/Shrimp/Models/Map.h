@@ -12,6 +12,8 @@ namespace Shrimp {
     class IMapObserver;
 
     class Map : private Util::Uncopyable {
+    private:
+      typedef Util::ObserverContainer<IMapObserver> ObserversType;
     public:
       static const int LayerCount = 2;
     public:
@@ -44,7 +46,7 @@ namespace Shrimp {
       int Width;
       int Height;
       Tile* Layers[LayerCount];
-      Util::ObserverContainer<IMapObserver> Observers;
+      ObserversType Observers;
     };
 
     class IMapObserver : private Util::Uncopyable {
