@@ -1,13 +1,13 @@
-#ifdef __TEST
-
 #include "Shrimp/Util/ObserverContainer.h"
+
+#ifdef __TEST
 
 #include <gtest/gtest.h>
 
 namespace Shrimp {
   namespace Util {
 
-    TEST(ObserverContainerTest, Foo) {
+    TEST(ObserverContainerTest, ObserverContainer) {
       ObserverContainer<int> container;
       container.Add(3);
       container.Add(1);
@@ -26,10 +26,8 @@ namespace Shrimp {
       expected.insert(6);
       expected.insert(9);
 
-      std::set<int> actual;
-      std::copy(container.Begin(), container.End(),
-                std::inserter(actual, actual.end()));
-
+      std::set<int> actual(container.Begin(), container.End());
+      ASSERT_EQ(4u, actual.size());
       ASSERT_TRUE(expected == actual);
     }
 

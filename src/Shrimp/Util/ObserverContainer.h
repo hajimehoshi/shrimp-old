@@ -1,7 +1,9 @@
 #ifndef SHRIMP_UTIL_OBSERVERCONTAINER_H
 #define SHRIMP_UTIL_OBSERVERCONTAINER_H
 
-#include <set>
+#include <cstdio>
+#include <algorithm>
+#include <vector>
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -10,25 +12,28 @@ namespace Shrimp {
     template<class T>
       class ObserverContainer : private Uncopyable {
     private:
-      typedef std::set<T> ContainerInnerType;
+      typedef std::vector<T> InnerContainerType;
     public:
-      typedef typename ContainerInnerType::const_iterator Iterator;
-      inline void Add(T observer) {
-        this->Observers.insert(observer);  
+      typedef typename InnerContainerType::const_iterator CIterator;
+      void Add(T observer) {
+        this->Observers.push_back(observer);  
       }
-      inline Iterator Begin() const {
+      inline CIterator Begin() const {
         return this->Observers.begin();
       }
-      inline Iterator End() const {
+      inline CIterator End() const {
         return this->Observers.end();
       }
-      inline void Remove(T observer) {
-        Iterator it = this->Observers.find(observer);
-        assert(it != this->Observers.end());
-        this->Observers.erase(it);
+      void Remove(T observer) {
+        typename InnerContainerType::reverse_iterator rit =
+          std::find(this->Observers.rbegin(),
+                    this->Observers.rend(),
+                    observer);
+        assert(rit != this->Observers.rend());
+        this->Observers.erase(--rit.base());
       }
     private:
-      ContainerInnerType Observers;
+      InnerContainerType Observers;
     };
 
   }
