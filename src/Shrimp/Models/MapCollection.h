@@ -4,6 +4,7 @@
 #include <map>
 #include <set>
 #include "Shrimp/Models/Map.h"
+#include "Shrimp/Util/ObserverContainer.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {

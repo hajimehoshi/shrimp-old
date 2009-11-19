@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cstdlib>
 #include "Shrimp/Views/MainWindow.h"
 
 namespace Shrimp {
@@ -69,7 +70,7 @@ namespace Shrimp {
       wc.lpszMenuName = 0;
       wc.lpszClassName = _T("MainWindow");
       if (!RegisterClassEx(&wc)) {
-        // exit?
+        std::abort();
       }
     }
 
