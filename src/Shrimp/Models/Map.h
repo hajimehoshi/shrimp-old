@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 #include "Shrimp/Models/Tile.h"
+#include "Shrimp/Util/ObserverContainer.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -18,7 +19,7 @@ namespace Shrimp {
       Map(const std::string& name, int width, int height);
       ~Map();
       inline void AddObserver(IMapObserver& observer) {
-        this->Observers.insert(&observer);
+        this->Observers.Add(observer);
       }
       inline int GetHeight() const {
         return this->Height;
@@ -33,9 +34,7 @@ namespace Shrimp {
         return this->Width;
       }
       inline void RemoveObserver(IMapObserver& observer) {
-        std::set<IMapObserver*>::iterator it = this->Observers.find(&observer);
-        assert(it != this->Observers.end());
-        this->Observers.erase(it);
+        this->Observers.Remove(observer);
       }
       void SetHeight(int height);
       void SetName(const std::string& name);
@@ -46,7 +45,7 @@ namespace Shrimp {
       int Width;
       int Height;
       Tile* Layers[LayerCount];
-      std::set<IMapObserver*> Observers;
+      Util::ObserverContainer<IMapObserver> Observers;
     };
 
     class IMapObserver : private Util::Uncopyable {

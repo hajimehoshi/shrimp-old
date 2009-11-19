@@ -19,7 +19,6 @@ namespace Shrimp {
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND Handle;
     private:
-
       class MainWindowWC : private Util::Uncopyable {
       public:
         const WNDCLASSEX& GetWndClass() const {
