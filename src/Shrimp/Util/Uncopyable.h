@@ -4,6 +4,10 @@
 namespace Shrimp {
   namespace Util {
 
+    /*
+     * This class is NOT for polymorphism.
+     * Don't call delete operator for a pointer of this class!
+     */
     class Uncopyable {
     protected:
       Uncopyable() { }

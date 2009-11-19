@@ -15,7 +15,7 @@ namespace Shrimp {
     public:
       typedef typename InnerContainerType::const_iterator CIterator;
       void Add(T observer) {
-        this->Observers.push_back(observer);  
+        this->Observers.push_back(observer);
       }
       inline CIterator Begin() const {
         return this->Observers.begin();
