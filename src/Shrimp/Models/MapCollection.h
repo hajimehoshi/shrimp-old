@@ -2,7 +2,6 @@
 #define SHRIMP_MODELS_MAPCOLLECTION_H
 
 #include <map>
-#include <list>
 #include "Shrimp/Models/Map.h"
 
 namespace Shrimp {
