@@ -1,20 +1,16 @@
-#ifndef SHRIMP_APPLICAION_H
-#define SHRIMP_APPLICAION_H
+#ifndef SHRIMP_APPLICATION_H
+#define SHRIMP_APPLICATION_H
 
-#include "Shrimp/Util/Uncopyable.h"
+#include "Shrimp/Util/Singleton.h"
 
 namespace Shrimp {
 
-  class Application : private Util::Uncopyable {
+  class Application : public Util::Singleton<Application> {
+    friend class Util::Singleton<Application>;
   public:
     int Run();
   private:
     Application() { }
-  public:
-    static Application& GetInstance() {
-      static Application instance;
-      return instance;
-    }
   };
 
 }

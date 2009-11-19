@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include "Shrimp/Views/WndProc.h"
+#include "Shrimp/Util/Singleton.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -19,7 +20,8 @@ namespace Shrimp {
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND Handle;
     private:
-      class MainWindowWC : private Util::Uncopyable {
+      class MainWindowWC : public Util::Singleton<MainWindowWC> {
+        friend class Util::Singleton<MainWindowWC>;
       public:
         const WNDCLASSEX& GetWndClass() const {
           return this->WndClass;
@@ -27,11 +29,6 @@ namespace Shrimp {
       private:
         MainWindowWC();
         WNDCLASSEX WndClass;
-      public:
-        static const MainWindowWC& GetInstance() {
-          static const MainWindowWC instance;
-          return instance;
-        }
       };
 
     };
