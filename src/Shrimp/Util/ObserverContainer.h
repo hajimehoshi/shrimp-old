@@ -9,11 +9,12 @@ namespace Shrimp {
 
     template<class T>
       class ObserverContainer : private Uncopyable {
+    private:
+      typedef std::set<T> ContainerInnerType;
     public:
-      typedef std::set<T*> ContainerInnerType;
       typedef typename ContainerInnerType::const_iterator Iterator;
-      inline void Add(T& observer) {
-        this->Observers.insert(&observer);  
+      inline void Add(T observer) {
+        this->Observers.insert(observer);  
       }
       inline Iterator Begin() const {
         return this->Observers.begin();
@@ -21,8 +22,8 @@ namespace Shrimp {
       inline Iterator End() const {
         return this->Observers.end();
       }
-      inline void Remove(T& observer) {
-        Iterator it = this->Observers.find(&observer);
+      inline void Remove(T observer) {
+        Iterator it = this->Observers.find(observer);
         assert(it != this->Observers.end());
         this->Observers.erase(it);
       }

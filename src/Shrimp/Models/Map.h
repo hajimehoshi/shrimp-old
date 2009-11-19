@@ -13,14 +13,14 @@ namespace Shrimp {
 
     class Map : private Util::Uncopyable {
     private:
-      typedef Util::ObserverContainer<IMapObserver> ObserversType;
+      typedef Util::ObserverContainer<IMapObserver*> ObserversType;
     public:
       static const int LayerCount = 2;
     public:
       Map(const std::string& name, int width, int height);
       ~Map();
       inline void AddObserver(IMapObserver& observer) {
-        this->Observers.Add(observer);
+        this->Observers.Add(&observer);
       }
       inline int GetHeight() const {
         return this->Height;
@@ -35,7 +35,7 @@ namespace Shrimp {
         return this->Width;
       }
       inline void RemoveObserver(IMapObserver& observer) {
-        this->Observers.Remove(observer);
+        this->Observers.Remove(&observer);
       }
       void SetHeight(int height);
       void SetName(const std::string& name);
