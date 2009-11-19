@@ -1,7 +1,6 @@
 #ifndef SHRIMP_MODELS_MAP_H
 #define SHRIMP_MODELS_MAP_H
 
-#include <set>
 #include <string>
 #include "Shrimp/Models/Tile.h"
 #include "Shrimp/Util/ObserverContainer.h"
