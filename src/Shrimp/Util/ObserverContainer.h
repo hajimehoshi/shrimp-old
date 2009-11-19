@@ -1,7 +1,6 @@
 #ifndef SHRIMP_UTIL_OBSERVERCONTAINER_H
 #define SHRIMP_UTIL_OBSERVERCONTAINER_H
 
-#include <cstdio>
 #include <algorithm>
 #include <vector>
 #include "Shrimp/Util/Uncopyable.h"
