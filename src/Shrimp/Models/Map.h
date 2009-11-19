@@ -4,13 +4,14 @@
 #include <set>
 #include <string>
 #include "Shrimp/Models/Tile.h"
+#include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
   namespace Models {
 
     class IMapObserver;
 
-    class Map {
+    class Map : private Util::Uncopyable {
     public:
       static const int LayerCount = 2;
     public:
@@ -41,8 +42,6 @@ namespace Shrimp {
       void SetTile(int layer, int x, int y, const Tile& tile);
       void SetWidth(int width);
     private:
-      Map(const Map& map);
-      Map& operator=(const Map& rhs);
       std::string Name;
       int Width;
       int Height;
@@ -50,7 +49,7 @@ namespace Shrimp {
       std::set<IMapObserver*> Observers;
     };
 
-    class IMapObserver {
+    class IMapObserver : private Util::Uncopyable {
     public:
       IMapObserver() { }
       virtual ~IMapObserver() = 0;
@@ -58,9 +57,6 @@ namespace Shrimp {
       virtual void OnNameUpdated() { }
       virtual void OnTileUpdated() { }
       virtual void OnWidthUpdated() { }
-    private:
-      IMapObserver(const IMapObserver& mapObserver);
-      IMapObserver& operator=(const IMapObserver& rhs);
     };
 
   }

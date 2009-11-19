@@ -4,13 +4,14 @@
 #include <map>
 #include <set>
 #include "Shrimp/Models/Map.h"
+#include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
   namespace Models {
 
     class IMapCollectionObserver;
 
-    class MapCollection {
+    class MapCollection : private Util::Uncopyable {
     private:
       struct Node {
         static const int InvalidId = -1;
@@ -36,8 +37,6 @@ namespace Shrimp {
         this->Observers.erase(it);
       }
     private:
-      MapCollection(const MapCollection& mapCollection);
-      MapCollection& operator=(const MapCollection& rhs);
       int GenerateNextId();
       Node* GetNode(int id) const;
       int NextId;
@@ -47,14 +46,11 @@ namespace Shrimp {
       int RecycleBinNodeId;
     };
 
-    class IMapCollectionObserver {
+    class IMapCollectionObserver : private Util::Uncopyable {
     public:
       IMapCollectionObserver() { }
       virtual ~IMapCollectionObserver() = 0;
       virtual void OnItemAdded() { }
-    private:
-      IMapCollectionObserver(const IMapCollectionObserver& mapObserver);
-      IMapCollectionObserver& operator=(const IMapCollectionObserver& rhs);
     };
 
   }

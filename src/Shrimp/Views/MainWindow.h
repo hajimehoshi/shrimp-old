@@ -4,32 +4,29 @@
 #include <windows.h>
 #include <tchar.h>
 #include "Shrimp/Views/WndProc.h"
+#include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
   namespace Views {
 
-    class MainWindow {
+    class MainWindow : private Util::Uncopyable {
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
       MainWindow();
       void Show();
     private:
-      MainWindow(const MainWindow& rhs);
-      MainWindow& operator=(const MainWindow& rhs);
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND Handle;
     private:
 
-      class MainWindowWC {
+      class MainWindowWC : private Util::Uncopyable {
       public:
         const WNDCLASSEX& GetWndClass() const {
           return this->WndClass;
         }
       private:
         MainWindowWC();
-        MainWindowWC(const MainWindowWC& rhs);
-        MainWindowWC& operator=(const MainWindowWC& rhs);
         WNDCLASSEX WndClass;
       public:
         static const MainWindowWC& GetInstance() {

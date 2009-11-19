@@ -1,20 +1,22 @@
 #ifndef SHRIMP_APPLICAION_H
 #define SHRIMP_APPLICAION_H
 
+#include "Shrimp/Util/Uncopyable.h"
+
 namespace Shrimp {
-  class Application {
+
+  class Application : private Util::Uncopyable {
   public:
     int Run();
   private:
     Application() { }
-    Application(const Application& rhs);
-    Application& operator=(const Application& rhs);
   public:
     static Application& GetInstance() {
       static Application instance;
       return instance;
     }
   };
+
 }
 
 #endif
