@@ -14,6 +14,8 @@ namespace Shrimp {
 
     class MapCollection : private Util::Uncopyable {
     private:
+      typedef Util::ObserverContainer<IMapCollectionObserver*> ObserversType;
+    private:
       struct Node {
         static const int InvalidId = -1;
         int ParentId;
@@ -26,23 +28,21 @@ namespace Shrimp {
       ~MapCollection();
       void Add(int parentId, Map& map);
       inline void AddObserver(IMapCollectionObserver& observer) {
-        this->Observers.insert(&observer);
+        this->Observers.Add(&observer);
       }
       const std::set<int>& GetChildIds(int id) const;
       Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
       inline void RemoveObserver(IMapCollectionObserver& observer) {
-        std::set<IMapCollectionObserver*>::iterator it = this->Observers.find(&observer);
-        assert(it != this->Observers.end());
-        this->Observers.erase(it);
+        this->Observers.Remove(&observer);
       }
     private:
       int GenerateNextId();
       Node* GetNode(int id) const;
       int NextId;
       std::map<int, Node*> Nodes;
-      std::set<IMapCollectionObserver*> Observers;
+      ObserversType Observers;
       int ProjectNodeId;
       int RecycleBinNodeId;
     };
