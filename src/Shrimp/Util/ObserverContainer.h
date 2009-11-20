@@ -14,25 +14,16 @@ namespace Shrimp {
     private:
       typedef std::vector<T> InnerContainerType;
     public:
-      typedef typename InnerContainerType::const_iterator CIterator;
-      typedef Enumerable<InnerContainerType> ObserverE;
+      typedef typename Util::Enumerable<InnerContainerType> Enumerable;
     public:
       ObserverContainer()
-        : observers(), observerE(this->observers) {
+        : observers(), enumerable(this->observers) {
       }
       void Add(T observer) {
         this->observers.push_back(observer);
       }
-      // TODO: Remove it!
-      inline CIterator Begin() const {
-        return this->observers.begin();
-      }
-      // TODO: Remove it!
-      inline CIterator End() const {
-        return this->observers.end();
-      }
-      const ObserverE& GetEnumerable() const {
-        return this->observerE;
+      const Enumerable& GetEnumerable() const {
+        return this->enumerable;
       }
       void Remove(T observer) {
         typename InnerContainerType::reverse_iterator rit =
@@ -44,7 +35,7 @@ namespace Shrimp {
       }
     private:
       InnerContainerType observers;
-      ObserverE observerE;
+      Enumerable enumerable;
     };
 
   }
