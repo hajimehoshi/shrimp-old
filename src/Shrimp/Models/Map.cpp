@@ -25,9 +25,7 @@ namespace Shrimp {
       if (this->Height != height) {
         this->Height = height;
         const ObeserverE& e = this->Observers.GetEnumerable();
-        for (ObeserverE::Iterator it = e.Begin();
-             it != e.End();
-             ++it) {
+        for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnHeightUpdated();
         }
       }
@@ -37,9 +35,7 @@ namespace Shrimp {
       if (this->Name != name) {
         this->Name = name;
         const ObeserverE& e = this->Observers.GetEnumerable();
-        for (ObeserverE::Iterator it = e.Begin();
-             it != e.End();
-             ++it) {
+        for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnNameUpdated();
         }
       }
@@ -55,9 +51,7 @@ namespace Shrimp {
       if (this->Layers[layer][x + y * this->Width] != tile) {
         this->Layers[layer][x + y * this->Width] = tile;
         const ObeserverE& e = this->Observers.GetEnumerable();
-        for (ObeserverE::Iterator it = e.Begin();
-             it != e.End();
-             ++it) {
+        for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnTileUpdated();
         }
       }
@@ -68,9 +62,7 @@ namespace Shrimp {
       if (this->Width != width) {
         this->Width = width;
         const ObeserverE& e = this->Observers.GetEnumerable();
-        for (ObeserverE::Iterator it = e.Begin();
-             it != e.End();
-             ++it) {
+        for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnWidthUpdated();
         }
       }
