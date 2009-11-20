@@ -9,36 +9,36 @@ namespace Shrimp {
     }
 
     MapCollection::MapCollection()
-      : NextId(0) {
+      : nextId(0) {
       int id;
       Node* node;
 
       id = this->GenerateNextId();
       assert(id == 0);
       node = new Node(Node::InvalidId, 0);
-      this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
-      this->ProjectNodeId = id;
+      this->nodes.insert(std::map<int, Node*>::value_type(id, node));
+      this->projectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
       node = new Node(Node::InvalidId, 0);
-      this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
-      this->RecycleBinNodeId = id;
+      this->nodes.insert(std::map<int, Node*>::value_type(id, node));
+      this->recycleBinNodeId = id;
     }
 
     MapCollection::~MapCollection() {
-      for (std::map<int, Node*>::iterator it = this->Nodes.begin();
-           it != this->Nodes.end();
+      for (std::map<int, Node*>::iterator it = this->nodes.begin();
+           it != this->nodes.end();
            ++it) {
         delete it->second;
       }
-      this->Nodes.clear();
+      this->nodes.clear();
     }
 
     void MapCollection::Add(int parentId, Map& map) {
       int id = this->GenerateNextId();
       Node* node = new Node(parentId, &map);
-      this->Nodes.insert(std::map<int, Node*>::value_type(id, node));
+      this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->ChildIds.insert(id);
     }
 
@@ -51,22 +51,22 @@ namespace Shrimp {
     }
 
     int MapCollection::GetProjectNodeId() const {
-      return this->ProjectNodeId;
+      return this->projectNodeId;
     }
 
     int MapCollection::GetRecycleBinNodeId() const {
-      return this->RecycleBinNodeId;
+      return this->recycleBinNodeId;
     }
 
     int MapCollection::GenerateNextId() {
-      const int nextId = this->NextId;
-      this->NextId++;
+      const int nextId = this->nextId;
+      this->nextId++;
       return nextId;
     }
 
     MapCollection::Node* MapCollection::GetNode(int id) const {
-      std::map<int, Node*>::const_iterator it = this->Nodes.find(id);
-      assert(it != this->Nodes.end());
+      std::map<int, Node*>::const_iterator it = this->nodes.find(id);
+      assert(it != this->nodes.end());
       return it->second;
     }
 

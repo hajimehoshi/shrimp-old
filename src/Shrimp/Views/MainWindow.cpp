@@ -5,7 +5,8 @@
 namespace Shrimp {
   namespace Views {
 
-    MainWindow::MainWindow() : Handle(0) {
+    MainWindow::MainWindow()
+      : handle(0) {
       const MainWindowWC& mainWindowWC = MainWindowWC::GetInstance();
       const WNDCLASSEX& wc = mainWindowWC.GetWndClass();
       CreateWindow(wc.lpszClassName,
@@ -19,14 +20,14 @@ namespace Shrimp {
                    0,
                    GetModuleHandle(0),
                    this);
-      // this->Handle is set on processing WM_NCCREATE in WndProc
-      assert(this->Handle);
+      // this->handle is set on processing WM_NCCREATE in WndProc
+      assert(this->handle);
     }
 
     void MainWindow::Show() {
-      assert(this->Handle);
-      ShowWindow(this->Handle, SW_SHOW);
-      UpdateWindow(this->Handle);
+      assert(this->handle);
+      ShowWindow(this->handle, SW_SHOW);
+      UpdateWindow(this->handle);
     }
 
     LRESULT MainWindow::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -35,14 +36,14 @@ namespace Shrimp {
         {
           const TCHAR* text = _T("ほげ");
           PAINTSTRUCT ps;
-          BeginPaint(this->Handle, &ps);
+          BeginPaint(this->handle, &ps);
           TextOut(ps.hdc, 10, 20, text, _tcslen(text));
-          EndPaint(this->Handle, &ps);
+          EndPaint(this->handle, &ps);
           return 0;
         }
       case WM_LBUTTONDOWN:
         {
-          MessageBox(this->Handle, _T("はい"), _T("Shrimp"), MB_ICONINFORMATION);
+          MessageBox(this->handle, _T("はい"), _T("Shrimp"), MB_ICONINFORMATION);
           return 0;
         }
       case WM_DESTROY:
@@ -51,11 +52,11 @@ namespace Shrimp {
           return 0;
         }
       }
-      return DefWindowProc(this->Handle, msg, wParam, lParam);
+      return DefWindowProc(this->handle, msg, wParam, lParam);
     }
 
     MainWindow::MainWindowWC::MainWindowWC() {
-      WNDCLASSEX& wc = MainWindowWC::WndClass;
+      WNDCLASSEX& wc = this->wndClass;
       ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);
       wc.style = CS_HREDRAW | CS_VREDRAW;

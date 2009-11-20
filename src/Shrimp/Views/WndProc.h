@@ -13,7 +13,7 @@ namespace Shrimp {
         TControl* const control =
           reinterpret_cast<TControl*>((reinterpret_cast<CREATESTRUCT*>(lParam))->lpCreateParams);
         assert(control);
-        control->Handle = hWnd;
+        control->handle = hWnd;
         SetWindowLongPtr(hWnd, GWLP_USERDATA,
                          reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(control)));
       } else {

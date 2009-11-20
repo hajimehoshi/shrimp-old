@@ -11,6 +11,17 @@ namespace Shrimp {
   namespace Views {
 
     class MainWindow : private Util::Uncopyable {
+    private:
+      class MainWindowWC : public Util::Singleton<MainWindowWC> {
+        friend class Util::Singleton<MainWindowWC>;
+      public:
+        const WNDCLASSEX& GetWndClass() const {
+          return this->wndClass;
+        }
+      private:
+        MainWindowWC();
+        WNDCLASSEX wndClass;
+      };
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
@@ -18,19 +29,7 @@ namespace Shrimp {
       void Show();
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
-      HWND Handle;
-    private:
-      class MainWindowWC : public Util::Singleton<MainWindowWC> {
-        friend class Util::Singleton<MainWindowWC>;
-      public:
-        const WNDCLASSEX& GetWndClass() const {
-          return this->WndClass;
-        }
-      private:
-        MainWindowWC();
-        WNDCLASSEX WndClass;
-      };
-
+      HWND handle;
     };
 
   }

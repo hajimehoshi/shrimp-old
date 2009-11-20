@@ -19,33 +19,33 @@ namespace Shrimp {
       Map(const std::string& name, int width, int height);
       ~Map();
       inline void AddObserver(IMapObserver& observer) {
-        this->Observers.Add(&observer);
+        this->observers.Add(&observer);
       }
       inline int GetHeight() const {
-        return this->Height;
+        return this->height;
       }
       inline const std::string& GetName() const {
-        return this->Name;
+        return this->name;
       }
       inline const Tile& GetTile(int layer, int x, int y) const {
-        return this->Layers[layer][x + y * this->Width];
+        return this->layers[layer][x + y * this->width];
       }
       inline int GetWidth() const {
-        return this->Width;
+        return this->width;
       }
       inline void RemoveObserver(IMapObserver& observer) {
-        this->Observers.Remove(&observer);
+        this->observers.Remove(&observer);
       }
       void SetHeight(int height);
       void SetName(const std::string& name);
       void SetTile(int layer, int x, int y, const Tile& tile);
       void SetWidth(int width);
     private:
-      std::string Name;
-      int Width;
-      int Height;
-      Tile* Layers[LayerCount];
-      Util::ObserverContainer<IMapObserver*> Observers;
+      std::string name;
+      int width;
+      int height;
+      Tile* layers[LayerCount];
+      Util::ObserverContainer<IMapObserver*> observers;
     };
 
     class IMapObserver : private Util::Uncopyable {

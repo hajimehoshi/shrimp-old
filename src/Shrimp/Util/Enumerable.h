@@ -10,8 +10,8 @@ namespace Shrimp {
       class Enumerable : private Uncopyable {
     public:
       typedef typename T::const_iterator Iterator;
-      Enumerable(T& innerContainer_)
-        : innerContainer(innerContainer_) {
+      Enumerable(T& innerContainer)
+        : innerContainer(innerContainer) {
       }
       inline Iterator Begin() const {
         return this->innerContainer.begin();

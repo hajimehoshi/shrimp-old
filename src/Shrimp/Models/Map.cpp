@@ -6,25 +6,25 @@ namespace Shrimp {
     typedef Util::ObserverContainer<IMapObserver*>::Enumerable ObeserverE;
 
     Map::Map(const std::string& name, int width, int height)
-      : Name(name), Width(width), Height(height) {
-      assert(0 < this->Width);
-      assert(0 < this->Height);
+      : name(name), width(width), height(height) {
+      assert(0 < this->width);
+      assert(0 < this->height);
       for (int i = 0; i < LayerCount; ++i) {
-        this->Layers[i] = new Tile[this->Width * this->Height];
+        this->layers[i] = new Tile[this->width * this->height];
       }
     }
 
     Map::~Map() {
       for (int i = 0; i < LayerCount; ++i) {
-        delete[] this->Layers[i];
+        delete[] this->layers[i];
       }
     }
 
     void Map::SetHeight(int height) {
       assert(0 < height);
-      if (this->Height != height) {
-        this->Height = height;
-        const ObeserverE& e = this->Observers.GetEnumerable();
+      if (this->height != height) {
+        this->height = height;
+        const ObeserverE& e = this->observers.GetEnumerable();
         for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnHeightUpdated();
         }
@@ -32,9 +32,9 @@ namespace Shrimp {
     }
 
     void Map::SetName(const std::string& name) {
-      if (this->Name != name) {
-        this->Name = name;
-        const ObeserverE& e = this->Observers.GetEnumerable();
+      if (this->name != name) {
+        this->name = name;
+        const ObeserverE& e = this->observers.GetEnumerable();
         for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnNameUpdated();
         }
@@ -45,12 +45,12 @@ namespace Shrimp {
       assert(0 <= layer);
       assert(layer < LayerCount);
       assert(0 <= x);
-      assert(x < this->Width);
+      assert(x < this->width);
       assert(0 <= y);
-      assert(y < this->Height);
-      if (this->Layers[layer][x + y * this->Width] != tile) {
-        this->Layers[layer][x + y * this->Width] = tile;
-        const ObeserverE& e = this->Observers.GetEnumerable();
+      assert(y < this->height);
+      if (this->layers[layer][x + y * this->width] != tile) {
+        this->layers[layer][x + y * this->width] = tile;
+        const ObeserverE& e = this->observers.GetEnumerable();
         for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnTileUpdated();
         }
@@ -59,9 +59,9 @@ namespace Shrimp {
 
     void Map::SetWidth(int width) {
       assert(0 < width);
-      if (this->Width != width) {
-        this->Width = width;
-        const ObeserverE& e = this->Observers.GetEnumerable();
+      if (this->width != width) {
+        this->width = width;
+        const ObeserverE& e = this->observers.GetEnumerable();
         for (ObeserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
           (*it)->OnWidthUpdated();
         }
