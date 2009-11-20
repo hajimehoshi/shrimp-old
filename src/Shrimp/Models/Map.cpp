@@ -3,6 +3,8 @@
 namespace Shrimp {
   namespace Models {
 
+    typedef Util::ObserverContainer<IMapObserver*>::Enumerable ObeserverE;
+
     Map::Map(const std::string& name, int width, int height)
       : Name(name), Width(width), Height(height) {
       assert(0 < this->Width);
@@ -22,9 +24,8 @@ namespace Shrimp {
       assert(0 < height);
       if (this->Height != height) {
         this->Height = height;
-        const Util::ObserverContainer<IMapObserver*>::Enumerable& e =
-          this->Observers.GetEnumerable();
-        for (Util::ObserverContainer<IMapObserver*>::Enumerable::Iterator it = e.Begin();
+        const ObeserverE& e = this->Observers.GetEnumerable();
+        for (ObeserverE::Iterator it = e.Begin();
              it != e.End();
              ++it) {
           (*it)->OnHeightUpdated();
@@ -35,9 +36,8 @@ namespace Shrimp {
     void Map::SetName(const std::string& name) {
       if (this->Name != name) {
         this->Name = name;
-        const Util::ObserverContainer<IMapObserver*>::Enumerable& e =
-          this->Observers.GetEnumerable();
-        for (Util::ObserverContainer<IMapObserver*>::Enumerable::Iterator it = e.Begin();
+        const ObeserverE& e = this->Observers.GetEnumerable();
+        for (ObeserverE::Iterator it = e.Begin();
              it != e.End();
              ++it) {
           (*it)->OnNameUpdated();
@@ -54,9 +54,8 @@ namespace Shrimp {
       assert(y < this->Height);
       if (this->Layers[layer][x + y * this->Width] != tile) {
         this->Layers[layer][x + y * this->Width] = tile;
-        const Util::ObserverContainer<IMapObserver*>::Enumerable& e =
-          this->Observers.GetEnumerable();
-        for (Util::ObserverContainer<IMapObserver*>::Enumerable::Iterator it = e.Begin();
+        const ObeserverE& e = this->Observers.GetEnumerable();
+        for (ObeserverE::Iterator it = e.Begin();
              it != e.End();
              ++it) {
           (*it)->OnTileUpdated();
@@ -68,9 +67,8 @@ namespace Shrimp {
       assert(0 < width);
       if (this->Width != width) {
         this->Width = width;
-        const Util::ObserverContainer<IMapObserver*>::Enumerable& e =
-          this->Observers.GetEnumerable();
-        for (Util::ObserverContainer<IMapObserver*>::Enumerable::Iterator it = e.Begin();
+        const ObeserverE& e = this->Observers.GetEnumerable();
+        for (ObeserverE::Iterator it = e.Begin();
              it != e.End();
              ++it) {
           (*it)->OnWidthUpdated();
