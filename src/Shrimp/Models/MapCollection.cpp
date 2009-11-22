@@ -4,7 +4,7 @@
 namespace Shrimp {
   namespace Models {
 
-    typedef Util::ObserverContainer<IMapCollectionObserver*>::STLEnumerable ObserverE;
+    typedef Util::ObserverContainer<IMapCollectionObserver*>::Observers Observers;
 
     MapCollection::Node::Node(int parentId, Models::Map* map)
       : ParentId(parentId), Map(map) {
@@ -42,8 +42,8 @@ namespace Shrimp {
       Node* node = new Node(parentId, &map);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->ChildIds.insert(id);
-      const ObserverE& e = this->observers.GetEnumerable();
-      for (ObserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
+      const Observers& e = this->observers.GetObservers();
+      for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
         (*it)->OnItemAdded(id);
       }
     }
@@ -112,8 +112,6 @@ namespace Shrimp {
       Map map2("Bar", 21, 16);
       Map map3("Baz", 22, 17);
 
-      
-
       ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
 
@@ -173,6 +171,27 @@ namespace Shrimp {
       const Map& tmpMap3 = mapCollection.GetMap(4);
       ASSERT_EQ(&map3, &tmpMap3);
     }
+
+    /*TEST(MapCollectionTest, Remove) {
+      MapCollection mapCollection;
+      Map map1("Foo", 20, 15);
+      Map map2("Bar", 21, 16);
+      Map map3("Baz", 22, 17);
+
+      mapCollection.Add(0, map1); // 2
+      mapCollection.Add(0, map2); // 3
+      mapCollection.Add(3, map3); // 4
+
+      {
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        mapCollection.Remove(3);
+        std::set<int> expectedIds;
+        expectedIds.insert();
+        ASSERT_TURE(expectedIds == mapCollection.GetChildIds(0));
+        mapCollection.RemoveObserver(observer);
+      }
+      }*/
 
   }
 }

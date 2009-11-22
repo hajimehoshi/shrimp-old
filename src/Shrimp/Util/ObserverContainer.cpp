@@ -26,10 +26,8 @@ namespace Shrimp {
       expected.insert(6);
       expected.insert(9);
 
-      const ObserverContainer<int>::STLEnumerable& e =
-        container.GetEnumerable();
-      std::set<int> actual(e.Begin(), e.End());
-      ASSERT_EQ(4u, actual.size());
+      const ObserverContainer<int>::Observers& e = container.GetObservers();
+      std::set<int> actual(e.begin(), e.end());
       ASSERT_TRUE(expected == actual);
     }
 
