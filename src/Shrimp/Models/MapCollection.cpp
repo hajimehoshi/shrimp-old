@@ -4,6 +4,8 @@
 namespace Shrimp {
   namespace Models {
 
+    typedef Util::ObserverContainer<IMapCollectionObserver*>::STLEnumerable ObserverE;
+
     MapCollection::Node::Node(int parentId, Models::Map* map)
       : ParentId(parentId), Map(map) {
     }
@@ -40,6 +42,10 @@ namespace Shrimp {
       Node* node = new Node(parentId, &map);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->ChildIds.insert(id);
+      const ObserverE& e = this->observers.GetEnumerable();
+      for (ObserverE::Iterator it = e.Begin(); it != e.End(); ++it) {
+        (*it)->OnItemAdded(id);
+      }
     }
 
     const std::set<int>& MapCollection::GetChildIds(int id) const {
@@ -85,17 +91,13 @@ namespace Shrimp {
 
     class MockMapCollectionObserver : public IMapCollectionObserver {
     public:
-      MockMapCollectionObserver() {
-        this->Clear();
-      }
       virtual ~MockMapCollectionObserver() { }
-      void Clear() {
-        this->IsCalledOnItemAdded = false;
+      virtual void OnItemAdded(int index) {
+        this->calledHandler = "OnItemAdded";
+        this->intValues["index"] = index;
       }
-      virtual void OnItemAdded() {
-        this->IsCalledOnItemAdded = true;
-      }
-      bool IsCalledOnItemAdded;
+      std::string calledHandler;
+      std::map<std::string, int> intValues;
     };
 
     TEST(MapCollectionTest, RootNodes) {
@@ -106,45 +108,63 @@ namespace Shrimp {
 
     TEST(MapCollectionTest, Add) {
       MapCollection mapCollection;
-      MockMapCollectionObserver mapCollectionObserver;
-      mapCollection.AddObserver(mapCollectionObserver);
-
       Map map1("Foo", 20, 15);
       Map map2("Bar", 21, 16);
       Map map3("Baz", 22, 17);
 
-      std::set<int> expectedIds;
+      
 
       ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
 
-      mapCollection.Add(0, map1);
-      expectedIds.clear();
-      expectedIds.insert(2);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
-      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
-      ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+      {
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        mapCollection.Add(0, map1);
+        std::set<int> expectedIds;
+        expectedIds.insert(2);
+        ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+        ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
+        ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+        ASSERT_EQ("OnItemAdded", observer.calledHandler);
+        ASSERT_EQ(2, observer.intValues["index"]);
+        mapCollection.RemoveObserver(observer);
+      }
 
-      mapCollection.Add(0, map2);
-      expectedIds.clear();
-      expectedIds.insert(2);
-      expectedIds.insert(3);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
-      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
-      ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
-      ASSERT_TRUE(mapCollection.GetChildIds(3).empty());
+      {
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        mapCollection.Add(0, map2);
+        std::set<int> expectedIds;
+        expectedIds.insert(2);
+        expectedIds.insert(3);
+        ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+        ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
+        ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+        ASSERT_TRUE(mapCollection.GetChildIds(3).empty());
+        ASSERT_EQ("OnItemAdded", observer.calledHandler);
+        ASSERT_EQ(3, observer.intValues["index"]);
+        mapCollection.RemoveObserver(observer);
+      }
 
-      mapCollection.Add(3, map3);
-      expectedIds.clear();
-      expectedIds.insert(2);
-      expectedIds.insert(3);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
-      ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
-      ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
-      expectedIds.clear();
-      expectedIds.insert(4);
-      ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
-      ASSERT_TRUE(mapCollection.GetChildIds(4).empty());
+      {
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        mapCollection.Add(3, map3);
+        std::set<int> expectedIds;
+        expectedIds.insert(2);
+        expectedIds.insert(3);
+        ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+        ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
+        ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+        expectedIds.clear();
+        expectedIds.insert(4);
+        ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
+        ASSERT_TRUE(mapCollection.GetChildIds(4).empty());
+        ASSERT_EQ("OnItemAdded", observer.calledHandler);
+        ASSERT_EQ(4, observer.intValues["index"]);
+        mapCollection.RemoveObserver(observer);
+      }
 
       const Map& tmpMap1 = mapCollection.GetMap(2);
       ASSERT_EQ(&map1, &tmpMap1);

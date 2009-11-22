@@ -50,7 +50,7 @@ namespace Shrimp {
     public:
       IMapCollectionObserver() { }
       virtual ~IMapCollectionObserver() = 0;
-      virtual void OnItemAdded() { }
+      virtual void OnItemAdded(int index) = 0;
     };
 
   }
