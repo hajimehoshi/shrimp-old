@@ -111,10 +111,8 @@ namespace Shrimp {
       Map map1("Foo", 20, 15);
       Map map2("Bar", 21, 16);
       Map map3("Baz", 22, 17);
-
       ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
-
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
@@ -128,7 +126,6 @@ namespace Shrimp {
         ASSERT_EQ(2, observer.intValues["index"]);
         mapCollection.RemoveObserver(observer);
       }
-
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
@@ -144,7 +141,6 @@ namespace Shrimp {
         ASSERT_EQ(3, observer.intValues["index"]);
         mapCollection.RemoveObserver(observer);
       }
-
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
@@ -163,7 +159,6 @@ namespace Shrimp {
         ASSERT_EQ(4, observer.intValues["index"]);
         mapCollection.RemoveObserver(observer);
       }
-
       const Map& tmpMap1 = mapCollection.GetMap(2);
       ASSERT_EQ(&map1, &tmpMap1);
       const Map& tmpMap2 = mapCollection.GetMap(3);
