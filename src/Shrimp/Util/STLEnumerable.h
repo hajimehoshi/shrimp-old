@@ -7,10 +7,10 @@ namespace Shrimp {
   namespace Util {
 
     template<class T>
-      class Enumerable : private Uncopyable {
+      class STLEnumerable : private Uncopyable {
     public:
       typedef typename T::const_iterator Iterator;
-      Enumerable(T& innerContainer)
+      STLEnumerable(T& innerContainer)
         : innerContainer(innerContainer) {
       }
       inline Iterator Begin() const {

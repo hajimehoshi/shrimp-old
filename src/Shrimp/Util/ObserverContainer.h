@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <vector>
-#include "Shrimp/Util/Enumerable.h"
+#include "Shrimp/Util/STLEnumerable.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -14,7 +14,7 @@ namespace Shrimp {
     private:
       typedef std::vector<T> InnerContainerType;
     public:
-      typedef typename Util::Enumerable<InnerContainerType> Enumerable;
+      typedef typename Util::STLEnumerable<InnerContainerType> STLEnumerable;
     public:
       ObserverContainer()
         : observers(), enumerable(this->observers) {
@@ -22,7 +22,7 @@ namespace Shrimp {
       void Add(T observer) {
         this->observers.push_back(observer);
       }
-      const Enumerable& GetEnumerable() const {
+      const STLEnumerable& GetEnumerable() const {
         return this->enumerable;
       }
       void Remove(T observer) {
@@ -35,7 +35,7 @@ namespace Shrimp {
       }
     private:
       InnerContainerType observers;
-      Enumerable enumerable;
+      STLEnumerable enumerable;
     };
 
   }

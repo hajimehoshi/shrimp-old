@@ -3,7 +3,6 @@
 
 #include <string>
 #include "Shrimp/Models/Tile.h"
-#include "Shrimp/Util/Enumerable.h"
 #include "Shrimp/Util/ObserverContainer.h"
 #include "Shrimp/Util/Uncopyable.h"
 

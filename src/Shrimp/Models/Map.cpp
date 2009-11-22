@@ -3,7 +3,7 @@
 namespace Shrimp {
   namespace Models {
 
-    typedef Util::ObserverContainer<IMapObserver*>::Enumerable ObeserverE;
+    typedef Util::ObserverContainer<IMapObserver*>::STLEnumerable ObeserverE;
 
     Map::Map(const std::string& name, int width, int height)
       : name(name), width(width), height(height) {
