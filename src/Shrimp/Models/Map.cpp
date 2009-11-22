@@ -83,104 +83,104 @@ namespace Shrimp {
 
     class MockMapObserver : public IMapObserver {
     public:
-      MockMapObserver() {
-        this->Clear();
-      }
       virtual ~MockMapObserver() { }
-      void Clear() {
-        this->IsCalledOnHeightUpdated = false;
-        this->IsCalledOnNameUpdated = false;
-        this->IsCalledOnTileUpdated = false;
-        this->IsCalledOnWidthUpdated = false;
-      }
       virtual void OnHeightUpdated() {
-        this->IsCalledOnHeightUpdated = true;
+        this->calledHandler = "OnHeightUpdated";
       }
-      bool IsCalledOnHeightUpdated;
       virtual void OnNameUpdated() {
-        this->IsCalledOnNameUpdated = true;
+        this->calledHandler = "OnNameUpdated";
       }
-      bool IsCalledOnNameUpdated;
       virtual void OnTileUpdated() {
-        this->IsCalledOnTileUpdated = true;
+        this->calledHandler = "OnTileUpdated";
       }
-      bool IsCalledOnTileUpdated;
       virtual void OnWidthUpdated() {
-        this->IsCalledOnWidthUpdated = true;
+        this->calledHandler = "OnWidthUpdated";
       }
-      bool IsCalledOnWidthUpdated;
+      std::string calledHandler;
     };
 
     TEST(MapTest, Name) {
       Map map("Foo", 20, 15);
-      MockMapObserver observer;
-      map.AddObserver(observer);
-
       ASSERT_EQ("Foo", map.GetName());
-
-      observer.Clear();
-      map.SetName("Foo");
-      ASSERT_EQ("Foo", map.GetName());
-      ASSERT_FALSE(observer.IsCalledOnNameUpdated);
-
-      observer.Clear();
-      map.SetName("Bar");
-      ASSERT_EQ("Bar", map.GetName());
-      ASSERT_TRUE(observer.IsCalledOnNameUpdated);
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetName("Foo");
+        ASSERT_EQ("Foo", map.GetName());
+        ASSERT_TRUE(observer.calledHandler.empty());
+        map.RemoveObserver(observer);
+      }
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetName("Bar");
+        ASSERT_EQ("Bar", map.GetName());
+        ASSERT_EQ("OnNameUpdated", observer.calledHandler);
+        map.RemoveObserver(observer);
+      }
     }
 
     TEST(MapTest, Width) {
       Map map("Foo", 20, 15);
-      MockMapObserver observer;
-      map.AddObserver(observer);
-
       ASSERT_EQ(20, map.GetWidth());
-
-      observer.Clear();
-      map.SetWidth(20);
-      ASSERT_EQ(20, map.GetWidth());
-      ASSERT_FALSE(observer.IsCalledOnWidthUpdated);
-
-      observer.Clear();
-      map.SetWidth(21);
-      ASSERT_EQ(21, map.GetWidth());
-      ASSERT_TRUE(observer.IsCalledOnWidthUpdated);
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetWidth(20);
+        ASSERT_EQ(20, map.GetWidth());
+        ASSERT_TRUE(observer.calledHandler.empty());
+        map.RemoveObserver(observer);
+      }
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetWidth(21);
+        ASSERT_EQ(21, map.GetWidth());
+        ASSERT_EQ("OnWidthUpdated", observer.calledHandler);
+        map.RemoveObserver(observer);
+      }
     }
 
     TEST(MapTest, Height) {
       Map map("Foo", 20, 15);
-      MockMapObserver observer;
-      map.AddObserver(observer);
-
       ASSERT_EQ(15, map.GetHeight());
-
-      observer.Clear();
-      map.SetHeight(15);
-      ASSERT_EQ(15, map.GetHeight());
-      ASSERT_FALSE(observer.IsCalledOnHeightUpdated);
-
-      observer.Clear();
-      map.SetHeight(16);
-      ASSERT_EQ(16, map.GetHeight());
-      ASSERT_TRUE(observer.IsCalledOnHeightUpdated);
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetHeight(15);
+        ASSERT_EQ(15, map.GetHeight());
+        ASSERT_TRUE(observer.calledHandler.empty());
+        map.RemoveObserver(observer);
+      }
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetHeight(16);
+        ASSERT_EQ(16, map.GetHeight());
+        ASSERT_EQ("OnHeightUpdated", observer.calledHandler);
+        map.RemoveObserver(observer);
+      }
     }
 
     TEST(MapTest, Tile) {
       Map map("Foo", 20, 15);
-      MockMapObserver observer;
-      map.AddObserver(observer);
-
       ASSERT_TRUE(Tile(0, 0) == map.GetTile(0, 1, 2));
-
-      observer.Clear();
-      map.SetTile(0, 1, 2, Tile(0, 0));
-      ASSERT_TRUE(Tile(0, 0) == map.GetTile(0, 1, 2));
-      ASSERT_FALSE(observer.IsCalledOnTileUpdated);
-
-      observer.Clear();
-      map.SetTile(0, 1, 2, Tile(3, 4));
-      ASSERT_TRUE(Tile(3, 4) == map.GetTile(0, 1, 2));
-      ASSERT_TRUE(observer.IsCalledOnTileUpdated);
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetTile(0, 1, 2, Tile(0, 0));
+        ASSERT_TRUE(Tile(0, 0) == map.GetTile(0, 1, 2));
+        ASSERT_TRUE(observer.calledHandler.empty());
+        map.RemoveObserver(observer);
+      }
+      {
+        MockMapObserver observer;
+        map.AddObserver(observer);
+        map.SetTile(0, 1, 2, Tile(3, 4));
+        ASSERT_TRUE(Tile(3, 4) == map.GetTile(0, 1, 2));
+        ASSERT_EQ("OnTileUpdated", observer.calledHandler);
+        map.RemoveObserver(observer);
+      }
     }
 
   }
