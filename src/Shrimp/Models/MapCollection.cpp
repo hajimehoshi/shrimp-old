@@ -7,7 +7,7 @@ namespace Shrimp {
     typedef Util::ObserverContainer<IMapCollectionObserver*>::Observers Observers;
 
     MapCollection::Node::Node(int parentId, Models::Map* map)
-      : ParentId(parentId), Map(map) {
+      : parentId(parentId), map(map) {
     }
 
     MapCollection::MapCollection()
@@ -41,19 +41,19 @@ namespace Shrimp {
       int id = this->GenerateNextId();
       Node* node = new Node(parentId, &map);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
-      this->GetNode(parentId)->ChildIds.insert(id);
+      this->GetNode(parentId)->childIds.insert(id);
       const Observers& e = this->observers.GetObservers();
       for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
         (*it)->OnItemAdded(id);
       }
     }
 
-    const std::set<int>& MapCollection::GetChildIds(int id) const {
-      return this->GetNode(id)->ChildIds;
+    const MapCollection::ChildIds& MapCollection::GetChildIds(int id) const {
+      return this->GetNode(id)->childIds;
     }
 
     Map& MapCollection::GetMap(int id) const {
-      return *(this->GetNode(id)->Map);
+      return *(this->GetNode(id)->map);
     }
 
     int MapCollection::GetProjectNodeId() const {

@@ -13,13 +13,15 @@ namespace Shrimp {
     class IMapCollectionObserver;
 
     class MapCollection : private Util::Uncopyable {
+    public:
+      typedef std::set<int> ChildIds;
     private:
       struct Node {
       public:
         static const int InvalidId = -1;
-        int ParentId;
-        Models::Map* Map;
-        std::set<int> ChildIds;
+        int parentId;
+        Models::Map* map;
+        ChildIds childIds;
         Node(int parentId, Models::Map* map);
       };
     public:
@@ -29,7 +31,7 @@ namespace Shrimp {
       inline void AddObserver(IMapCollectionObserver& observer) {
         this->observers.Add(&observer);
       }
-      const std::set<int>& GetChildIds(int id) const;
+      const ChildIds& GetChildIds(int id) const;
       Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
