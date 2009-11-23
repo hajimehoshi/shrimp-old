@@ -210,7 +210,7 @@ namespace Shrimp {
         ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
         expectedIds.clear();
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
-        ASSERT_TRUE(mapCollection.nodes.find(4) == mapCollection.nodes.end());
+        ASSERT_EQ(0u, mapCollection.nodes.count(4));
         mapCollection.RemoveObserver(observer);
       }
     }
@@ -231,9 +231,9 @@ namespace Shrimp {
         mapCollection.Remove(2);
         ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
         ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
-        ASSERT_TRUE(mapCollection.nodes.find(2) == mapCollection.nodes.end());
-        ASSERT_TRUE(mapCollection.nodes.find(3) == mapCollection.nodes.end());
-        ASSERT_TRUE(mapCollection.nodes.find(4) == mapCollection.nodes.end());
+        ASSERT_EQ(0u, mapCollection.nodes.count(2));
+        ASSERT_EQ(0u, mapCollection.nodes.count(3));
+        ASSERT_EQ(0u, mapCollection.nodes.count(4));
         mapCollection.RemoveObserver(observer);
       }
     }
