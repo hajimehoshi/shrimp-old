@@ -77,15 +77,26 @@ namespace Shrimp {
     }
 
     void MapCollection::Remove(int id) {
+      Node* node = this->GetNode(id);
+      Node* parentNode = this->GetNode(node->parentId);
+      std::set<int>::iterator it = parentNode->childIds.find(id);
+      assert(it != parentNode->childIds.end());
+      parentNode->childIds.erase(it);
+      this->RemoveNode(id);
+    }
+
+    void MapCollection::RemoveNode(int id) {
       std::map<int, Node*>::iterator it = this->nodes.find(id);
       assert(it != this->nodes.end());
       Node* node = it->second;
-      Node* parentNode = this->GetNode(node->parentId);
-      std::set<int>::iterator it2 = parentNode->childIds.find(id);
-      assert(it2 != parentNode->childIds.end());
-      parentNode->childIds.erase(it2);
-      delete node;
+      std::set<int> childIds = node->childIds;
+      for (std::set<int>::iterator it2 = childIds.begin();
+           it2 != childIds.end();
+           ++it2) {
+        this->RemoveNode(*it2);
+      }
       this->nodes.erase(it);
+      delete node;
     }
 
     IMapCollectionObserver::~IMapCollectionObserver() {
@@ -199,6 +210,7 @@ namespace Shrimp {
         ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
         expectedIds.clear();
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
+        ASSERT_TRUE(mapCollection.nodes.find(4) == mapCollection.nodes.end());
         mapCollection.RemoveObserver(observer);
       }
     }
@@ -219,6 +231,9 @@ namespace Shrimp {
         mapCollection.Remove(2);
         ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
         ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
+        ASSERT_TRUE(mapCollection.nodes.find(2) == mapCollection.nodes.end());
+        ASSERT_TRUE(mapCollection.nodes.find(3) == mapCollection.nodes.end());
+        ASSERT_TRUE(mapCollection.nodes.find(4) == mapCollection.nodes.end());
         mapCollection.RemoveObserver(observer);
       }
     }
