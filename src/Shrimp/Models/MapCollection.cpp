@@ -203,6 +203,26 @@ namespace Shrimp {
       }
     }
 
+    TEST(MapCollectionTest, RemoveChildren) {
+      MapCollection mapCollection;
+      Map map1("Foo", 20, 15);
+      Map map2("Bar", 21, 16);
+      Map map3("Baz", 22, 17);
+      Map map4("Quux", 23, 18);
+      mapCollection.Add(0, map1); // 2
+      mapCollection.Add(2, map2); // 3
+      mapCollection.Add(3, map3); // 4
+      mapCollection.Add(4, map4); // 5
+      {
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        mapCollection.Remove(2);
+        ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
+        ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
+        mapCollection.RemoveObserver(observer);
+      }
+    }
+
   }
 }
 
