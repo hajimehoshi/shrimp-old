@@ -51,10 +51,10 @@ namespace Shrimp {
     public:
       IMapObserver() { }
       virtual ~IMapObserver() = 0;
-      virtual void OnHeightUpdated() { }
-      virtual void OnNameUpdated() { }
-      virtual void OnTileUpdated() { }
-      virtual void OnWidthUpdated() { }
+      virtual void OnHeightUpdated() = 0;
+      virtual void OnNameUpdated() = 0;
+      virtual void OnTileUpdated() = 0;
+      virtual void OnWidthUpdated() = 0;
     };
 
   }
