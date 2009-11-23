@@ -35,6 +35,7 @@ namespace Shrimp {
       Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
+      void Remove(int id);
       inline void RemoveObserver(IMapCollectionObserver& observer) {
         this->observers.Remove(&observer);
       }

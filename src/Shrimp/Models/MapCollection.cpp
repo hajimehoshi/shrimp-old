@@ -76,6 +76,18 @@ namespace Shrimp {
       return it->second;
     }
 
+    void MapCollection::Remove(int id) {
+      std::map<int, Node*>::iterator it = this->nodes.find(id);
+      assert(it != this->nodes.end());
+      Node* node = it->second;
+      Node* parentNode = this->GetNode(node->parentId);
+      std::set<int>::iterator it2 = parentNode->childIds.find(id);
+      assert(it2 != parentNode->childIds.end());
+      parentNode->childIds.erase(it2);
+      delete node;
+      this->nodes.erase(it);
+    }
+
     IMapCollectionObserver::~IMapCollectionObserver() {
     }
 
@@ -167,26 +179,29 @@ namespace Shrimp {
       ASSERT_EQ(&map3, &tmpMap3);
     }
 
-    /*TEST(MapCollectionTest, Remove) {
+    TEST(MapCollectionTest, Remove) {
       MapCollection mapCollection;
       Map map1("Foo", 20, 15);
       Map map2("Bar", 21, 16);
       Map map3("Baz", 22, 17);
-
       mapCollection.Add(0, map1); // 2
       mapCollection.Add(0, map2); // 3
       mapCollection.Add(3, map3); // 4
-
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
-        mapCollection.Remove(3);
+        mapCollection.Remove(4);
         std::set<int> expectedIds;
-        expectedIds.insert();
-        ASSERT_TURE(expectedIds == mapCollection.GetChildIds(0));
+        expectedIds.insert(2);
+        expectedIds.insert(3);
+        ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
+        ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
+        ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
+        expectedIds.clear();
+        ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
         mapCollection.RemoveObserver(observer);
       }
-      }*/
+    }
 
   }
 }
