@@ -83,6 +83,10 @@ namespace Shrimp {
       assert(it != parentNode->childIds.end());
       parentNode->childIds.erase(it);
       this->RemoveNode(id);
+      const Observers& e = this->observers.GetObservers();
+      for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+        (*it)->OnItemRemoved(id);
+      }      
     }
 
     void MapCollection::RemoveNode(int id) {
@@ -117,6 +121,10 @@ namespace Shrimp {
       virtual ~MockMapCollectionObserver() { }
       virtual void OnItemAdded(int index) {
         this->calledHandler = "OnItemAdded";
+        this->intValues["index"] = index;
+      }
+      virtual void OnItemRemoved(int index) {
+        this->calledHandler = "OnItemRemoved";
         this->intValues["index"] = index;
       }
       std::string calledHandler;
@@ -199,6 +207,8 @@ namespace Shrimp {
         expectedIds.clear();
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
         ASSERT_EQ(0u, mapCollection.nodes.count(4));
+        ASSERT_EQ("OnItemRemoved", observer.calledHandler);
+        ASSERT_EQ(4, observer.intValues["index"]);
         mapCollection.RemoveObserver(observer);
       }
     }
@@ -218,6 +228,8 @@ namespace Shrimp {
         ASSERT_EQ(0u, mapCollection.nodes.count(2));
         ASSERT_EQ(0u, mapCollection.nodes.count(3));
         ASSERT_EQ(0u, mapCollection.nodes.count(4));
+        ASSERT_EQ("OnItemRemoved", observer.calledHandler);
+        ASSERT_EQ(2, observer.intValues["index"]);
         mapCollection.RemoveObserver(observer);
       }
     }
