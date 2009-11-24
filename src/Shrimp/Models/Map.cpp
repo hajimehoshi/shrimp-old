@@ -99,6 +99,13 @@ namespace Shrimp {
       std::string calledHandler;
     };
 
+    TEST(MapTest, Map) {
+      Map map;
+      ASSERT_EQ("", map.GetName());
+      ASSERT_EQ(20, map.GetWidth());
+      ASSERT_EQ(15, map.GetHeight());
+    }
+
     TEST(MapTest, Name) {
       Map map("Foo", 20, 15);
       ASSERT_EQ("Foo", map.GetName());
