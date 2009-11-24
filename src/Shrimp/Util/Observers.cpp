@@ -1,4 +1,4 @@
-#include "Shrimp/Util/ObserverContainer.h"
+#include "Shrimp/Util/Observers.h"
 
 #ifdef __TEST
 
@@ -8,7 +8,7 @@ namespace Shrimp {
   namespace Util {
 
     TEST(ObserverContainerTest, ObserverContainer) {
-      ObserverContainer<int> container;
+      Observers<int> container;
       container.Add(3);
       container.Add(1);
       container.Add(4);
@@ -26,8 +26,7 @@ namespace Shrimp {
       expected.insert(6);
       expected.insert(9);
 
-      const ObserverContainer<int>::Observers& e = container.GetObservers();
-      std::set<int> actual(e.begin(), e.end());
+      std::set<int> actual(container.begin(), container.end());
       ASSERT_TRUE(expected == actual);
     }
 

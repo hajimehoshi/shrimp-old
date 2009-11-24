@@ -4,7 +4,7 @@
 #include <map>
 #include <set>
 #include "Shrimp/Models/Map.h"
-#include "Shrimp/Util/ObserverContainer.h"
+#include "Shrimp/Util/Observers.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 #ifdef __TEST
@@ -23,6 +23,8 @@ namespace Shrimp {
 #endif
     public:
       typedef std::set<int> ChildIds;
+    private:
+      typedef Util::Observers<IMapCollectionObserver*> Observers;
     private:
       struct Node : private Util::Uncopyable {
       public:
@@ -54,7 +56,7 @@ namespace Shrimp {
       void RemoveNode(int id);
       int nextId;
       std::map<int, Node*> nodes;
-      Util::ObserverContainer<IMapCollectionObserver*> observers;
+      Observers observers;
       int projectNodeId;
       int recycleBinNodeId;
     };

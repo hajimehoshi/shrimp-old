@@ -3,7 +3,7 @@
 
 #include <string>
 #include "Shrimp/Models/Tile.h"
-#include "Shrimp/Util/ObserverContainer.h"
+#include "Shrimp/Util/Observers.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -12,6 +12,8 @@ namespace Shrimp {
     class IMapObserver;
 
     class Map : private Util::Uncopyable {
+    private:
+      typedef Util::Observers<IMapObserver*> Observers;
     public:
       static const int LayerCount = 2;
     public:
@@ -45,7 +47,7 @@ namespace Shrimp {
       int width;
       int height;
       Tile* layers[LayerCount];
-      Util::ObserverContainer<IMapObserver*> observers;
+      Observers observers;
     };
 
     class IMapObserver : private Util::Uncopyable {

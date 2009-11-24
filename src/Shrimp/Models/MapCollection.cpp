@@ -4,8 +4,6 @@
 namespace Shrimp {
   namespace Models {
 
-    typedef Util::ObserverContainer<IMapCollectionObserver*>::Observers Observers;
-
     MapCollection::Node::Node(int parentId)
       : parentId(parentId) {
     }
@@ -42,8 +40,9 @@ namespace Shrimp {
       Node* node = new Node(parentId);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->childIds.insert(id);
-      const Observers& e = this->observers.GetObservers();
-      for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+      for (Observers::const_iterator it = this->observers.begin();
+           it != this->observers.end();
+           ++it) {
         (*it)->OnItemAdded(id);
       }
     }
@@ -83,8 +82,9 @@ namespace Shrimp {
       assert(it != parentNode->childIds.end());
       parentNode->childIds.erase(it);
       this->RemoveNode(id);
-      const Observers& e = this->observers.GetObservers();
-      for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+      for (Observers::const_iterator it = this->observers.begin();
+           it != this->observers.end();
+           ++it) {
         (*it)->OnItemRemoved(id);
       }      
     }

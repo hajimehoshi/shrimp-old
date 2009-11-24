@@ -3,8 +3,6 @@
 namespace Shrimp {
   namespace Models {
 
-    typedef Util::ObserverContainer<IMapObserver*>::Observers Observers;
-
     Map::Map(const std::string& name, int width, int height)
       : name(name), width(width), height(height) {
       assert(0 < this->width);
@@ -24,8 +22,9 @@ namespace Shrimp {
       assert(0 < height);
       if (this->height != height) {
         this->height = height;
-        const Observers& e = this->observers.GetObservers();
-        for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+        for (Observers::iterator it = this->observers.begin();
+             it != this->observers.end();
+             ++it) {
           (*it)->OnHeightUpdated();
         }
       }
@@ -34,8 +33,9 @@ namespace Shrimp {
     void Map::SetName(const std::string& name) {
       if (this->name != name) {
         this->name = name;
-        const Observers& e = this->observers.GetObservers();
-        for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+        for (Observers::iterator it = this->observers.begin();
+             it != this->observers.end();
+             ++it) {
           (*it)->OnNameUpdated();
         }
       }
@@ -50,8 +50,9 @@ namespace Shrimp {
       assert(y < this->height);
       if (this->layers[layer][x + y * this->width] != tile) {
         this->layers[layer][x + y * this->width] = tile;
-        const Observers& e = this->observers.GetObservers();
-        for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+        for (Observers::iterator it = this->observers.begin();
+             it != this->observers.end();
+             ++it) {
           (*it)->OnTileUpdated();
         }
       }
@@ -61,8 +62,9 @@ namespace Shrimp {
       assert(0 < width);
       if (this->width != width) {
         this->width = width;
-        const Observers& e = this->observers.GetObservers();
-        for (Observers::const_iterator it = e.begin(); it != e.end(); ++it) {
+        for (Observers::iterator it = this->observers.begin();
+             it != this->observers.end();
+             ++it) {
           (*it)->OnWidthUpdated();
         }
       }
