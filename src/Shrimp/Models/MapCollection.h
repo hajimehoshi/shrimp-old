@@ -28,15 +28,15 @@ namespace Shrimp {
       public:
         static const int InvalidId = -1;
       public:
-        Node(int parentId, Models::Map* map);
+        Node(int parentId);
         int parentId;
-        Models::Map* map;
+        Models::Map map;
         ChildIds childIds;
       };
     public:
       MapCollection();
       ~MapCollection();
-      void Add(int parentId, Map& map);
+      void Add(int parentId);
       inline void AddObserver(IMapCollectionObserver& observer) {
         this->observers.Add(&observer);
       }

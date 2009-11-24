@@ -6,8 +6,8 @@ namespace Shrimp {
 
     typedef Util::ObserverContainer<IMapCollectionObserver*>::Observers Observers;
 
-    MapCollection::Node::Node(int parentId, Models::Map* map)
-      : parentId(parentId), map(map) {
+    MapCollection::Node::Node(int parentId)
+      : parentId(parentId) {
     }
 
     MapCollection::MapCollection()
@@ -17,13 +17,13 @@ namespace Shrimp {
 
       id = this->GenerateNextId();
       assert(id == 0);
-      node = new Node(Node::InvalidId, 0);
+      node = new Node(Node::InvalidId);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->projectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
-      node = new Node(Node::InvalidId, 0);
+      node = new Node(Node::InvalidId);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->recycleBinNodeId = id;
     }
@@ -37,9 +37,9 @@ namespace Shrimp {
       this->nodes.clear();
     }
 
-    void MapCollection::Add(int parentId, Map& map) {
+    void MapCollection::Add(int parentId) {
       int id = this->GenerateNextId();
-      Node* node = new Node(parentId, &map);
+      Node* node = new Node(parentId);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->childIds.insert(id);
       const Observers& e = this->observers.GetObservers();
@@ -53,7 +53,7 @@ namespace Shrimp {
     }
 
     Map& MapCollection::GetMap(int id) const {
-      return *(this->GetNode(id)->map);
+      return this->GetNode(id)->map;
     }
 
     int MapCollection::GetProjectNodeId() const {
@@ -131,15 +131,12 @@ namespace Shrimp {
 
     TEST(MapCollectionTest, Add) {
       MapCollection mapCollection;
-      Map map1("Foo", 20, 15);
-      Map map2("Bar", 21, 16);
-      Map map3("Baz", 22, 17);
       ASSERT_TRUE(mapCollection.GetChildIds(0).empty());
       ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
-        mapCollection.Add(0, map1);
+        mapCollection.Add(0);
         std::set<int> expectedIds;
         expectedIds.insert(2);
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
@@ -152,7 +149,7 @@ namespace Shrimp {
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
-        mapCollection.Add(0, map2);
+        mapCollection.Add(0);
         std::set<int> expectedIds;
         expectedIds.insert(2);
         expectedIds.insert(3);
@@ -167,7 +164,7 @@ namespace Shrimp {
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
-        mapCollection.Add(3, map3);
+        mapCollection.Add(3);
         std::set<int> expectedIds;
         expectedIds.insert(2);
         expectedIds.insert(3);
@@ -182,22 +179,13 @@ namespace Shrimp {
         ASSERT_EQ(4, observer.intValues["index"]);
         mapCollection.RemoveObserver(observer);
       }
-      const Map& tmpMap1 = mapCollection.GetMap(2);
-      ASSERT_EQ(&map1, &tmpMap1);
-      const Map& tmpMap2 = mapCollection.GetMap(3);
-      ASSERT_EQ(&map2, &tmpMap2);
-      const Map& tmpMap3 = mapCollection.GetMap(4);
-      ASSERT_EQ(&map3, &tmpMap3);
     }
 
     TEST(MapCollectionTest, Remove) {
       MapCollection mapCollection;
-      Map map1("Foo", 20, 15);
-      Map map2("Bar", 21, 16);
-      Map map3("Baz", 22, 17);
-      mapCollection.Add(0, map1); // 2
-      mapCollection.Add(0, map2); // 3
-      mapCollection.Add(3, map3); // 4
+      mapCollection.Add(0); // 2
+      mapCollection.Add(0); // 3
+      mapCollection.Add(3); // 4
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
@@ -217,14 +205,10 @@ namespace Shrimp {
 
     TEST(MapCollectionTest, RemoveChildren) {
       MapCollection mapCollection;
-      Map map1("Foo", 20, 15);
-      Map map2("Bar", 21, 16);
-      Map map3("Baz", 22, 17);
-      Map map4("Quux", 23, 18);
-      mapCollection.Add(0, map1); // 2
-      mapCollection.Add(2, map2); // 3
-      mapCollection.Add(3, map3); // 4
-      mapCollection.Add(4, map4); // 5
+      mapCollection.Add(0); // 2
+      mapCollection.Add(2); // 3
+      mapCollection.Add(3); // 4
+      mapCollection.Add(4); // 5
       {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
