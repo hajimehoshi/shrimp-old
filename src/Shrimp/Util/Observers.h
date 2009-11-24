@@ -13,16 +13,16 @@ namespace Shrimp {
     public:
       typedef typename std::vector<T>::const_iterator const_iterator;
     public:
-      void Add(T observer) {
+      inline void Add(T observer) {
         this->observers.push_back(observer);
       }
-      const_iterator begin() {
+      inline const_iterator begin() {
         return this->observers.begin();
       }
-      const_iterator end() {
+      inline const_iterator end() {
         return this->observers.end();
       }
-      void Remove(T observer) {
+      inline void Remove(T observer) {
         typename std::vector<T>::reverse_iterator rit =
           std::find(this->observers.rbegin(),
                     this->observers.rend(),
