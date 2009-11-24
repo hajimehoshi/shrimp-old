@@ -6,6 +6,17 @@ namespace Shrimp {
     MapTreeViewPresenter::MapTreeViewPresenter(IMapTreeView& view,
                                                Models::MapCollection& mapCollection)
       : view(view), mapCollection(mapCollection) {
+      this->mapCollection.AddObserver(*this);
+    }
+
+    MapTreeViewPresenter::~MapTreeViewPresenter() {
+      this->mapCollection.RemoveObserver(*this);
+    }
+
+    void MapTreeViewPresenter::OnItemAdded(int index) {
+    }
+
+    void MapTreeViewPresenter::OnItemRemoved(int index) {
     }
 
   }
