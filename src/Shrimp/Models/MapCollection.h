@@ -61,8 +61,7 @@ namespace Shrimp {
 
     class IMapCollectionObserver : private Util::Uncopyable {
     public:
-      IMapCollectionObserver() { }
-      virtual ~IMapCollectionObserver() = 0;
+      virtual ~IMapCollectionObserver() { }
       virtual void OnItemAdded(int index) = 0;
       virtual void OnItemRemoved(int index) = 0;
     };

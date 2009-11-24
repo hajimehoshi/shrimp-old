@@ -103,9 +103,6 @@ namespace Shrimp {
       delete node;
     }
 
-    IMapCollectionObserver::~IMapCollectionObserver() {
-    }
-
   }
 }
 

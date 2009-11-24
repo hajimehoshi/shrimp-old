@@ -68,9 +68,6 @@ namespace Shrimp {
       }
     }
 
-    IMapObserver::~IMapObserver() {
-    }
-
   }
 }
 
