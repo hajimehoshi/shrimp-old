@@ -3,8 +3,9 @@
 namespace Shrimp {
   namespace Presenters {
 
-    MapTreeViewPresenter::MapTreeViewPresenter(IMapTreeView& view)
-      : view(view) {
+    MapTreeViewPresenter::MapTreeViewPresenter(IMapTreeView& view,
+                                               Models::MapCollection& mapCollection)
+      : view(view), mapCollection(mapCollection) {
     }
 
   }
@@ -20,15 +21,15 @@ namespace Shrimp {
     class MockMapTreeView : public IMapTreeView {
     };
 
-    TEST(MapTreeViewPresenterTest, View) {
+    TEST(MapTreeViewPresenterTest, Constractor) {
       IMapTreeView view;
-      MapTreeViewPresenter presenter(view);
+      Models::MapCollection mapCollection;
+      MapTreeViewPresenter presenter(view, mapCollection);
       ASSERT_EQ(&view, &presenter.GetView());
+      ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
     }
 
   }
 }
 
 #endif
-
-
