@@ -222,6 +222,22 @@ namespace Shrimp {
       }
     }
 
+    TEST(MapCollectionTest, GetMap) {
+      MapCollection mapCollection;
+      mapCollection.Add(0); // 2
+      mapCollection.Add(0); // 3
+      mapCollection.Add(3); // 4
+      ASSERT_EQ(&mapCollection.GetMap(2), &mapCollection.GetMap(2));
+      ASSERT_NE(&mapCollection.GetMap(2), &mapCollection.GetMap(3));
+      ASSERT_NE(&mapCollection.GetMap(2), &mapCollection.GetMap(4));
+      ASSERT_NE(&mapCollection.GetMap(3), &mapCollection.GetMap(2));
+      ASSERT_EQ(&mapCollection.GetMap(3), &mapCollection.GetMap(3));
+      ASSERT_NE(&mapCollection.GetMap(3), &mapCollection.GetMap(4));
+      ASSERT_NE(&mapCollection.GetMap(4), &mapCollection.GetMap(2));
+      ASSERT_NE(&mapCollection.GetMap(4), &mapCollection.GetMap(3));
+      ASSERT_EQ(&mapCollection.GetMap(4), &mapCollection.GetMap(4));
+    }
+
   }
 }
 
