@@ -24,7 +24,7 @@ namespace Shrimp {
     public:
       typedef std::set<int> ChildIds;
     private:
-      struct Node {
+      struct Node : private Util::Uncopyable {
       public:
         static const int InvalidId = -1;
       public:
