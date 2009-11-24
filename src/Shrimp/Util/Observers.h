@@ -12,15 +12,14 @@ namespace Shrimp {
       class Observers : private Uncopyable {
     public:
       typedef typename std::vector<T>::const_iterator const_iterator;
-      typedef const_iterator iterator;
     public:
       void Add(T observer) {
         this->observers.push_back(observer);
       }
-      iterator begin() {
+      const_iterator begin() {
         return this->observers.begin();
       }
-      iterator end() {
+      const_iterator end() {
         return this->observers.end();
       }
       void Remove(T observer) {

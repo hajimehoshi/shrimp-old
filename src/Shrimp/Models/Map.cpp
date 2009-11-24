@@ -22,7 +22,7 @@ namespace Shrimp {
       assert(0 < height);
       if (this->height != height) {
         this->height = height;
-        for (Observers::iterator it = this->observers.begin();
+        for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
           (*it)->OnHeightUpdated();
@@ -33,7 +33,7 @@ namespace Shrimp {
     void Map::SetName(const std::string& name) {
       if (this->name != name) {
         this->name = name;
-        for (Observers::iterator it = this->observers.begin();
+        for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
           (*it)->OnNameUpdated();
@@ -50,7 +50,7 @@ namespace Shrimp {
       assert(y < this->height);
       if (this->layers[layer][x + y * this->width] != tile) {
         this->layers[layer][x + y * this->width] = tile;
-        for (Observers::iterator it = this->observers.begin();
+        for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
           (*it)->OnTileUpdated();
@@ -62,7 +62,7 @@ namespace Shrimp {
       assert(0 < width);
       if (this->width != width) {
         this->width = width;
-        for (Observers::iterator it = this->observers.begin();
+        for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
           (*it)->OnWidthUpdated();
