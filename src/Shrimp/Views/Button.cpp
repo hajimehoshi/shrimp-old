@@ -45,12 +45,12 @@ namespace Shrimp {
       return buttonWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
     }
 
-    Button::ButtonWC::ButtonWC()
+    ButtonWC::ButtonWC()
       : defaultWndProc(0) {
       WNDCLASSEX& wc = this->wndClass;
       ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);
-      GetClassInfoEx(0, _T("BUTTON"), &wc);
+      GetClassInfoEx(0, WC_BUTTON, &wc);
       this->defaultWndProc = wc.lpfnWndProc;
       wc.lpfnWndProc = &WndProc<Button>;
       wc.lpszClassName = _T("ShrimpButton");

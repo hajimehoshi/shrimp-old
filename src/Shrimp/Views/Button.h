@@ -2,6 +2,7 @@
 #define SHRIMP_VIEWS_BUTTON_H
 
 #include <windows.h>
+#include <commctrl.h>
 #include <tchar.h>
 #include "Shrimp/Views/WndProc.h"
 #include "Shrimp/Util/Singleton.h"
@@ -10,24 +11,10 @@
 namespace Shrimp {
   namespace Views {
 
+    class ButtonWC;
+
     class Button : private Util::Uncopyable {
     private:
-      class ButtonWC : public Util::Singleton<ButtonWC> {
-        friend class Util::Singleton<ButtonWC>;
-      public:
-        const WNDCLASSEX& GetWndClass() const {
-          return this->wndClass;
-        }
-        inline const WNDPROC GetDefaultWndProc() const {
-          assert(this->defaultWndProc);
-          return this->defaultWndProc;
-        }
-      private:
-        ButtonWC();
-        WNDCLASSEX wndClass;
-        WNDPROC defaultWndProc;
-      };
-
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
@@ -37,6 +24,22 @@ namespace Shrimp {
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
+    };
+
+    class ButtonWC : public Util::Singleton<ButtonWC> {
+      friend class Util::Singleton<ButtonWC>;
+    public:
+      const WNDCLASSEX& GetWndClass() const {
+        return this->wndClass;
+      }
+      inline const WNDPROC GetDefaultWndProc() const {
+        assert(this->defaultWndProc);
+        return this->defaultWndProc;
+      }
+    private:
+      ButtonWC();
+      WNDCLASSEX wndClass;
+      WNDPROC defaultWndProc;
     };
 
   }

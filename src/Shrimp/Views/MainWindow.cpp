@@ -69,7 +69,7 @@ namespace Shrimp {
       return mainWindowWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
     }
 
-    MainWindow::MainWindowWC::MainWindowWC()
+    MainWindowWC::MainWindowWC()
       : defaultWndProc(DefWindowProc) {
       WNDCLASSEX& wc = this->wndClass;
       ZeroMemory(&wc, sizeof(wc));
@@ -84,7 +84,7 @@ namespace Shrimp {
       wc.hCursor = LoadCursor(0, IDC_ARROW);
       wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
       wc.lpszMenuName = 0;
-      wc.lpszClassName = _T("MainWindow");
+      wc.lpszClassName = _T("ShrimpMainWindow");
       if (!RegisterClassEx(&wc)) {
         std::abort();
       }
