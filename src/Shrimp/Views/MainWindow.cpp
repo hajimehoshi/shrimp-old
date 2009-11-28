@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include "Shrimp/Views/MainWindow.h"
+#include "Shrimp/Views/Button.h"
 
 namespace Shrimp {
   namespace Views {
@@ -22,6 +23,7 @@ namespace Shrimp {
                    this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
+      
     }
 
     void MainWindow::Show() {
@@ -32,20 +34,28 @@ namespace Shrimp {
 
     LRESULT MainWindow::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
       switch (msg) {
+      case WM_CREATE:
+        {
+          Button* button = new Button(this->handle);
+          button->Show();
+          return 0;
+        }
       case WM_PAINT:
         {
           const TCHAR* text = _T("ほげ");
           PAINTSTRUCT ps;
           BeginPaint(this->handle, &ps);
-          TextOut(ps.hdc, 10, 20, text, _tcslen(text));
+          TextOut(ps.hdc, 400, 400, text, _tcslen(text));
           EndPaint(this->handle, &ps);
           return 0;
         }
+        break;
       case WM_LBUTTONDOWN:
         {
-          MessageBox(this->handle, _T("はい"), _T("Shrimp"), MB_ICONINFORMATION);
+          MessageBox(this->handle, _T("ウィンドウがクリックされた"), _T("Shrimp"), MB_ICONINFORMATION);
           return 0;
         }
+        break;
       case WM_DESTROY:
         {
           PostQuitMessage(0);
