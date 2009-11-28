@@ -65,10 +65,12 @@ namespace Shrimp {
           return 0;
         }
       }
-      return DefWindowProc(this->handle, msg, wParam, lParam);
+      const MainWindowWC& mainWindowWC = MainWindowWC::GetInstance();
+      return mainWindowWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
     }
 
-    MainWindow::MainWindowWC::MainWindowWC() {
+    MainWindow::MainWindowWC::MainWindowWC()
+      : defaultWndProc(DefWindowProc) {
       WNDCLASSEX& wc = this->wndClass;
       ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);

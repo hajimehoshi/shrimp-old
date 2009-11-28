@@ -18,9 +18,14 @@ namespace Shrimp {
         const WNDCLASSEX& GetWndClass() const {
           return this->wndClass;
         }
+        inline const WNDPROC GetDefaultWndProc() const {
+          assert(this->defaultWndProc);
+          return this->defaultWndProc;
+        }
       private:
         MainWindowWC();
         WNDCLASSEX wndClass;
+        WNDPROC defaultWndProc;
       };
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

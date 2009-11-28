@@ -44,7 +44,6 @@ namespace Shrimp {
       const ButtonWC& buttonWC = ButtonWC::GetInstance();
       return buttonWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
     }
-
     Button::ButtonWC::ButtonWC()
       : defaultWndProc(0) {
       WNDCLASSEX& wc = this->wndClass;
