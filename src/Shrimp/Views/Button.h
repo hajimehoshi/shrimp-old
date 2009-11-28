@@ -29,7 +29,7 @@ namespace Shrimp {
     class ButtonWC : public Util::Singleton<ButtonWC> {
       friend class Util::Singleton<ButtonWC>;
     public:
-      const WNDCLASSEX& GetWndClass() const {
+      inline const WNDCLASSEX& GetWndClass() const {
         return this->wndClass;
       }
       inline const WNDPROC GetDefaultWndProc() const {

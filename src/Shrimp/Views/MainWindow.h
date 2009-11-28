@@ -28,7 +28,7 @@ namespace Shrimp {
     class MainWindowWC : public Util::Singleton<MainWindowWC> {
       friend class Util::Singleton<MainWindowWC>;
     public:
-      const WNDCLASSEX& GetWndClass() const {
+      inline const WNDCLASSEX& GetWndClass() const {
         return this->wndClass;
       }
       inline const WNDPROC GetDefaultWndProc() const {
