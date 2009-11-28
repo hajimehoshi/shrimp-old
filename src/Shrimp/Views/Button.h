@@ -32,11 +32,11 @@ namespace Shrimp {
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
       Button(HWND parent);
+      ~Button();
       void Show();
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
-
     };
 
   }

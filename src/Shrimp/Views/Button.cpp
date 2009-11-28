@@ -22,6 +22,10 @@ namespace Shrimp {
       assert(this->handle);
     }
 
+    Button::~Button() {
+      DestroyWindow(this->handle);
+    }
+
     void Button::Show() {
       assert(this->handle);
       ShowWindow(this->handle, SW_SHOW);

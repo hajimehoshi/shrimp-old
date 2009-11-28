@@ -26,6 +26,7 @@ namespace Shrimp {
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
       MainWindow();
+      ~MainWindow();
       void Show();
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);

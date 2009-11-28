@@ -23,7 +23,10 @@ namespace Shrimp {
                    this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
-      
+    }
+
+    MainWindow::~MainWindow() {
+      DestroyWindow(this->handle);
     }
 
     void MainWindow::Show() {
