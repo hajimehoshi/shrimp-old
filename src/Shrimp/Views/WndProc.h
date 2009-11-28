@@ -15,7 +15,7 @@ namespace Shrimp {
         assert(control);
         control->handle = hWnd;
         SetWindowLongPtr(hWnd, GWLP_USERDATA,
-                         reinterpret_cast<__int3264>(reinterpret_cast<LONG*>(control)));
+                         reinterpret_cast<__int3264>(control));
       } else {
         TControl* const control =
           reinterpret_cast<TControl*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
