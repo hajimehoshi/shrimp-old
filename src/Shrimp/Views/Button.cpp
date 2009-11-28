@@ -15,7 +15,7 @@ namespace Shrimp {
                    WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                    10, 10, 100, 100,
                    parent,
-                   reinterpret_cast<HMENU>(100),
+                   0,
                    GetModuleHandle(0),
                    this);
       // this->handle is set on processing WM_NCCREATE in WndProc
