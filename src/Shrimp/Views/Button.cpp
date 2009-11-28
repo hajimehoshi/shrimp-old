@@ -39,7 +39,6 @@ namespace Shrimp {
           MessageBox(this->handle, _T("ボタンがクリックされた"), _T("Shrimp"), MB_ICONINFORMATION);
           return 0;
         }
-        break;
       }
       const ButtonWC& buttonWC = ButtonWC::GetInstance();
       return buttonWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);

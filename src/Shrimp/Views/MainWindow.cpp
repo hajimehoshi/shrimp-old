@@ -52,13 +52,11 @@ namespace Shrimp {
           EndPaint(this->handle, &ps);
           return 0;
         }
-        break;
       case WM_LBUTTONDOWN:
         {
           MessageBox(this->handle, _T("ウィンドウがクリックされた"), _T("Shrimp"), MB_ICONINFORMATION);
           return 0;
         }
-        break;
       case WM_DESTROY:
         {
           PostQuitMessage(0);
