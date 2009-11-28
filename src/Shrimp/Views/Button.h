@@ -11,8 +11,6 @@
 namespace Shrimp {
   namespace Views {
 
-    class ButtonWC;
-
     class Button : private Util::Uncopyable {
     private:
       template<class T> friend

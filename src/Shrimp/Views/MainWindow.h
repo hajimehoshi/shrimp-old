@@ -10,8 +10,6 @@
 namespace Shrimp {
   namespace Views {
 
-    class MainWindowWC;
-
     class MainWindow : private Util::Uncopyable {
     private:
       template<class T> friend
