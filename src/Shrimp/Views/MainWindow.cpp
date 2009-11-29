@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cstdlib>
+#include <cstdio>
 #include "Shrimp/Views/MainWindow.h"
 #include "Shrimp/Views/Button.h"
 #include "Shrimp/Views/MapTreeView.h"
@@ -7,12 +8,34 @@
 namespace Shrimp {
   namespace Views {
 
+    WNDCLASSEX MainWindow::wndClass;
+
+    WNDPROC MainWindow::defaultWndProc;
+
     MainWindow::MainWindow()
       : handle(0) {
-      const MainWindowWC& mainWindowWC = MainWindowWC::GetInstance();
-      const WNDCLASSEX& wc = mainWindowWC.GetWndClass();
+      if (!defaultWndProc) {
+        defaultWndProc = ::DefWindowProc;
+        ::ZeroMemory(&wndClass, sizeof(wndClass));
+        wndClass.cbSize = sizeof(wndClass);
+        wndClass.style = CS_HREDRAW | CS_VREDRAW;
+        wndClass.lpfnWndProc = &WndProc<MainWindow>;
+        wndClass.cbClsExtra = 0;
+        wndClass.cbWndExtra = 0;
+        wndClass.hInstance = GetModuleHandle(0);
+        wndClass.hIcon = ::LoadIcon(0, IDI_APPLICATION);
+        wndClass.hIconSm = ::LoadIcon(0, IDI_WINLOGO);
+        wndClass.hCursor = ::LoadCursor(0, IDC_ARROW);
+        wndClass.hbrBackground = static_cast<HBRUSH>(::GetStockObject(WHITE_BRUSH));
+        wndClass.lpszMenuName = 0;
+        wndClass.lpszClassName = _T("ShrimpMainWindow");
+        if (!::RegisterClassEx(&wndClass)) {
+          std::abort();
+        }        
+      }
+      assert(defaultWndProc);
       ::CreateWindowEx(0,
-                       wc.lpszClassName,
+                       wndClass.lpszClassName,
                        _T("Shrimp"),
                        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
                        CW_USEDEFAULT,
@@ -25,6 +48,10 @@ namespace Shrimp {
                        this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
+      Button* button = new Button(this->handle);
+      button->Show();
+      MapTreeView* mapTreeView = new MapTreeView(this->handle);
+      mapTreeView->Show();
     }
 
     MainWindow::~MainWindow() {
@@ -39,15 +66,6 @@ namespace Shrimp {
 
     LRESULT MainWindow::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
       switch (msg) {
-      case WM_CREATE:
-        {
-          Button* button = new Button(this->handle);
-          button->Show();
-          MapTreeView* mapTreeView = new MapTreeView(this->handle);
-          mapTreeView->Show();
-          return 0;
-        }
-        break;
       case WM_PAINT:
         {
           const TCHAR* text = _T("ほげ");
@@ -73,29 +91,7 @@ namespace Shrimp {
           return 0;
         }
       }
-      const MainWindowWC& mainWindowWC = MainWindowWC::GetInstance();
-      return mainWindowWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
-    }
-
-    MainWindowWC::MainWindowWC()
-      : defaultWndProc(::DefWindowProc) {
-      WNDCLASSEX& wc = this->wndClass;
-      ::ZeroMemory(&wc, sizeof(wc));
-      wc.cbSize = sizeof(wc);
-      wc.style = CS_HREDRAW | CS_VREDRAW;
-      wc.lpfnWndProc = &WndProc<MainWindow>;
-      wc.cbClsExtra = 0;
-      wc.cbWndExtra = 0;
-      wc.hInstance = GetModuleHandle(0);
-      wc.hIcon = ::LoadIcon(0, IDI_APPLICATION);
-      wc.hIconSm = ::LoadIcon(0, IDI_WINLOGO);
-      wc.hCursor = ::LoadCursor(0, IDC_ARROW);
-      wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(WHITE_BRUSH));
-      wc.lpszMenuName = 0;
-      wc.lpszClassName = _T("ShrimpMainWindow");
-      if (!::RegisterClassEx(&wc)) {
-        std::abort();
-      }
+      return defaultWndProc(this->handle, msg, wParam, lParam);
     }
 
   }

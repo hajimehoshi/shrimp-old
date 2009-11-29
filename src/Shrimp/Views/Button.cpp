@@ -5,12 +5,26 @@
 namespace Shrimp {
   namespace Views {
 
+    WNDCLASSEX Button::wndClass;
+
+    WNDPROC Button::defaultWndProc;
+
     Button::Button(HWND parent)
       : handle(0) {
-      const ButtonWC& buttonWC = ButtonWC::GetInstance();
-      const WNDCLASSEX& wc = buttonWC.GetWndClass();
+      if (!defaultWndProc) {
+        ::ZeroMemory(&wndClass, sizeof(wndClass));
+        wndClass.cbSize = sizeof(wndClass);
+        ::GetClassInfoEx(0, WC_BUTTON, &wndClass);
+        defaultWndProc = wndClass.lpfnWndProc;
+        wndClass.lpfnWndProc = &WndProc<Button>;
+        wndClass.lpszClassName = _T("ShrimpButton");
+        if (!::RegisterClassEx(&wndClass)) {
+          std::abort();
+        }
+      }
+      assert(defaultWndProc);
       ::CreateWindowEx(0,
-                       wc.lpszClassName,
+                       wndClass.lpszClassName,
                        _T("OK"),
                        WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                        10, 10, 100, 100,
@@ -43,22 +57,7 @@ namespace Shrimp {
         }
         break;
       }
-      const ButtonWC& buttonWC = ButtonWC::GetInstance();
-      return buttonWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
-    }
-
-    ButtonWC::ButtonWC()
-      : defaultWndProc(0) {
-      WNDCLASSEX& wc = this->wndClass;
-      ::ZeroMemory(&wc, sizeof(wc));
-      wc.cbSize = sizeof(wc);
-      ::GetClassInfoEx(0, WC_BUTTON, &wc);
-      this->defaultWndProc = wc.lpfnWndProc;
-      wc.lpfnWndProc = &WndProc<Button>;
-      wc.lpszClassName = _T("ShrimpButton");
-      if (!::RegisterClassEx(&wc)) {
-        std::abort();
-      }
+      return defaultWndProc(this->handle, msg, wParam, lParam);
     }
 
   }

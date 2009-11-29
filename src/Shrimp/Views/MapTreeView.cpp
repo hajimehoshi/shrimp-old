@@ -5,12 +5,26 @@
 namespace Shrimp {
   namespace Views {
 
+    WNDCLASSEX MapTreeView::wndClass;
+
+    WNDPROC MapTreeView::defaultWndProc;
+
     MapTreeView::MapTreeView(HWND parent)
       : handle(0) {
-      const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
-      const WNDCLASSEX& wc = mapTreeViewWC.GetWndClass();
+      if (!defaultWndProc) {
+        ::ZeroMemory(&wndClass, sizeof(wndClass));
+        wndClass.cbSize = sizeof(wndClass);
+        ::GetClassInfoEx(0, WC_TREEVIEW, &wndClass);
+        this->defaultWndProc = wndClass.lpfnWndProc;
+        wndClass.lpfnWndProc = &WndProc<MapTreeView>;
+        wndClass.lpszClassName = _T("ShrimpMapTreeView");
+        if (!::RegisterClassEx(&wndClass)) {
+          std::abort();
+        }
+      }
+      assert(defaultWndProc);
       ::CreateWindowEx(WS_EX_CLIENTEDGE,
-                       wc.lpszClassName,
+                       wndClass.lpszClassName,
                        0,
                        WS_CHILD | WS_VISIBLE,
                        200, 200, 100, 100,
@@ -40,22 +54,8 @@ namespace Shrimp {
         }
         break;
         }*/
-      const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
-      return mapTreeViewWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
-    }
-
-    MapTreeViewWC::MapTreeViewWC()
-      : defaultWndProc(0) {
-      WNDCLASSEX& wc = this->wndClass;
-      ::ZeroMemory(&wc, sizeof(wc));
-      wc.cbSize = sizeof(wc);
-      ::GetClassInfoEx(0, WC_TREEVIEW, &wc);
-      this->defaultWndProc = wc.lpfnWndProc;
-      wc.lpfnWndProc = &WndProc<MapTreeView>;
-      wc.lpszClassName = _T("ShrimpMapTreeView");
-      if (!::RegisterClassEx(&wc)) {
-        std::abort();
-      }
+      //const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
+      return defaultWndProc(this->handle, msg, wParam, lParam);
     }
 
   }

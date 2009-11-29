@@ -5,7 +5,6 @@
 #include <commctrl.h>
 #include <tchar.h>
 #include "Shrimp/Views/WndProc.h"
-#include "Shrimp/Util/Singleton.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -13,6 +12,8 @@ namespace Shrimp {
 
     class MapTreeView : private Util::Uncopyable {
     private:
+      static WNDCLASSEX wndClass;
+      static WNDPROC defaultWndProc;
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
@@ -22,22 +23,6 @@ namespace Shrimp {
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
-    };
-
-    class MapTreeViewWC : public Util::Singleton<MapTreeViewWC> {
-      friend class Util::Singleton<MapTreeViewWC>;
-    public:
-      inline const WNDCLASSEX& GetWndClass() const {
-        return this->wndClass;
-      }
-      inline const WNDPROC GetDefaultWndProc() const {
-        assert(this->defaultWndProc);
-        return this->defaultWndProc;
-      }
-    private:
-      MapTreeViewWC();
-      WNDCLASSEX wndClass;
-      WNDPROC defaultWndProc;
     };
 
   }
