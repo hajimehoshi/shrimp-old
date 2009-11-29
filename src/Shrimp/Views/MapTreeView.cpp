@@ -9,27 +9,27 @@ namespace Shrimp {
       : handle(0) {
       const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
       const WNDCLASSEX& wc = mapTreeViewWC.GetWndClass();
-      CreateWindowEx(WS_EX_CLIENTEDGE,
-                     wc.lpszClassName,
-                     _T("OK"),
-                     WS_CHILD | WS_VISIBLE,
-                     200, 200, 100, 100,
-                     parent,
-                     0,
-                     GetModuleHandle(0),
-                     this);
+      ::CreateWindowEx(WS_EX_CLIENTEDGE,
+                       wc.lpszClassName,
+                       _T("OK"),
+                       WS_CHILD | WS_VISIBLE,
+                       200, 200, 100, 100,
+                       parent,
+                       0,
+                       GetModuleHandle(0),
+                       this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
     }
 
     MapTreeView::~MapTreeView() {
-      DestroyWindow(this->handle);
+      ::DestroyWindow(this->handle);
     }
 
     void MapTreeView::Show() {
       assert(this->handle);
-      ShowWindow(this->handle, SW_SHOW);
-      UpdateWindow(this->handle);
+      ::ShowWindow(this->handle, SW_SHOW);
+      ::UpdateWindow(this->handle);
     }
 
     LRESULT MapTreeView::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -47,13 +47,13 @@ namespace Shrimp {
     MapTreeViewWC::MapTreeViewWC()
       : defaultWndProc(0) {
       WNDCLASSEX& wc = this->wndClass;
-      ZeroMemory(&wc, sizeof(wc));
+      ::ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);
-      GetClassInfoEx(0, WC_TREEVIEW, &wc);
+      ::GetClassInfoEx(0, WC_TREEVIEW, &wc);
       this->defaultWndProc = wc.lpfnWndProc;
       wc.lpfnWndProc = &WndProc<MapTreeView>;
       wc.lpszClassName = _T("ShrimpMapTreeView");
-      if (!RegisterClassEx(&wc)) {
+      if (!::RegisterClassEx(&wc)) {
         std::abort();
       }
     }
