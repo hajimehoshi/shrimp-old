@@ -9,14 +9,15 @@ namespace Shrimp {
       : handle(0) {
       const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
       const WNDCLASSEX& wc = mapTreeViewWC.GetWndClass();
-      CreateWindow(wc.lpszClassName,
-                   _T("OK"),
-                   WS_CHILD | WS_VISIBLE | WS_THICKFRAME,
-                   200, 200, 100, 100,
-                   parent,
-                   0,
-                   GetModuleHandle(0),
-                   this);
+      CreateWindowEx(WS_EX_CLIENTEDGE,
+                     wc.lpszClassName,
+                     _T("OK"),
+                     WS_CHILD | WS_VISIBLE,
+                     200, 200, 100, 100,
+                     parent,
+                     0,
+                     GetModuleHandle(0),
+                     this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
     }
@@ -54,7 +55,6 @@ namespace Shrimp {
       wc.lpszClassName = _T("ShrimpMapTreeView");
       if (!RegisterClassEx(&wc)) {
         std::abort();
-        assert(0);
       }
     }
 

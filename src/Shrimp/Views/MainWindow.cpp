@@ -11,17 +11,18 @@ namespace Shrimp {
       : handle(0) {
       const MainWindowWC& mainWindowWC = MainWindowWC::GetInstance();
       const WNDCLASSEX& wc = mainWindowWC.GetWndClass();
-      CreateWindow(wc.lpszClassName,
-                   _T("Shrimp"),
-                   WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                   CW_USEDEFAULT,
-                   CW_USEDEFAULT,
-                   CW_USEDEFAULT,
-                   CW_USEDEFAULT,
-                   0,
-                   0,
-                   GetModuleHandle(0),
-                   this);
+      CreateWindowEx(0,
+                     wc.lpszClassName,
+                     _T("Shrimp"),
+                     WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                     CW_USEDEFAULT,
+                     CW_USEDEFAULT,
+                     CW_USEDEFAULT,
+                     CW_USEDEFAULT,
+                     0,
+                     0,
+                     GetModuleHandle(0),
+                     this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
     }

@@ -9,14 +9,15 @@ namespace Shrimp {
       : handle(0) {
       const ButtonWC& buttonWC = ButtonWC::GetInstance();
       const WNDCLASSEX& wc = buttonWC.GetWndClass();
-      CreateWindow(wc.lpszClassName,
-                   _T("OK"),
-                   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-                   10, 10, 100, 100,
-                   parent,
-                   0,
-                   GetModuleHandle(0),
-                   this);
+      CreateWindowEx(0,
+                     wc.lpszClassName,
+                     _T("OK"),
+                     WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                     10, 10, 100, 100,
+                     parent,
+                     0,
+                     GetModuleHandle(0),
+                     this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
     }
