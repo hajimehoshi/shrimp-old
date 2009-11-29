@@ -11,7 +11,7 @@ namespace Shrimp {
       const WNDCLASSEX& wc = mapTreeViewWC.GetWndClass();
       ::CreateWindowEx(WS_EX_CLIENTEDGE,
                        wc.lpszClassName,
-                       _T("OK"),
+                       0,
                        WS_CHILD | WS_VISIBLE,
                        200, 200, 100, 100,
                        parent,
