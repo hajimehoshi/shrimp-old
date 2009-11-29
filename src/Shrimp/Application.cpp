@@ -10,7 +10,9 @@ namespace Shrimp {
     Views::MainWindow mainWindow;
     mainWindow.Show();
     MSG msg;
-    while (GetMessage(&msg, 0, 0, 0)) {
+    BOOL r;
+    while (r = GetMessage(&msg, 0, 0, 0)) {
+      assert(r != -1);
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
