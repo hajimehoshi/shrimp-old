@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "Shrimp/Views/MainWindow.h"
 #include "Shrimp/Views/Button.h"
+#include "Shrimp/Views/MapTreeView.h"
 
 namespace Shrimp {
   namespace Views {
@@ -41,6 +42,8 @@ namespace Shrimp {
         {
           Button* button = new Button(this->handle);
           button->Show();
+          MapTreeView* mapTreeView = new MapTreeView(this->handle);
+          mapTreeView->Show();
           return 0;
         }
       case WM_PAINT:

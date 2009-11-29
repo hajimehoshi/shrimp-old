@@ -1,18 +1,18 @@
 #include <cassert>
 #include <cstdlib>
-#include "Shrimp/Views/Button.h"
+#include "Shrimp/Views/MapTreeView.h"
 
 namespace Shrimp {
   namespace Views {
 
-    Button::Button(HWND parent)
+    MapTreeView::MapTreeView(HWND parent)
       : handle(0) {
-      const ButtonWC& buttonWC = ButtonWC::GetInstance();
-      const WNDCLASSEX& wc = buttonWC.GetWndClass();
+      const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
+      const WNDCLASSEX& wc = mapTreeViewWC.GetWndClass();
       CreateWindow(wc.lpszClassName,
                    _T("OK"),
-                   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-                   10, 10, 100, 100,
+                   WS_CHILD | WS_VISIBLE | WS_THICKFRAME,
+                   200, 200, 100, 100,
                    parent,
                    0,
                    GetModuleHandle(0),
@@ -21,39 +21,40 @@ namespace Shrimp {
       assert(this->handle);
     }
 
-    Button::~Button() {
+    MapTreeView::~MapTreeView() {
       DestroyWindow(this->handle);
     }
 
-    void Button::Show() {
+    void MapTreeView::Show() {
       assert(this->handle);
       ShowWindow(this->handle, SW_SHOW);
       UpdateWindow(this->handle);
     }
 
-    LRESULT Button::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
-      switch (msg) {
+    LRESULT MapTreeView::ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
+      /*switch (msg) {
       case WM_LBUTTONUP:
         {
           MessageBox(this->handle, _T("ボタンがクリックされた"), _T("Shrimp"), MB_ICONINFORMATION);
         }
         break;
-      }
-      const ButtonWC& buttonWC = ButtonWC::GetInstance();
-      return buttonWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
+        }*/
+      const MapTreeViewWC& mapTreeViewWC = MapTreeViewWC::GetInstance();
+      return mapTreeViewWC.GetDefaultWndProc()(this->handle, msg, wParam, lParam);
     }
 
-    ButtonWC::ButtonWC()
+    MapTreeViewWC::MapTreeViewWC()
       : defaultWndProc(0) {
       WNDCLASSEX& wc = this->wndClass;
       ZeroMemory(&wc, sizeof(wc));
       wc.cbSize = sizeof(wc);
-      GetClassInfoEx(0, WC_BUTTON, &wc);
+      GetClassInfoEx(0, WC_TREEVIEW, &wc);
       this->defaultWndProc = wc.lpfnWndProc;
-      wc.lpfnWndProc = &WndProc<Button>;
-      wc.lpszClassName = _T("ShrimpButton");
+      wc.lpfnWndProc = &WndProc<MapTreeView>;
+      wc.lpszClassName = _T("ShrimpMapTreeView");
       if (!RegisterClassEx(&wc)) {
         std::abort();
+        assert(0);
       }
     }
 

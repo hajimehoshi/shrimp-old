@@ -7,7 +7,7 @@ CXXFLAGS_TEST    = -D__TEST $(shell gtest-config --cppflags --cxxflags) -mconsol
 CXXFLAGS_DEBUG   = -D__DEBUG -fno-rtti
 CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -fno-rtti -finline-functions -O3
 
-LDFLAGS = -W -Wall -mno-cygwin -mwindows
+LDFLAGS = -W -Wall -mno-cygwin -mwindows -lcomctl32
 LDFLAGS_TEST    = $(shell gtest-config --ldflags --libs) -mconsole
 LDFLAGS_DEBUG   =
 LDFLAGS_RELEASE = -O3
