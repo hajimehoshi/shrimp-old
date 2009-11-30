@@ -3,9 +3,8 @@
 namespace Shrimp {
   namespace Presenters {
 
-    MapTreeViewPresenter::MapTreeViewPresenter(Models::MapCollection& mapCollection,
-                                               IMapTreeView& view)
-      : mapCollection(mapCollection), view(view) {
+    MapTreeViewPresenter::MapTreeViewPresenter(Models::MapCollection& mapCollection)
+      : mapCollection(mapCollection), view(0) {
       this->mapCollection.AddObserver(*this);
     }
 
@@ -33,10 +32,11 @@ namespace Shrimp {
     };
 
     TEST(MapTreeViewPresenterTest, Constractor) {
-      IMapTreeView view;
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter presenter(mapCollection, view);
+      MapTreeViewPresenter presenter(mapCollection);
       ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
+      IMapTreeView view;
+      presenter.SetView(view);
       ASSERT_EQ(&view, &presenter.GetView());
     }
 

@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <tchar.h>
-#include "Shrimp/Models/MapCollection.h"
 #include "Shrimp/Presenters/MapTreeViewPresenter.h"
 #include "Shrimp/Views/WndProc.h"
 #include "Shrimp/Util/Uncopyable.h"
@@ -19,13 +18,13 @@ namespace Shrimp {
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
-      MapTreeView(HWND parent, Models::MapCollection& mapCollection);
+      MapTreeView(HWND parent, Presenters::MapTreeViewPresenter& presenter);
       ~MapTreeView();
       void Show();
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
-      Presenters::MapTreeViewPresenter presenter;
+      Presenters::MapTreeViewPresenter& presenter;
     };
 
   }
