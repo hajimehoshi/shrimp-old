@@ -18,6 +18,7 @@ namespace Shrimp {
       inline IMapTreeView& GetView() {
         return this->view;
       }
+      void SetMapCollection(Models::MapCollection& mapCollection);
       void OnItemAdded(int index);
       void OnItemRemoved(int index);
     private:
