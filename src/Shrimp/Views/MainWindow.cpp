@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstdio>
+#include "Shrimp/Models/MapCollection.h"
 #include "Shrimp/Views/MainWindow.h"
 #include "Shrimp/Views/Button.h"
 #include "Shrimp/Views/MapTreeView.h"
@@ -50,7 +51,8 @@ namespace Shrimp {
       assert(this->handle);
       Button* button = new Button(this->handle);
       button->Show();
-      MapTreeView* mapTreeView = new MapTreeView(this->handle);
+      Models::MapCollection* mapCollection = new Models::MapCollection();
+      MapTreeView* mapTreeView = new MapTreeView(this->handle, *mapCollection);
       mapTreeView->Show();
     }
 
