@@ -10,11 +10,10 @@ namespace Shrimp {
 
     class MapTreeViewPresenter : public Models::IMapCollectionObserver {
     public:
-      MapTreeViewPresenter(IMapTreeView& view,
-                           Models::MapCollection& mapCollection);
+      MapTreeViewPresenter(IMapTreeView& view);
       ~MapTreeViewPresenter();
       inline Models::MapCollection& GetMapCollection() {
-        return this->mapCollection;
+        return *(this->mapCollection);
       }
       inline IMapTreeView& GetView() {
         return this->view;
@@ -23,7 +22,7 @@ namespace Shrimp {
       void OnItemRemoved(int index);
     private:
       IMapTreeView& view;
-      Models::MapCollection& mapCollection;
+      Models::MapCollection* mapCollection;
     };
 
     class IMapTreeView {
