@@ -9,8 +9,7 @@ namespace Shrimp {
 
     WNDPROC MapTreeView::defaultWndProc;
 
-    MapTreeView::MapTreeView(HWND parent,
-                             Presenters::MapTreeViewPresenter& presenter)
+    MapTreeView::MapTreeView(HWND parent, Presenter& presenter)
       : handle(0), presenter(presenter) {
       presenter.SetView(*this);
       if (!defaultWndProc) {

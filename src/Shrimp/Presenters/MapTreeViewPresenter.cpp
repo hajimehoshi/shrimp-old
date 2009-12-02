@@ -1,3 +1,4 @@
+#include <map>
 #include "Shrimp/Presenters/MapTreeViewPresenter.h"
 
 namespace Shrimp {
@@ -12,10 +13,16 @@ namespace Shrimp {
       this->mapCollection.RemoveObserver(*this);
     }
 
-    void MapTreeViewPresenter::OnItemAdded(int index) {
+    void MapTreeViewPresenter::Add(int parentId) {
     }
 
-    void MapTreeViewPresenter::OnItemRemoved(int index) {
+    void MapTreeViewPresenter::OnItemAdded(int id) {
+    }
+
+    void MapTreeViewPresenter::OnItemRemoved(int id) {
+    }
+
+    void MapTreeViewPresenter::Remove(int id) {
     }
 
   }
@@ -31,18 +38,29 @@ namespace Shrimp {
     class MockMapTreeView : public IMapTreeView {
     public:
       void Add() {
+        this->calledMethod = "Add";
       }
       void Remove() {
+        this->calledMethod = "Remove";
       }
+      std::string calledMethod;
+      std::map<std::string, int> intValues;
     };
 
-    TEST(MapTreeViewPresenterTest, Constractor) {
+    TEST(MapTreeViewPresenterTest, MapTreeViewPresenter) {
       Models::MapCollection mapCollection;
       MapTreeViewPresenter presenter(mapCollection);
       ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
       MockMapTreeView view;
       presenter.SetView(view);
       ASSERT_EQ(&view, &presenter.GetView());
+    }
+
+    TEST(MapTreeViewPresenterTest, Add) {
+      Models::MapCollection mapCollection;
+      MapTreeViewPresenter presenter(mapCollection);
+      MockMapTreeView view;
+      presenter.SetView(view);
     }
 
   }

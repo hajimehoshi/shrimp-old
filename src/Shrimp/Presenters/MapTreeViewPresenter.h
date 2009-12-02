@@ -19,18 +19,20 @@ namespace Shrimp {
         assert(this->view);
         return *(this->view);
       }
+      void Add(int parentId);
       inline void SetView(IMapTreeView& view) {
         assert(!this->view);
         this->view = &view;
       }
-      void OnItemAdded(int index);
-      void OnItemRemoved(int index);
+      void OnItemAdded(int id);
+      void OnItemRemoved(int id);
+      void Remove(int id);
     private:
       Models::MapCollection& mapCollection;
       IMapTreeView* view;
     };
 
-    class IMapTreeView {
+    class IMapTreeView : private Util::Uncopyable {
     public:
       virtual ~IMapTreeView() { }
       virtual void Add() = 0;

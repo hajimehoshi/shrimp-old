@@ -11,14 +11,15 @@
 namespace Shrimp {
   namespace Views {
 
-    class MapTreeView : public Presenters::IMapTreeView, private Util::Uncopyable {
+    class MapTreeView : public Presenters::IMapTreeView {
     private:
+      typedef Presenters::MapTreeViewPresenter Presenter;
       static WNDCLASSEX wndClass;
       static WNDPROC defaultWndProc;
       template<class T> friend
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
-      MapTreeView(HWND parent, Presenters::MapTreeViewPresenter& presenter);
+      MapTreeView(HWND parent, Presenter& presenter);
       ~MapTreeView();
       void Add() { }
       void Remove() { }
@@ -26,7 +27,7 @@ namespace Shrimp {
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
-      Presenters::MapTreeViewPresenter& presenter;
+      Presenter& presenter;
     };
 
   }
