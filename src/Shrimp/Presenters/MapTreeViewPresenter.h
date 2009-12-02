@@ -31,6 +31,10 @@ namespace Shrimp {
     };
 
     class IMapTreeView {
+    public:
+      virtual ~IMapTreeView() { }
+      virtual void Add() = 0;
+      virtual void Remove() = 0;
     };
 
   }

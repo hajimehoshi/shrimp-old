@@ -29,13 +29,18 @@ namespace Shrimp {
   namespace Presenters {
 
     class MockMapTreeView : public IMapTreeView {
+    public:
+      void Add() {
+      }
+      void Remove() {
+      }
     };
 
     TEST(MapTreeViewPresenterTest, Constractor) {
       Models::MapCollection mapCollection;
       MapTreeViewPresenter presenter(mapCollection);
       ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
-      IMapTreeView view;
+      MockMapTreeView view;
       presenter.SetView(view);
       ASSERT_EQ(&view, &presenter.GetView());
     }
