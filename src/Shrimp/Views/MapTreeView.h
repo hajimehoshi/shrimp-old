@@ -21,8 +21,8 @@ namespace Shrimp {
     public:
       MapTreeView(HWND parent, Presenter& presenter);
       ~MapTreeView();
-      void Add() { }
-      void Remove() { }
+      void Add(int id) { }
+      void Remove(int id) { }
       void Show();
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);

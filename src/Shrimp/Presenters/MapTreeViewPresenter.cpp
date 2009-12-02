@@ -37,11 +37,13 @@ namespace Shrimp {
 
     class MockMapTreeView : public IMapTreeView {
     public:
-      void Add() {
+      void Add(int id) {
         this->calledMethod = "Add";
+        this->intValues["id"] = id;
       }
-      void Remove() {
+      void Remove(int id) {
         this->calledMethod = "Remove";
+        this->intValues["id"] = id;
       }
       std::string calledMethod;
       std::map<std::string, int> intValues;
@@ -61,6 +63,7 @@ namespace Shrimp {
       MapTreeViewPresenter presenter(mapCollection);
       MockMapTreeView view;
       presenter.SetView(view);
+      //presenter.Add();
     }
 
   }

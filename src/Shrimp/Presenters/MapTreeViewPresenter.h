@@ -35,8 +35,8 @@ namespace Shrimp {
     class IMapTreeView : private Util::Uncopyable {
     public:
       virtual ~IMapTreeView() { }
-      virtual void Add() = 0;
-      virtual void Remove() = 0;
+      virtual void Add(int id) = 0;
+      virtual void Remove(int id) = 0;
     };
 
   }
