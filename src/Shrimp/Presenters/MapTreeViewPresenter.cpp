@@ -18,7 +18,7 @@ namespace Shrimp {
     }
 
     void MapTreeViewPresenter::OnItemAdded(int id) {
-      this->view->Add(id);
+      this->view->Add(id, "");
     }
 
     void MapTreeViewPresenter::OnItemRemoved(int id) {
@@ -41,9 +41,10 @@ namespace Shrimp {
 
     class MockMapTreeView : public IMapTreeView {
     public:
-      void Add(int id) {
+      void Add(int id, std::string name) {
         this->calledMethod = "Add";
         this->intValues["id"] = id;
+        this->stringValues["name"] = name;
       }
       void Remove(int id) {
         this->calledMethod = "Remove";
@@ -51,6 +52,7 @@ namespace Shrimp {
       }
       std::string calledMethod;
       std::map<std::string, int> intValues;
+      std::map<std::string, std::string> stringValues;
     };
 
     TEST(MapTreeViewPresenterTest, MapTreeViewPresenter) {
@@ -74,6 +76,7 @@ namespace Shrimp {
       ASSERT_EQ("Add", view.calledMethod);
       int newChildId = *(childIds.begin());
       ASSERT_EQ(newChildId, view.intValues["id"]);
+      ASSERT_EQ("", view.stringValues["name"]);
     }
 
     TEST(MapTreeViewPresenterTest, Remove) {

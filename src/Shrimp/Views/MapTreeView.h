@@ -21,7 +21,7 @@ namespace Shrimp {
     public:
       MapTreeView(HWND parent, Presenter& presenter);
       ~MapTreeView();
-      void Add(int id) { }
+      void Add(int id, std::string name) { }
       void Remove(int id) { }
       void Show();
     private:
