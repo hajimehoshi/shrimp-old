@@ -22,9 +22,11 @@ namespace Shrimp {
     }
 
     void MapTreeViewPresenter::OnItemRemoved(int id) {
+      this->view->Remove(id);
     }
 
     void MapTreeViewPresenter::Remove(int id) {
+      this->mapCollection.Remove(id);
     }
 
   }
@@ -71,6 +73,20 @@ namespace Shrimp {
       ASSERT_EQ(1u, childIds.size());
       ASSERT_EQ("Add", view.calledMethod);
       int newChildId = *(childIds.begin());
+      ASSERT_EQ(newChildId, view.intValues["id"]);
+    }
+
+    TEST(MapTreeViewPresenterTest, Remove) {
+      Models::MapCollection mapCollection;
+      MapTreeViewPresenter presenter(mapCollection);
+      MockMapTreeView view;
+      presenter.SetView(view);
+      presenter.Add(0);
+      const Models::MapCollection::ChildIds& childIds =
+        mapCollection.GetChildIds(0);
+      int newChildId = *(childIds.begin());      
+      presenter.Remove(newChildId);
+      ASSERT_EQ("Remove", view.calledMethod);
       ASSERT_EQ(newChildId, view.intValues["id"]);
     }
 
