@@ -14,9 +14,11 @@ namespace Shrimp {
     }
 
     void MapTreeViewPresenter::Add(int parentId) {
+      this->mapCollection.Add(parentId);
     }
 
     void MapTreeViewPresenter::OnItemAdded(int id) {
+      this->view->Add(id);
     }
 
     void MapTreeViewPresenter::OnItemRemoved(int id) {
@@ -63,7 +65,13 @@ namespace Shrimp {
       MapTreeViewPresenter presenter(mapCollection);
       MockMapTreeView view;
       presenter.SetView(view);
-      //presenter.Add();
+      presenter.Add(0);
+      const Models::MapCollection::ChildIds& childIds =
+        mapCollection.GetChildIds(0);
+      ASSERT_EQ(1u, childIds.size());
+      ASSERT_EQ("Add", view.calledMethod);
+      int newChildId = *(childIds.begin());
+      ASSERT_EQ(newChildId, view.intValues["id"]);
     }
 
   }
