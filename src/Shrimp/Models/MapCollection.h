@@ -47,8 +47,8 @@ namespace Shrimp {
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
       inline void OnHeightUpdated(Map& map) { }
-      void OnNameUpdated(Map& map);
-      inline void OnTileUpdated(Map& map) { }
+      inline void OnNameUpdated(Map& map);
+      void OnTileUpdated(Map& map) { }
       inline void OnWidthUpdated(Map& map) { }
       void Remove(int id);
       inline void RemoveObserver(IMapCollectionObserver& observer) {

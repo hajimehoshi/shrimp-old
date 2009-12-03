@@ -29,6 +29,12 @@ namespace Shrimp {
         return this->name;
       }
       inline const Tile& GetTile(int layer, int x, int y) const {
+        assert(0 <= layer);
+        assert(layer < LayerCount);
+        assert(0 <= x);
+        assert(x < this->width);
+        assert(0 <= y);
+        assert(y < this->height);
         return this->layers[layer][x + y * this->width];
       }
       inline int GetWidth() const {
