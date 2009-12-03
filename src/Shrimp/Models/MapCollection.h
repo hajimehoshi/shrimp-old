@@ -32,7 +32,7 @@ namespace Shrimp {
       public:
         Node(int parentId);
         int parentId;
-        Models::Map map;
+        Map map;
         ChildIds childIds;
       };
     public:
