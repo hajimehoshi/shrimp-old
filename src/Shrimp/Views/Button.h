@@ -11,11 +11,11 @@ namespace Shrimp {
   namespace Views {
 
     class Button : private Util::Uncopyable {
+      template<class T> friend
+        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     private:
       static WNDCLASSEX wndClass;
       static WNDPROC defaultWndProc;
-      template<class T> friend
-        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
       Button(HWND parent);
       ~Button();

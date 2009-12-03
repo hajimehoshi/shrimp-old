@@ -12,12 +12,12 @@ namespace Shrimp {
   namespace Views {
 
     class MapTreeView : private Util::Uncopyable {
+      template<class T> friend
+        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     private:
       typedef Presenters::MapTreeViewPresenter<MapTreeView> Presenter;
       static WNDCLASSEX wndClass;
       static WNDPROC defaultWndProc;
-      template<class T> friend
-        LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     public:
       MapTreeView(HWND parent, Presenter& presenter);
       ~MapTreeView();
