@@ -110,7 +110,7 @@ namespace Shrimp {
     }
 
     TEST(MapTreeViewPresenterTest, Update) {
-      /*Models::MapCollection mapCollection;
+      Models::MapCollection mapCollection;
       MapTreeViewPresenter presenter(mapCollection);
       MockMapTreeView view;
       presenter.SetView(view);
@@ -126,7 +126,7 @@ namespace Shrimp {
       presenter.Update(newChildId, "bar");
       ASSERT_EQ("bar", map.GetName());
       ASSERT_EQ("Update", view.calledMethod);
-      ASSERT_EQ("bar", view.stringValues["text"]);*/
+      ASSERT_EQ("bar", view.stringValues["text"]);
     }
 
   }
