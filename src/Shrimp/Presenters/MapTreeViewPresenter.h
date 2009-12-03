@@ -11,18 +11,10 @@ namespace Shrimp {
     public:
       MapTreeViewPresenter(Models::MapCollection& mapCollection);
       ~MapTreeViewPresenter();
-      inline Models::MapCollection& GetMapCollection() const {
-        return this->mapCollection;
-      }
-      inline TView& GetView() const {
-        assert(this->view);
-        return *(this->view);
-      }
+      inline Models::MapCollection& GetMapCollection() const;
+      inline TView& GetView() const;
       void Add(int parentId);
-      inline void SetView(TView& view) {
-        assert(!this->view);
-        this->view = &view;
-      }
+      inline void SetView(TView& view);
       void OnItemAdded(int id);
       void OnItemRemoved(int id);
       void OnItemUpdated(int id);
@@ -50,6 +42,17 @@ namespace Shrimp {
     }
 
     template<class TView>
+      inline Models::MapCollection& MapTreeViewPresenter<TView>::GetMapCollection() const {
+      return this->mapCollection;
+    }
+
+    template<class TView>
+      inline TView& MapTreeViewPresenter<TView>::GetView() const {
+      assert(this->view);
+      return *(this->view);
+    }
+
+    template<class TView>
       void MapTreeViewPresenter<TView>::OnItemAdded(int id) {
       assert(this->view);
       this->view->Add(id, "");
@@ -70,6 +73,12 @@ namespace Shrimp {
     template<class TView>
       void MapTreeViewPresenter<TView>::Remove(int id) {
       this->mapCollection.Remove(id);
+    }
+
+    template<class TView>
+      inline void MapTreeViewPresenter<TView>::SetView(TView& view) {
+      assert(!this->view);
+      this->view = &view;
     }
 
     template<class TView>
