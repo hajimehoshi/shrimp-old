@@ -82,7 +82,6 @@ namespace Shrimp {
 
     void MapCollection::OnNameUpdated(Map& map) {
       int id = map.GetId();
-      assert(id != Node::InvalidId);
       assert(&(this->GetMap(id)) == &map);
       for (Observers::const_iterator it = this->observers.begin();
            it != this->observers.end();
