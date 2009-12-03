@@ -115,13 +115,16 @@ namespace Shrimp {
 
     class MockMapCollectionObserver : public IMapCollectionObserver {
     public:
-      virtual ~MockMapCollectionObserver() { }
-      virtual void OnItemAdded(int id) {
+      void OnItemAdded(int id) {
         this->calledHandler = "OnItemAdded";
         this->intValues["id"] = id;
       }
-      virtual void OnItemRemoved(int id) {
+      void OnItemRemoved(int id) {
         this->calledHandler = "OnItemRemoved";
+        this->intValues["id"] = id;
+      }
+      void OnItemUpdated(int id) {
+        this->calledHandler = "OnItemUpdated";
         this->intValues["id"] = id;
       }
       std::string calledHandler;

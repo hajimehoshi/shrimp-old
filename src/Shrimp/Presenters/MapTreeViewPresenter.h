@@ -26,7 +26,9 @@ namespace Shrimp {
       }
       void OnItemAdded(int id);
       void OnItemRemoved(int id);
+      void OnItemUpdated(int id);
       void Remove(int id);
+      void Update(int id, std::string name);
     private:
       Models::MapCollection& mapCollection;
       IMapTreeView* view;
@@ -35,8 +37,9 @@ namespace Shrimp {
     class IMapTreeView : private Util::Uncopyable {
     public:
       virtual ~IMapTreeView() { }
-      virtual void Add(int id, std::string name) = 0;
+      virtual void Add(int id, std::string text) = 0;
       virtual void Remove(int id) = 0;
+      virtual void Update(int id, std::string text) = 0;
     };
 
   }

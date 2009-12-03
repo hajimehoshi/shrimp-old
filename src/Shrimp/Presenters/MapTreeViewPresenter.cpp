@@ -27,8 +27,17 @@ namespace Shrimp {
       this->view->Remove(id);
     }
 
+    void MapTreeViewPresenter::OnItemUpdated(int id) {
+      assert(this->view);
+      this->view->Update(id, this->mapCollection.GetMap(id).GetName());
+    }
+
     void MapTreeViewPresenter::Remove(int id) {
       this->mapCollection.Remove(id);
+    }
+
+    void MapTreeViewPresenter::Update(int id, std::string name) {
+      this->mapCollection.GetMap(id).SetName(name);
     }
 
   }
@@ -43,14 +52,19 @@ namespace Shrimp {
 
     class MockMapTreeView : public IMapTreeView {
     public:
-      void Add(int id, std::string name) {
+      void Add(int id, std::string text) {
         this->calledMethod = "Add";
         this->intValues["id"] = id;
-        this->stringValues["name"] = name;
+        this->stringValues["text"] = text;
       }
       void Remove(int id) {
         this->calledMethod = "Remove";
         this->intValues["id"] = id;
+      }
+      void Update(int id, std::string text) {
+        this->calledMethod = "Update";
+        this->intValues["id"] = id;
+        this->stringValues["text"] = text;
       }
       std::string calledMethod;
       std::map<std::string, int> intValues;
@@ -93,6 +107,26 @@ namespace Shrimp {
       presenter.Remove(newChildId);
       ASSERT_EQ("Remove", view.calledMethod);
       ASSERT_EQ(newChildId, view.intValues["id"]);
+    }
+
+    TEST(MapTreeViewPresenterTest, Update) {
+      /*Models::MapCollection mapCollection;
+      MapTreeViewPresenter presenter(mapCollection);
+      MockMapTreeView view;
+      presenter.SetView(view);
+      presenter.Add(0);
+      const Models::MapCollection::ChildIds& childIds =
+        mapCollection.GetChildIds(0);
+      int newChildId = *(childIds.begin());
+      Models::Map& map = mapCollection.GetMap(newChildId);
+      presenter.Update(newChildId, "foo");
+      ASSERT_EQ("foo", map.GetName());
+      ASSERT_EQ("Update", view.calledMethod);
+      ASSERT_EQ("foo", view.stringValues["text"]);
+      presenter.Update(newChildId, "bar");
+      ASSERT_EQ("bar", map.GetName());
+      ASSERT_EQ("Update", view.calledMethod);
+      ASSERT_EQ("bar", view.stringValues["text"]);*/
     }
 
   }

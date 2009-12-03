@@ -66,6 +66,7 @@ namespace Shrimp {
       virtual ~IMapCollectionObserver() { }
       virtual void OnItemAdded(int id) = 0;
       virtual void OnItemRemoved(int id) = 0;
+      virtual void OnItemUpdated(int id) = 0;
     };
 
   }
