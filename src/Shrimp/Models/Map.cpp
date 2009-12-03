@@ -26,7 +26,7 @@ namespace Shrimp {
         for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
-          (*it)->Map_OnHeightUpdated(*this);
+          (*it)->Map_HeightUpdated(*this);
         }
       }
     }
@@ -37,7 +37,7 @@ namespace Shrimp {
         for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
-          (*it)->Map_OnNameUpdated(*this);
+          (*it)->Map_NameUpdated(*this);
         }
       }
     }
@@ -54,7 +54,7 @@ namespace Shrimp {
         for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
-          (*it)->Map_OnTileUpdated(*this);
+          (*it)->Map_TileUpdated(*this);
         }
       }
     }
@@ -66,7 +66,7 @@ namespace Shrimp {
         for (Observers::const_iterator it = this->observers.begin();
              it != this->observers.end();
              ++it) {
-          (*it)->Map_OnWidthUpdated(*this);
+          (*it)->Map_WidthUpdated(*this);
         }
       }
     }
@@ -84,20 +84,20 @@ namespace Shrimp {
     class MockMapObserver : public IMapObserver {
     public:
       virtual ~MockMapObserver() { }
-      virtual void Map_OnHeightUpdated(Map& map) {
-        this->calledHandler = "Map_OnHeightUpdated";
+      virtual void Map_HeightUpdated(Map& map) {
+        this->calledHandler = "Map_HeightUpdated";
         this->mapValues["map"] = &map;
       }
-      virtual void Map_OnNameUpdated(Map& map) {
-        this->calledHandler = "Map_OnNameUpdated";
+      virtual void Map_NameUpdated(Map& map) {
+        this->calledHandler = "Map_NameUpdated";
         this->mapValues["map"] = &map;
       }
-      virtual void Map_OnTileUpdated(Map& map) {
-        this->calledHandler = "Map_OnTileUpdated";
+      virtual void Map_TileUpdated(Map& map) {
+        this->calledHandler = "Map_TileUpdated";
         this->mapValues["map"] = &map;
       }
-      virtual void Map_OnWidthUpdated(Map& map) {
-        this->calledHandler = "Map_OnWidthUpdated";
+      virtual void Map_WidthUpdated(Map& map) {
+        this->calledHandler = "Map_WidthUpdated";
         this->mapValues["map"] = &map;
       }
       std::string calledHandler;
@@ -128,7 +128,7 @@ namespace Shrimp {
         map.AddObserver(observer);
         map.SetName("Bar");
         ASSERT_EQ("Bar", map.GetName());
-        ASSERT_EQ("Map_OnNameUpdated", observer.calledHandler);
+        ASSERT_EQ("Map_NameUpdated", observer.calledHandler);
         ASSERT_EQ(&map, observer.mapValues["map"]);
         map.RemoveObserver(observer);
       }
@@ -150,7 +150,7 @@ namespace Shrimp {
         map.AddObserver(observer);
         map.SetWidth(21);
         ASSERT_EQ(21, map.GetWidth());
-        ASSERT_EQ("Map_OnWidthUpdated", observer.calledHandler);
+        ASSERT_EQ("Map_WidthUpdated", observer.calledHandler);
         ASSERT_EQ(&map, observer.mapValues["map"]);
         map.RemoveObserver(observer);
       }
@@ -172,7 +172,7 @@ namespace Shrimp {
         map.AddObserver(observer);
         map.SetHeight(16);
         ASSERT_EQ(16, map.GetHeight());
-        ASSERT_EQ("Map_OnHeightUpdated", observer.calledHandler);
+        ASSERT_EQ("Map_HeightUpdated", observer.calledHandler);
         ASSERT_EQ(&map, observer.mapValues["map"]);
         map.RemoveObserver(observer);
       }
@@ -194,7 +194,7 @@ namespace Shrimp {
         map.AddObserver(observer);
         map.SetTile(0, 1, 2, Tile(3, 4));
         ASSERT_TRUE(Tile(3, 4) == map.GetTile(0, 1, 2));
-        ASSERT_EQ("Map_OnTileUpdated", observer.calledHandler);
+        ASSERT_EQ("Map_TileUpdated", observer.calledHandler);
         ASSERT_EQ(&map, observer.mapValues["map"]);
         map.RemoveObserver(observer);
       }

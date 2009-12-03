@@ -63,10 +63,10 @@ namespace Shrimp {
     class IMapObserver : private Util::Uncopyable {
     public:
       virtual ~IMapObserver() { }
-      virtual void Map_OnHeightUpdated(Map& map) = 0;
-      virtual void Map_OnNameUpdated(Map& map) = 0;
-      virtual void Map_OnTileUpdated(Map& map) = 0;
-      virtual void Map_OnWidthUpdated(Map& map) = 0;
+      virtual void Map_HeightUpdated(Map& map) = 0;
+      virtual void Map_NameUpdated(Map& map) = 0;
+      virtual void Map_TileUpdated(Map& map) = 0;
+      virtual void Map_WidthUpdated(Map& map) = 0;
     };
 
   }

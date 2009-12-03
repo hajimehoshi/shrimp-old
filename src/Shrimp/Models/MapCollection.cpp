@@ -48,7 +48,7 @@ namespace Shrimp {
       for (Observers::const_iterator it = this->observers.begin();
            it != this->observers.end();
            ++it) {
-        (*it)->MapCollection_OnItemAdded(id);
+        (*it)->MapCollection_ItemAdded(id);
       }
     }
 
@@ -80,13 +80,13 @@ namespace Shrimp {
       return it->second;
     }
 
-    void MapCollection::Map_OnNameUpdated(Map& map) {
+    void MapCollection::Map_NameUpdated(Map& map) {
       int id = map.GetId();
       assert(&(this->GetMap(id)) == &map);
       for (Observers::const_iterator it = this->observers.begin();
            it != this->observers.end();
            ++it) {
-        (*it)->MapCollection_OnItemUpdated(id);
+        (*it)->MapCollection_ItemUpdated(id);
       }
     }
 
@@ -100,7 +100,7 @@ namespace Shrimp {
       for (Observers::const_iterator it = this->observers.begin();
            it != this->observers.end();
            ++it) {
-        (*it)->MapCollection_OnItemRemoved(id);
+        (*it)->MapCollection_ItemRemoved(id);
       }
     }
 
@@ -131,16 +131,16 @@ namespace Shrimp {
 
     class MockMapCollectionObserver : public IMapCollectionObserver {
     public:
-      void MapCollection_OnItemAdded(int id) {
-        this->calledHandler = "MapCollection_OnItemAdded";
+      void MapCollection_ItemAdded(int id) {
+        this->calledHandler = "MapCollection_ItemAdded";
         this->intValues["id"] = id;
       }
-      void MapCollection_OnItemRemoved(int id) {
-        this->calledHandler = "MapCollection_OnItemRemoved";
+      void MapCollection_ItemRemoved(int id) {
+        this->calledHandler = "MapCollection_ItemRemoved";
         this->intValues["id"] = id;
       }
-      void MapCollection_OnItemUpdated(int id) {
-        this->calledHandler = "MapCollection_OnItemUpdated";
+      void MapCollection_ItemUpdated(int id) {
+        this->calledHandler = "MapCollection_ItemUpdated";
         this->intValues["id"] = id;
       }
       std::string calledHandler;
@@ -166,7 +166,7 @@ namespace Shrimp {
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(0));
         ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
         ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
-        ASSERT_EQ("MapCollection_OnItemAdded", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemAdded", observer.calledHandler);
         ASSERT_EQ(2, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -181,7 +181,7 @@ namespace Shrimp {
         ASSERT_TRUE(mapCollection.GetChildIds(1).empty());
         ASSERT_TRUE(mapCollection.GetChildIds(2).empty());
         ASSERT_TRUE(mapCollection.GetChildIds(3).empty());
-        ASSERT_EQ("MapCollection_OnItemAdded", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemAdded", observer.calledHandler);
         ASSERT_EQ(3, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -199,7 +199,7 @@ namespace Shrimp {
         expectedIds.insert(4);
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
         ASSERT_TRUE(mapCollection.GetChildIds(4).empty());
-        ASSERT_EQ("MapCollection_OnItemAdded", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemAdded", observer.calledHandler);
         ASSERT_EQ(4, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -223,7 +223,7 @@ namespace Shrimp {
         expectedIds.clear();
         ASSERT_TRUE(expectedIds == mapCollection.GetChildIds(3));
         ASSERT_EQ(0u, mapCollection.nodes.count(4));
-        ASSERT_EQ("MapCollection_OnItemRemoved", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemRemoved", observer.calledHandler);
         ASSERT_EQ(4, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -244,7 +244,7 @@ namespace Shrimp {
         ASSERT_EQ(0u, mapCollection.nodes.count(2));
         ASSERT_EQ(0u, mapCollection.nodes.count(3));
         ASSERT_EQ(0u, mapCollection.nodes.count(4));
-        ASSERT_EQ("MapCollection_OnItemRemoved", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemRemoved", observer.calledHandler);
         ASSERT_EQ(2, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -275,7 +275,7 @@ namespace Shrimp {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
         map.SetName("foo");
-        ASSERT_EQ("MapCollection_OnItemUpdated", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemUpdated", observer.calledHandler);
         ASSERT_EQ(2, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -284,7 +284,7 @@ namespace Shrimp {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
         map.SetName("bar");
-        ASSERT_EQ("MapCollection_OnItemUpdated", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemUpdated", observer.calledHandler);
         ASSERT_EQ(3, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }

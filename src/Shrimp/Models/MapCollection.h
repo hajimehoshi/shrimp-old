@@ -46,10 +46,10 @@ namespace Shrimp {
       Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
-      void Map_OnHeightUpdated(Map& map) { }
-      void Map_OnNameUpdated(Map& map);
-      void Map_OnTileUpdated(Map& map) { }
-      void Map_OnWidthUpdated(Map& map) { }
+      void Map_HeightUpdated(Map& map) { }
+      void Map_NameUpdated(Map& map);
+      void Map_TileUpdated(Map& map) { }
+      void Map_WidthUpdated(Map& map) { }
       void Remove(int id);
       inline void RemoveObserver(IMapCollectionObserver& observer) {
         this->observers.Remove(&observer);
@@ -68,9 +68,9 @@ namespace Shrimp {
     class IMapCollectionObserver : private Util::Uncopyable {
     public:
       virtual ~IMapCollectionObserver() { }
-      virtual void MapCollection_OnItemAdded(int id) = 0;
-      virtual void MapCollection_OnItemRemoved(int id) = 0;
-      virtual void MapCollection_OnItemUpdated(int id) = 0;
+      virtual void MapCollection_ItemAdded(int id) = 0;
+      virtual void MapCollection_ItemRemoved(int id) = 0;
+      virtual void MapCollection_ItemUpdated(int id) = 0;
     };
 
   }

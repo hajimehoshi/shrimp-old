@@ -44,7 +44,7 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.Add(0);
+      presenter.MapTreeView_ItemAdded(0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
       ASSERT_EQ(1u, childIds.size());
@@ -58,11 +58,11 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.Add(0);
+      presenter.MapTreeView_ItemAdded(0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
       int newChildId = *(childIds.begin());      
-      presenter.Remove(newChildId);
+      presenter.MapTreeView_ItemRemoved(newChildId);
       ASSERT_EQ("Remove", view.calledMethod);
       ASSERT_EQ(newChildId, view.intValues["id"]);
     }
@@ -71,16 +71,16 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.Add(0);
+      presenter.MapTreeView_ItemAdded(0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
       int newChildId = *(childIds.begin());
       Models::Map& map = mapCollection.GetMap(newChildId);
-      presenter.Update(newChildId, "foo");
+      presenter.MapTreeView_ItemUpdated(newChildId, "foo");
       ASSERT_EQ("foo", map.GetName());
       ASSERT_EQ("Update", view.calledMethod);
       ASSERT_EQ("foo", view.stringValues["text"]);
-      presenter.Update(newChildId, "bar");
+      presenter.MapTreeView_ItemUpdated(newChildId, "bar");
       ASSERT_EQ("bar", map.GetName());
       ASSERT_EQ("Update", view.calledMethod);
       ASSERT_EQ("bar", view.stringValues["text"]);
