@@ -49,17 +49,17 @@ namespace Shrimp {
 
     template<class TView>
       void MapTreeViewPresenter<TView>::MapCollection_ItemAdded(int id) {
-      this->view.Add(id, "");
+      this->view.AddItem(id, "");
     }
 
     template<class TView>
       void MapTreeViewPresenter<TView>::MapCollection_ItemRemoved(int id) {
-      this->view.Remove(id);
+      this->view.RemoveItem(id);
     }
 
     template<class TView>
       void MapTreeViewPresenter<TView>::MapCollection_ItemUpdated(int id) {
-      this->view.Update(id, this->mapCollection.GetMap(id).GetName());
+      this->view.UpdateItem(id, this->mapCollection.GetMap(id).GetName());
     }
 
     template<class TView>
