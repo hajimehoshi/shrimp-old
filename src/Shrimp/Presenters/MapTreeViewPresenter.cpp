@@ -18,10 +18,12 @@ namespace Shrimp {
     }
 
     void MapTreeViewPresenter::OnItemAdded(int id) {
+      assert(this->view);
       this->view->Add(id, "");
     }
 
     void MapTreeViewPresenter::OnItemRemoved(int id) {
+      assert(this->view);
       this->view->Remove(id);
     }
 
