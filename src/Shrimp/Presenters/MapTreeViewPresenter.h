@@ -15,9 +15,9 @@ namespace Shrimp {
       inline Models::MapCollection& GetMapCollection() const;
       inline TView& GetView() const;
       void Add(int parentId);
-      void OnItemAdded(int id);
-      void OnItemRemoved(int id);
-      void OnItemUpdated(int id);
+      void MapCollection_OnItemAdded(int id);
+      void MapCollection_OnItemRemoved(int id);
+      void MapCollection_OnItemUpdated(int id);
       void Remove(int id);
       void Update(int id, std::string name);
     private:
@@ -53,17 +53,17 @@ namespace Shrimp {
     }
 
     template<class TView>
-      void MapTreeViewPresenter<TView>::OnItemAdded(int id) {
+      void MapTreeViewPresenter<TView>::MapCollection_OnItemAdded(int id) {
       this->view.Add(id, "");
     }
 
     template<class TView>
-      void MapTreeViewPresenter<TView>::OnItemRemoved(int id) {
+      void MapTreeViewPresenter<TView>::MapCollection_OnItemRemoved(int id) {
       this->view.Remove(id);
     }
 
     template<class TView>
-      void MapTreeViewPresenter<TView>::OnItemUpdated(int id) {
+      void MapTreeViewPresenter<TView>::MapCollection_OnItemUpdated(int id) {
       this->view.Update(id, this->mapCollection.GetMap(id).GetName());
     }
 
