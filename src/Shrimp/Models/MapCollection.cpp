@@ -81,16 +81,9 @@ namespace Shrimp {
     }
 
     void MapCollection::OnNameUpdated(Map& map) {
-      int id = Node::InvalidId;
-      for (std::map<int, Node*>::const_iterator it = this->nodes.begin();
-           it != this->nodes.end();
-           ++it) {
-        if (&(it->second->map) == &map) {
-          id = it->first;
-          break;
-        }
-      }
+      int id = map.GetId();
       assert(id != Node::InvalidId);
+      assert(&(this->GetMap(id)) == &map);
       for (Observers::const_iterator it = this->observers.begin();
            it != this->observers.end();
            ++it) {
