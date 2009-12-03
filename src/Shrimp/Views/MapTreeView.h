@@ -11,9 +11,9 @@
 namespace Shrimp {
   namespace Views {
 
-    class MapTreeView : public Presenters::IMapTreeView {
+    class MapTreeView : private Util::Uncopyable {
     private:
-      typedef Presenters::MapTreeViewPresenter Presenter;
+      typedef Presenters::MapTreeViewPresenter<MapTreeView> Presenter;
       static WNDCLASSEX wndClass;
       static WNDPROC defaultWndProc;
       template<class T> friend

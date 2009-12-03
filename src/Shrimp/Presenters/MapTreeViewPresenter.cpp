@@ -1,47 +1,6 @@
 #include <map>
 #include "Shrimp/Presenters/MapTreeViewPresenter.h"
-
-namespace Shrimp {
-  namespace Presenters {
-
-    MapTreeViewPresenter::MapTreeViewPresenter(Models::MapCollection& mapCollection)
-      : mapCollection(mapCollection), view(0) {
-      this->mapCollection.AddObserver(*this);
-    }
-
-    MapTreeViewPresenter::~MapTreeViewPresenter() {
-      this->mapCollection.RemoveObserver(*this);
-    }
-
-    void MapTreeViewPresenter::Add(int parentId) {
-      this->mapCollection.Add(parentId);
-    }
-
-    void MapTreeViewPresenter::OnItemAdded(int id) {
-      assert(this->view);
-      this->view->Add(id, "");
-    }
-
-    void MapTreeViewPresenter::OnItemRemoved(int id) {
-      assert(this->view);
-      this->view->Remove(id);
-    }
-
-    void MapTreeViewPresenter::OnItemUpdated(int id) {
-      assert(this->view);
-      this->view->Update(id, this->mapCollection.GetMap(id).GetName());
-    }
-
-    void MapTreeViewPresenter::Remove(int id) {
-      this->mapCollection.Remove(id);
-    }
-
-    void MapTreeViewPresenter::Update(int id, std::string name) {
-      this->mapCollection.GetMap(id).SetName(name);
-    }
-
-  }
-}
+#include "Shrimp/Util/Uncopyable.h"
 
 #ifdef __TEST
 
@@ -50,7 +9,7 @@ namespace Shrimp {
 namespace Shrimp {
   namespace Presenters {
 
-    class MockMapTreeView : public IMapTreeView {
+    class MockMapTreeView : private Util::Uncopyable {
     public:
       void Add(int id, std::string text) {
         this->calledMethod = "Add";
@@ -73,7 +32,7 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, MapTreeViewPresenter) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter presenter(mapCollection);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
       MockMapTreeView view;
       presenter.SetView(view);
@@ -82,7 +41,7 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, Add) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter presenter(mapCollection);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       MockMapTreeView view;
       presenter.SetView(view);
       presenter.Add(0);
@@ -97,7 +56,7 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, Remove) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter presenter(mapCollection);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       MockMapTreeView view;
       presenter.SetView(view);
       presenter.Add(0);
@@ -111,7 +70,7 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, Update) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter presenter(mapCollection);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       MockMapTreeView view;
       presenter.SetView(view);
       presenter.Add(0);
