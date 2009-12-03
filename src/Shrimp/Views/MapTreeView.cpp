@@ -9,9 +9,8 @@ namespace Shrimp {
 
     WNDPROC MapTreeView::defaultWndProc;
 
-    MapTreeView::MapTreeView(HWND parent, Presenter& presenter)
-      : handle(0), presenter(presenter) {
-      presenter.SetView(*this);
+    MapTreeView::MapTreeView(HWND parent)
+      : handle(0), presenter(0) {
       if (!defaultWndProc) {
         ::ZeroMemory(&wndClass, sizeof(wndClass));
         wndClass.cbSize = sizeof(wndClass);

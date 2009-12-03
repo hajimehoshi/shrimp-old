@@ -9,12 +9,12 @@ namespace Shrimp {
     template<class TView>
     class MapTreeViewPresenter : public Models::IMapCollectionObserver {
     public:
-      MapTreeViewPresenter(Models::MapCollection& mapCollection);
+      MapTreeViewPresenter(Models::MapCollection& mapCollection,
+                           TView& view);
       ~MapTreeViewPresenter();
       inline Models::MapCollection& GetMapCollection() const;
       inline TView& GetView() const;
       void Add(int parentId);
-      inline void SetView(TView& view);
       void OnItemAdded(int id);
       void OnItemRemoved(int id);
       void OnItemUpdated(int id);
@@ -22,13 +22,14 @@ namespace Shrimp {
       void Update(int id, std::string name);
     private:
       Models::MapCollection& mapCollection;
-      TView* view;
+      TView& view;
     };
 
     template<class TView>
-      MapTreeViewPresenter<TView>::MapTreeViewPresenter(Models::MapCollection& mapCollection)
-      : mapCollection(mapCollection), view(0) {
+      MapTreeViewPresenter<TView>::MapTreeViewPresenter(Models::MapCollection& mapCollection, TView& view)
+      : mapCollection(mapCollection), view(view) {
       this->mapCollection.AddObserver(*this);
+      this->view.SetPresenter(*this);
     }
 
     template<class TView>
@@ -48,37 +49,27 @@ namespace Shrimp {
 
     template<class TView>
       inline TView& MapTreeViewPresenter<TView>::GetView() const {
-      assert(this->view);
-      return *(this->view);
+      return this->view;
     }
 
     template<class TView>
       void MapTreeViewPresenter<TView>::OnItemAdded(int id) {
-      assert(this->view);
-      this->view->Add(id, "");
+      this->view.Add(id, "");
     }
 
     template<class TView>
       void MapTreeViewPresenter<TView>::OnItemRemoved(int id) {
-      assert(this->view);
-      this->view->Remove(id);
+      this->view.Remove(id);
     }
 
     template<class TView>
       void MapTreeViewPresenter<TView>::OnItemUpdated(int id) {
-      assert(this->view);
-      this->view->Update(id, this->mapCollection.GetMap(id).GetName());
+      this->view.Update(id, this->mapCollection.GetMap(id).GetName());
     }
 
     template<class TView>
       void MapTreeViewPresenter<TView>::Remove(int id) {
       this->mapCollection.Remove(id);
-    }
-
-    template<class TView>
-      inline void MapTreeViewPresenter<TView>::SetView(TView& view) {
-      assert(!this->view);
-      this->view = &view;
     }
 
     template<class TView>

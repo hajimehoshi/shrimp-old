@@ -1,6 +1,7 @@
 #ifndef SHRIMP_VIEWS_TREEVIEW_H
 #define SHRIMP_VIEWS_TREEVIEW_H
 
+#include <cassert>
 #include <windows.h>
 #include <commctrl.h>
 #include <tchar.h>
@@ -19,16 +20,20 @@ namespace Shrimp {
       static WNDCLASSEX wndClass;
       static WNDPROC defaultWndProc;
     public:
-      MapTreeView(HWND parent, Presenter& presenter);
+      MapTreeView(HWND parent);
       ~MapTreeView();
       void Add(int id, std::string text) { }
       void Remove(int id) { }
+      inline void SetPresenter(Presenter& presenter) {
+        assert(!this->presenter);
+        this->presenter = &presenter;
+      }
       void Show();
       void Update(int id, std::string text) { }
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
-      Presenter& presenter;
+      Presenter* presenter;
     };
 
   }

@@ -20,6 +20,8 @@ namespace Shrimp {
         this->calledMethod = "Remove";
         this->intValues["id"] = id;
       }
+      void SetPresenter(MapTreeViewPresenter<MockMapTreeView>& presenter) {
+      }
       void Update(int id, std::string text) {
         this->calledMethod = "Update";
         this->intValues["id"] = id;
@@ -32,18 +34,16 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, MapTreeViewPresenter) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
-      ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
       MockMapTreeView view;
-      presenter.SetView(view);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
+      ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
       ASSERT_EQ(&view, &presenter.GetView());
     }
 
     TEST(MapTreeViewPresenterTest, Add) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       MockMapTreeView view;
-      presenter.SetView(view);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
       presenter.Add(0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
@@ -56,9 +56,8 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, Remove) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       MockMapTreeView view;
-      presenter.SetView(view);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
       presenter.Add(0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
@@ -70,9 +69,8 @@ namespace Shrimp {
 
     TEST(MapTreeViewPresenterTest, Update) {
       Models::MapCollection mapCollection;
-      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection);
       MockMapTreeView view;
-      presenter.SetView(view);
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
       presenter.Add(0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);

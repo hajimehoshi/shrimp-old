@@ -51,9 +51,10 @@ namespace Shrimp {
       Button* button = new Button(this->handle);
       button->Show();
       Models::MapCollection* mapCollection = new Models::MapCollection();
+      MapTreeView* mapTreeView = new MapTreeView(this->handle);
       Presenters::MapTreeViewPresenter<MapTreeView>* presenter =
-        new Presenters::MapTreeViewPresenter<MapTreeView>(*mapCollection);
-      MapTreeView* mapTreeView = new MapTreeView(this->handle, *presenter);
+        new Presenters::MapTreeViewPresenter<MapTreeView>(*mapCollection, *mapTreeView);
+      assert(presenter); // to cancel warining
       mapTreeView->Show();
     }
 
