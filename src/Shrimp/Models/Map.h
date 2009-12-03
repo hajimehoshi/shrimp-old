@@ -17,13 +17,16 @@ namespace Shrimp {
     public:
       static const int LayerCount = 2;
     public:
-      Map(const std::string& name = "", int width = 20, int height = 15);
+      Map(int id, const std::string& name = "", int width = 20, int height = 15);
       ~Map();
       inline void AddObserver(IMapObserver& observer) {
         this->observers.Add(&observer);
       }
       inline int GetHeight() const {
         return this->height;
+      }
+      inline int GetId() const {
+        return this->id;
       }
       inline const std::string& GetName() const {
         return this->name;
@@ -48,7 +51,8 @@ namespace Shrimp {
       void SetTile(int layer, int x, int y, const Tile& tile);
       void SetWidth(int width);
     private:
-      Map(const std::string&, int width);
+      Map(int id, const std::string&, int width);
+      const int id;
       std::string name;
       int width;
       int height;

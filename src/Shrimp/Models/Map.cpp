@@ -4,8 +4,8 @@
 namespace Shrimp {
   namespace Models {
 
-    Map::Map(const std::string& name, int width, int height)
-      : name(name), width(width), height(height) {
+    Map::Map(int id, const std::string& name, int width, int height)
+      : id(id), name(name), width(width), height(height) {
       assert(0 < this->width);
       assert(0 < this->height);
       for (int i = 0; i < LayerCount; ++i) {
@@ -105,14 +105,15 @@ namespace Shrimp {
     };
 
     TEST(MapTest, Map) {
-      Map map;
+      Map map(42);
       ASSERT_EQ("", map.GetName());
       ASSERT_EQ(20, map.GetWidth());
       ASSERT_EQ(15, map.GetHeight());
+      ASSERT_EQ(42, map.GetId());
     }
 
     TEST(MapTest, Name) {
-      Map map("Foo", 20, 15);
+      Map map(0, "Foo", 20, 15);
       ASSERT_EQ("Foo", map.GetName());
       {
         MockMapObserver observer;
@@ -134,7 +135,7 @@ namespace Shrimp {
     }
 
     TEST(MapTest, Width) {
-      Map map("Foo", 20, 15);
+      Map map(0, "Foo", 20, 15);
       ASSERT_EQ(20, map.GetWidth());
       {
         MockMapObserver observer;
@@ -156,7 +157,7 @@ namespace Shrimp {
     }
 
     TEST(MapTest, Height) {
-      Map map("Foo", 20, 15);
+      Map map(0, "Foo", 20, 15);
       ASSERT_EQ(15, map.GetHeight());
       {
         MockMapObserver observer;
@@ -178,7 +179,7 @@ namespace Shrimp {
     }
 
     TEST(MapTest, Tile) {
-      Map map("Foo", 20, 15);
+      Map map(0, "Foo", 20, 15);
       ASSERT_TRUE(Tile(0, 0) == map.GetTile(0, 1, 2));
       {
         MockMapObserver observer;

@@ -30,9 +30,9 @@ namespace Shrimp {
       public:
         static const int InvalidId = -1;
       public:
-        Node(int parentId);
-        int parentId;
+        Node(int id, int parentId);
         Map map;
+        const int parentId;
         ChildIds childIds;
       };
     public:

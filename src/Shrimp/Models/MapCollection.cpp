@@ -4,8 +4,8 @@
 namespace Shrimp {
   namespace Models {
 
-    MapCollection::Node::Node(int parentId)
-      : parentId(parentId) {
+    MapCollection::Node::Node(int id, int parentId)
+      : map(id), parentId(parentId) {
     }
 
     MapCollection::MapCollection()
@@ -15,13 +15,13 @@ namespace Shrimp {
 
       id = this->GenerateNextId();
       assert(id == 0);
-      node = new Node(Node::InvalidId);
+      node = new Node(id, Node::InvalidId);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->projectNodeId = id;
 
       id = this->GenerateNextId();
       assert(id == 1);
-      node = new Node(Node::InvalidId);
+      node = new Node(id, Node::InvalidId);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->recycleBinNodeId = id;
     }
@@ -41,7 +41,7 @@ namespace Shrimp {
 
     void MapCollection::Add(int parentId) {
       int id = this->GenerateNextId();
-      Node* node = new Node(parentId);
+      Node* node = new Node(id, parentId);
       node->map.AddObserver(*this);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->childIds.insert(id);
