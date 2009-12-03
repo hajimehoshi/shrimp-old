@@ -16,7 +16,7 @@ namespace Shrimp {
 
     class IMapCollectionObserver;
 
-    class MapCollection : private Util::Uncopyable {
+    class MapCollection : public IMapObserver {
 #ifdef __TEST
       FRIEND_TEST(MapCollectionTest, Remove);
       FRIEND_TEST(MapCollectionTest, RemoveChildren);
@@ -46,6 +46,10 @@ namespace Shrimp {
       Map& GetMap(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
+      inline void OnHeightUpdated(Map& map) { }
+      void OnNameUpdated(Map& map);
+      inline void OnTileUpdated(Map& map) { }
+      inline void OnWidthUpdated(Map& map) { }
       void Remove(int id);
       inline void RemoveObserver(IMapCollectionObserver& observer) {
         this->observers.Remove(&observer);

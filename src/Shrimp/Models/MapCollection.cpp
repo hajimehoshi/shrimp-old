@@ -30,6 +30,10 @@ namespace Shrimp {
       for (std::map<int, Node*>::iterator it = this->nodes.begin();
            it != this->nodes.end();
            ++it) {
+        // TODO: Refactoring
+        if (it->second->parentId != Node::InvalidId) {
+          it->second->map.RemoveObserver(*this);
+        }
         delete it->second;
       }
       this->nodes.clear();
@@ -38,6 +42,7 @@ namespace Shrimp {
     void MapCollection::Add(int parentId) {
       int id = this->GenerateNextId();
       Node* node = new Node(parentId);
+      node->map.AddObserver(*this);
       this->nodes.insert(std::map<int, Node*>::value_type(id, node));
       this->GetNode(parentId)->childIds.insert(id);
       for (Observers::const_iterator it = this->observers.begin();
@@ -75,6 +80,24 @@ namespace Shrimp {
       return it->second;
     }
 
+    void MapCollection::OnNameUpdated(Map& map) {
+      int id = Node::InvalidId;
+      for (std::map<int, Node*>::const_iterator it = this->nodes.begin();
+           it != this->nodes.end();
+           ++it) {
+        if (&(it->second->map) == &map) {
+          id = it->first;
+          break;
+        }
+      }
+      assert(id != Node::InvalidId);
+      for (Observers::const_iterator it = this->observers.begin();
+           it != this->observers.end();
+           ++it) {
+        (*it)->OnItemUpdated(id);
+      }
+    }
+
     void MapCollection::Remove(int id) {
       Node* node = this->GetNode(id);
       Node* parentNode = this->GetNode(node->parentId);
@@ -86,7 +109,7 @@ namespace Shrimp {
            it != this->observers.end();
            ++it) {
         (*it)->OnItemRemoved(id);
-      }      
+      }
     }
 
     void MapCollection::RemoveNode(int id) {
@@ -100,6 +123,7 @@ namespace Shrimp {
         this->RemoveNode(*it2);
       }
       this->nodes.erase(it);
+      node->map.RemoveObserver(*this);
       delete node;
     }
 
@@ -248,6 +272,38 @@ namespace Shrimp {
       ASSERT_NE(&mapCollection.GetMap(4), &mapCollection.GetMap(2));
       ASSERT_NE(&mapCollection.GetMap(4), &mapCollection.GetMap(3));
       ASSERT_EQ(&mapCollection.GetMap(4), &mapCollection.GetMap(4));
+    }
+
+    TEST(MapCollectionTest, UpdateMap) {
+      MapCollection mapCollection;
+      mapCollection.Add(0); // 2
+      mapCollection.Add(0); // 3
+      {
+        Map& map = mapCollection.GetMap(2);
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        map.SetName("foo");
+        ASSERT_EQ("OnItemUpdated", observer.calledHandler);
+        ASSERT_EQ(2, observer.intValues["id"]);
+        mapCollection.RemoveObserver(observer);
+      }
+      {
+        Map& map = mapCollection.GetMap(3);
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        map.SetName("bar");
+        ASSERT_EQ("OnItemUpdated", observer.calledHandler);
+        ASSERT_EQ(3, observer.intValues["id"]);
+        mapCollection.RemoveObserver(observer);
+      }
+      {
+        Map& map = mapCollection.GetMap(2);
+        MockMapCollectionObserver observer;
+        mapCollection.AddObserver(observer);
+        map.SetName("foo");
+        ASSERT_EQ("", observer.calledHandler);
+        mapCollection.RemoveObserver(observer);
+      }
     }
 
   }
