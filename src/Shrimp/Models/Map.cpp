@@ -1,4 +1,3 @@
-#include <map>
 #include "Shrimp/Models/Map.h"
 
 namespace Shrimp {
@@ -76,6 +75,7 @@ namespace Shrimp {
 
 #ifdef __TEST
 
+#include <map>
 #include <gtest/gtest.h>
 
 namespace Shrimp {

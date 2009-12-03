@@ -1,6 +1,5 @@
 #include <cassert>
 #include <cstdlib>
-#include <cstdio>
 #include "Shrimp/Views/MainWindow.h"
 #include "Shrimp/Views/Button.h"
 #include "Shrimp/Views/MapTreeView.h"

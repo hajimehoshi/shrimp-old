@@ -1,9 +1,9 @@
-#include <map>
 #include "Shrimp/Presenters/MapTreeViewPresenter.h"
 #include "Shrimp/Util/Uncopyable.h"
 
 #ifdef __TEST
 
+#include <map>
 #include <gtest/gtest.h>
 
 namespace Shrimp {
