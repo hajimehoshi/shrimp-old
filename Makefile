@@ -2,7 +2,7 @@ CXX = g++
 
 CXXFLAGS = -Isrc -mno-cygwin -mwindows
 CXXFLAGS += -DUNICODE -D_UNICODE
-CXXFLAGS += -W -Wall -Wpointer-arith -Wno-unused-parameter
+CXXFLAGS += -W -Wall -Wpointer-arith
 CXXFLAGS_TEST    = -D__TEST $(shell gtest-config --cppflags --cxxflags) -mconsole
 CXXFLAGS_DEBUG   = -D__DEBUG -fno-rtti
 CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -fno-rtti -finline-functions -O3

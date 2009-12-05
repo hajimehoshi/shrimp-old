@@ -20,7 +20,7 @@ namespace Shrimp {
         this->calledMethod = "RemoveItem";
         this->intValues["id"] = id;
       }
-      void SetPresenter(MapTreeViewPresenter<MockMapTreeView>& presenter) {
+      void SetPresenter(MapTreeViewPresenter<MockMapTreeView>&) {
       }
       void UpdateItem(int id, std::string text) {
         this->calledMethod = "UpdateItem";
@@ -44,7 +44,7 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.MapTreeView_ItemAdded(0);
+      presenter.MapTreeView_ItemAdded(view, 0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
       ASSERT_EQ(1u, childIds.size());
@@ -58,11 +58,11 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.MapTreeView_ItemAdded(0);
+      presenter.MapTreeView_ItemAdded(view, 0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
       int newChildId = *(childIds.begin());      
-      presenter.MapTreeView_ItemRemoved(newChildId);
+      presenter.MapTreeView_ItemRemoved(view, newChildId);
       ASSERT_EQ("RemoveItem", view.calledMethod);
       ASSERT_EQ(newChildId, view.intValues["id"]);
     }
@@ -71,16 +71,16 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.MapTreeView_ItemAdded(0);
+      presenter.MapTreeView_ItemAdded(view, 0);
       const Models::MapCollection::ChildIds& childIds =
         mapCollection.GetChildIds(0);
       int newChildId = *(childIds.begin());
       Models::Map& map = mapCollection.GetMap(newChildId);
-      presenter.MapTreeView_ItemUpdated(newChildId, "foo");
+      presenter.MapTreeView_ItemUpdated(view, newChildId, "foo");
       ASSERT_EQ("foo", map.GetName());
       ASSERT_EQ("UpdateItem", view.calledMethod);
       ASSERT_EQ("foo", view.stringValues["text"]);
-      presenter.MapTreeView_ItemUpdated(newChildId, "bar");
+      presenter.MapTreeView_ItemUpdated(view, newChildId, "bar");
       ASSERT_EQ("bar", map.GetName());
       ASSERT_EQ("UpdateItem", view.calledMethod);
       ASSERT_EQ("bar", view.stringValues["text"]);

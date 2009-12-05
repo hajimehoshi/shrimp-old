@@ -22,14 +22,14 @@ namespace Shrimp {
     public:
       MapTreeView(HWND parent);
       ~MapTreeView();
-      void AddItem(int id, std::string text) { }
-      void RemoveItem(int id) { }
+      void AddItem(int, std::string) { }
+      void RemoveItem(int) { }
       inline void SetPresenter(Presenter& presenter) {
         assert(!this->presenter);
         this->presenter = &presenter;
       }
       void Show();
-      void UpdateItem(int id, std::string text) { }
+      void UpdateItem(int, std::string) { }
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
