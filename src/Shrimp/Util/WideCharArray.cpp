@@ -21,7 +21,8 @@ namespace Shrimp {
                               wTextLength);
         this->wchars[wTextLength] = 0;
       } else {
-        this->wchars = new WCHAR[0];
+        this->wchars = new WCHAR[1];
+        this->wchars[0] = 0;
       }
     }
 
@@ -48,6 +49,8 @@ namespace Shrimp {
                 std::wstring(WideCharArray("foo").GetPtr()));
       ASSERT_EQ(std::wstring(L"日本語"),
                 std::wstring(WideCharArray("日本語").GetPtr()));
+      ASSERT_EQ(std::wstring(L""),
+                std::wstring(WideCharArray("").GetPtr()));
     }
 
   }
