@@ -62,7 +62,6 @@ namespace Shrimp {
     }
 
     void MainWindow::Show() {
-      assert(this->handle);
       ::ShowWindow(this->handle, SW_SHOW);
       ::UpdateWindow(this->handle);
     }

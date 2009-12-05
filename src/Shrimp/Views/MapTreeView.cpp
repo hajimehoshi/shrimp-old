@@ -90,7 +90,6 @@ namespace Shrimp {
     }
 
     void MapTreeView::Show() {
-      assert(this->handle); // TODO: remove it
       ::ShowWindow(this->handle, SW_SHOW);
       ::UpdateWindow(this->handle);
     }
