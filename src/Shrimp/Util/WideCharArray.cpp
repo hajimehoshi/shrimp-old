@@ -1,3 +1,4 @@
+#include <windows.h>
 #include "Shrimp/Util/WideCharArray.h"
 
 namespace Shrimp {
@@ -12,7 +13,7 @@ namespace Shrimp {
                                               0,
                                               0);
       if (0 < wTextLength) {
-        this->wchars = new WCHAR[wTextLength + 1];
+        this->wchars = new wchar_t[wTextLength + 1];
         ::MultiByteToWideChar(CP_UTF8,
                               MB_ERR_INVALID_CHARS,
                               str.c_str(),
@@ -21,7 +22,7 @@ namespace Shrimp {
                               wTextLength);
         this->wchars[wTextLength] = 0;
       } else {
-        this->wchars = new WCHAR[1];
+        this->wchars = new wchar_t[1];
         this->wchars[0] = 0;
       }
     }
@@ -30,7 +31,7 @@ namespace Shrimp {
       delete[] this->wchars;
     }
 
-    WCHAR* WideCharArray::GetPtr() {
+    wchar_t* WideCharArray::GetPtr() {
       return this->wchars;
     }
 

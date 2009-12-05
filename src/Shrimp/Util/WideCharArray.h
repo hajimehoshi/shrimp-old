@@ -2,8 +2,6 @@
 #define SHRIMP_UTIL_WIDECHARS
 
 #include <string>
-#include <windows.h>
-#include <tchar.h>
 #include "Shrimp/Util/Uncopyable.h"
 
 namespace Shrimp {
@@ -13,9 +11,9 @@ namespace Shrimp {
     public:
       WideCharArray(const std::string& str);
       ~WideCharArray();
-      WCHAR* GetPtr();
+      wchar_t* GetPtr();
     private:
-      WCHAR* wchars;
+      wchar_t* wchars;
     };
 
   }
