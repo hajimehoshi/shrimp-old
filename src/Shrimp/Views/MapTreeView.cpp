@@ -57,30 +57,40 @@ namespace Shrimp {
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
       this->AddItem(0, 0, "ほげ");
-      this->AddItem(0, 0, "ふが");
-      this->AddItem(0, 0, "ぴよ");
+      this->AddItem(1, 0, "ふが");
+      this->AddItem(2, 0, "ぴよ");
+      this->RemoveItem(1);
     }
 
     MapTreeView::~MapTreeView() {
       ::DestroyWindow(this->handle);
     }
 
-    void MapTreeView::AddItem(int, int, std::string text) {
+    void MapTreeView::AddItem(int id, int, std::string text) {
       TV_INSERTSTRUCT tvInsertStruct;
       ::ZeroMemory(&tvInsertStruct, sizeof(tvInsertStruct));
       tvInsertStruct.hInsertAfter = TVI_LAST;
       tvInsertStruct.hParent = TVI_ROOT;
       tvInsertStruct.item.mask = TVIF_TEXT;
       std::wstring wText = UTF8ToUTF16LE(text);
-      TCHAR* wText2 = new TCHAR[wText.length() + 1];
+      WCHAR* wText2 = new WCHAR[wText.length() + 1];
       ::CopyMemory(wText2, wText.c_str(), (wText.length() + 1) * sizeof(wText2[0]));
       tvInsertStruct.item.pszText = wText2;
-      TreeView_InsertItem(this->handle, &tvInsertStruct);
+      HTREEITEM treeItem = TreeView_InsertItem(this->handle, &tvInsertStruct);
       delete[] wText2;
+      assert(this->treeItems.find(id) == this->treeItems.end());
+      this->treeItems.insert(TreeItems::value_type(id, treeItem));
+    }
+
+    void MapTreeView::RemoveItem(int id) {
+      TreeItems::iterator it = this->treeItems.find(id);
+      assert(it != this->treeItems.end());
+      TreeView_DeleteItem(this->handle, it->second);
+      this->treeItems.erase(it);
     }
 
     void MapTreeView::Show() {
-      assert(this->handle);
+      assert(this->handle); // TODO: remove it
       ::ShowWindow(this->handle, SW_SHOW);
       ::UpdateWindow(this->handle);
     }

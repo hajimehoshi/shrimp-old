@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <tchar.h>
+#include <map>
 #include "Shrimp/Presenters/MapTreeViewPresenter.h"
 #include "Shrimp/Views/WndProc.h"
 #include "Shrimp/Util/Uncopyable.h"
@@ -17,13 +18,14 @@ namespace Shrimp {
         LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
     private:
       typedef Presenters::MapTreeViewPresenter<MapTreeView> Presenter;
+      typedef std::map<int, HTREEITEM> TreeItems;
       static WNDCLASSEX wndClass;
       static WNDPROC defaultWndProc;
     public:
       MapTreeView(HWND parent);
       ~MapTreeView();
       void AddItem(int id, int parentId, std::string text);
-      void RemoveItem(int) { }
+      void RemoveItem(int id);
       inline void SetPresenter(Presenter& presenter) {
         assert(!this->presenter);
         this->presenter = &presenter;
@@ -36,6 +38,7 @@ namespace Shrimp {
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;
       Presenter* presenter;
+      TreeItems treeItems;
     };
 
   }
