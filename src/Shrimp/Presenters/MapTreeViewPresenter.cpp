@@ -11,9 +11,10 @@ namespace Shrimp {
 
     class MockMapTreeView : private Util::Uncopyable {
     public:
-      void AddItem(int id, std::string text) {
+      void AddItem(int id, int parentId, std::string text) {
         this->calledMethod = "AddItem";
         this->intValues["id"] = id;
+        this->intValues["parentId"] = parentId;
         this->stringValues["text"] = text;
       }
       void RemoveItem(int id) {
@@ -44,14 +45,28 @@ namespace Shrimp {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      presenter.MapTreeView_ItemAdded(view, 0);
-      const Models::MapCollection::ChildIds& childIds =
-        mapCollection.GetChildIds(0);
-      ASSERT_EQ(1u, childIds.size());
-      ASSERT_EQ("AddItem", view.calledMethod);
-      int newChildId = *(childIds.begin());
-      ASSERT_EQ(newChildId, view.intValues["id"]);
-      ASSERT_EQ("", view.stringValues["name"]);
+      {
+        presenter.MapTreeView_ItemAdded(view, 0);
+        const Models::MapCollection::ChildIds& childIds =
+          mapCollection.GetChildIds(0);
+        ASSERT_EQ(1u, childIds.size());
+        ASSERT_EQ("AddItem", view.calledMethod);
+        int newChildId = *(childIds.begin());
+        ASSERT_EQ(newChildId, view.intValues["id"]);
+        ASSERT_EQ(0, view.intValues["parentId"]);
+        ASSERT_EQ("", view.stringValues["name"]);
+      }
+      {
+        presenter.MapTreeView_ItemAdded(view, 2);
+        const Models::MapCollection::ChildIds& childIds =
+          mapCollection.GetChildIds(2);
+        ASSERT_EQ(1u, childIds.size());
+        ASSERT_EQ("AddItem", view.calledMethod);
+        int newChildId = *(childIds.begin());
+        ASSERT_EQ(newChildId, view.intValues["id"]);
+        ASSERT_EQ(2, view.intValues["parentId"]);
+        ASSERT_EQ("", view.stringValues["name"]);
+      }
     }
 
     TEST(MapTreeViewPresenterTest, RemoveItem) {

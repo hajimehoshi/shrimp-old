@@ -44,6 +44,7 @@ namespace Shrimp {
       }
       const ChildIds& GetChildIds(int id) const;
       Map& GetMap(int id) const;
+      int GetParentId(int id) const;
       int GetProjectNodeId() const;
       int GetRecycleBinNodeId() const;
       void Map_HeightUpdated(Map&) { }

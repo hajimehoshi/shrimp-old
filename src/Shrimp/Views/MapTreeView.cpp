@@ -40,6 +40,9 @@ namespace Shrimp {
       ::DestroyWindow(this->handle);
     }
 
+    void MapTreeView::AddItem(int, int, std::string) {
+    }
+
     void MapTreeView::Show() {
       assert(this->handle);
       ::ShowWindow(this->handle, SW_SHOW);

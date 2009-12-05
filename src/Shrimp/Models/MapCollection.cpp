@@ -60,6 +60,10 @@ namespace Shrimp {
       return this->GetNode(id)->map;
     }
 
+    int MapCollection::GetParentId(int id) const {
+      return this->GetNode(id)->parentId;
+    }
+
     int MapCollection::GetProjectNodeId() const {
       return this->projectNodeId;
     }
@@ -155,6 +159,16 @@ namespace Shrimp {
       MapCollection mapCollection;
       ASSERT_EQ(0, mapCollection.GetProjectNodeId());
       ASSERT_EQ(1, mapCollection.GetRecycleBinNodeId());
+    }
+
+    TEST(MapCollectionTest, GetParentId) {
+      MapCollection mapCollection;
+      mapCollection.Add(0); // 2
+      mapCollection.Add(0); // 3
+      mapCollection.Add(3); // 4
+      ASSERT_EQ(0, mapCollection.GetParentId(2));
+      ASSERT_EQ(0, mapCollection.GetParentId(3));
+      ASSERT_EQ(3, mapCollection.GetParentId(4));
     }
 
     TEST(MapCollectionTest, Add) {

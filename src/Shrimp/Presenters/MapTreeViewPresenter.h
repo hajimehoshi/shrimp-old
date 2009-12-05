@@ -49,7 +49,8 @@ namespace Shrimp {
 
     template<class TView>
       void MapTreeViewPresenter<TView>::MapCollection_ItemAdded(Models::MapCollection&, int id) {
-      this->view.AddItem(id, "");
+      int parentId = mapCollection.GetParentId(id);
+      this->view.AddItem(id, parentId, "");
     }
 
     template<class TView>
