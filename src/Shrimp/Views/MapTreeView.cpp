@@ -75,18 +75,14 @@ namespace Shrimp {
       ::ZeroMemory(&tvInsertStruct, sizeof(tvInsertStruct));
       tvInsertStruct.hInsertAfter = TVI_LAST;
       tvInsertStruct.hParent = parent;
-      tvInsertStruct.item.mask = TVIF_TEXT;
+      tvInsertStruct.item.mask = TVIF_TEXT | TVIF_PARAM;
       std::wstring wText = UTF8ToUTF16LE(text);
       WCHAR* wText2 = new WCHAR[wText.length() + 1];
       ::CopyMemory(wText2, wText.c_str(), (wText.length() + 1) * sizeof(wText2[0]));
       tvInsertStruct.item.pszText = wText2;
+      tvInsertStruct.item.lParam = id;
       HTREEITEM treeItem = TreeView_InsertItem(this->handle, &tvInsertStruct);
       delete[] wText2;
-      TVITEM tvItem;
-      tvItem.hItem = treeItem;
-      tvItem.mask = TVIF_PARAM;
-      tvItem.lParam = id;
-      TreeView_SetItem(this->handle, &tvItem);
       assert(this->treeItems.find(id) == this->treeItems.end());
       this->treeItems.insert(TreeItems::value_type(id, treeItem));
     }
