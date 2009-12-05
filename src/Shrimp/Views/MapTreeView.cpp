@@ -1,9 +1,31 @@
 #include <cassert>
 #include <cstdlib>
+#include <vector>
 #include "Shrimp/Views/MapTreeView.h"
 
 namespace Shrimp {
   namespace Views {
+
+    std::wstring UTF8ToWideChar(const std::string& str) {
+      int wTextLength = ::MultiByteToWideChar(CP_UTF8,
+                                              MB_ERR_INVALID_CHARS,
+                                              str.c_str(),
+                                              str.length(),
+                                              0,
+                                              0);
+      if (0 < wTextLength) {
+        std::vector<wchar_t> buffer(wTextLength + 1);
+        ::MultiByteToWideChar(CP_UTF8,
+                              MB_ERR_INVALID_CHARS,
+                              str.c_str(),
+                              str.length(),
+                              &buffer[0],
+                              wTextLength);
+        return std::wstring(&buffer[0]);
+      } else {
+        return std::wstring(0);
+      }
+    }
 
     WNDCLASSEX MapTreeView::wndClass;
 
@@ -34,13 +56,25 @@ namespace Shrimp {
                        this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
+      this->AddItem(0, 0, "ほげ");
     }
 
     MapTreeView::~MapTreeView() {
       ::DestroyWindow(this->handle);
     }
 
-    void MapTreeView::AddItem(int, int, std::string) {
+    void MapTreeView::AddItem(int, int, std::string text) {
+      TV_INSERTSTRUCT tvInsertStruct;
+      ::ZeroMemory(&tvInsertStruct, sizeof(tvInsertStruct));
+      tvInsertStruct.hInsertAfter = TVI_LAST;
+      tvInsertStruct.hParent = TVI_ROOT;
+      tvInsertStruct.item.mask = TVIF_TEXT;
+      std::wstring wText = UTF8ToWideChar(text);
+      TCHAR* wText2 = new TCHAR[wText.length() + 1];
+      ::CopyMemory(wText2, wText.c_str(), (wText.length() + 1) * sizeof(wText2[0]));
+      tvInsertStruct.item.pszText = wText2;
+      TreeView_InsertItem(this->handle, &tvInsertStruct);
+      delete[] wText2;
     }
 
     void MapTreeView::Show() {
@@ -63,3 +97,22 @@ namespace Shrimp {
 
   }
 }
+
+#ifdef __TEST
+
+#include <gtest/gtest.h>
+
+namespace Shrimp {
+  namespace Views {
+
+    TEST(UTF8ToWideChar, UTF8ToWideChar) {
+      ASSERT_EQ(3u, UTF8ToWideChar("foo").length());
+      ASSERT_EQ(L"foo", UTF8ToWideChar("foo"));
+      ASSERT_EQ(3u, UTF8ToWideChar("日本語").length());
+      ASSERT_EQ(L"日本語", UTF8ToWideChar("日本語"));
+    }
+
+  }
+}
+
+#endif
