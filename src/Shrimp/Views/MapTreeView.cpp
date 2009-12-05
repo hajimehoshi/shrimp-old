@@ -1,28 +1,11 @@
 #include <cassert>
 #include <cstdlib>
 #include <vector>
+#include "Shrimp/Util/WideCharArray.h"
 #include "Shrimp/Views/MapTreeView.h"
 
 namespace Shrimp {
   namespace Views {
-
-    std::wstring UTF8ToUTF16LE(const std::string& str) {
-      int wTextLength = ::MultiByteToWideChar(CP_UTF8,
-                                              MB_ERR_INVALID_CHARS,
-                                              str.c_str(),
-                                              str.length(),
-                                              0,
-                                              0);
-      assert(0 < wTextLength);
-      std::vector<wchar_t> buffer(wTextLength + 1);
-      ::MultiByteToWideChar(CP_UTF8,
-                            MB_ERR_INVALID_CHARS,
-                            str.c_str(),
-                            str.length(),
-                            &buffer[0],
-                            wTextLength);
-      return std::wstring(&buffer[0]);
-    }
 
     WNDCLASSEX MapTreeView::wndClass;
 
@@ -76,13 +59,10 @@ namespace Shrimp {
       tvInsertStruct.hInsertAfter = TVI_LAST;
       tvInsertStruct.hParent = parent;
       tvInsertStruct.item.mask = TVIF_TEXT | TVIF_PARAM;
-      std::wstring wText = UTF8ToUTF16LE(text);
-      WCHAR* wText2 = new WCHAR[wText.length() + 1];
-      ::CopyMemory(wText2, wText.c_str(), (wText.length() + 1) * sizeof(wText2[0]));
-      tvInsertStruct.item.pszText = wText2;
+      Util::WideCharArray wText(text);
+      tvInsertStruct.item.pszText = wText.GetPtr();
       tvInsertStruct.item.lParam = id;
       HTREEITEM treeItem = TreeView_InsertItem(this->handle, &tvInsertStruct);
-      delete[] wText2;
       assert(this->treeItems.find(id) == this->treeItems.end());
       this->treeItems.insert(TreeItems::value_type(id, treeItem));
     }
@@ -137,22 +117,3 @@ namespace Shrimp {
 
   }
 }
-
-#ifdef __TEST
-
-#include <gtest/gtest.h>
-
-namespace Shrimp {
-  namespace Views {
-
-    TEST(UTF8ToUTF16LE, UTF8ToUTF16LE) {
-      ASSERT_EQ(3u, UTF8ToUTF16LE("foo").length());
-      ASSERT_EQ(L"foo", UTF8ToUTF16LE("foo"));
-      ASSERT_EQ(3u, UTF8ToUTF16LE("日本語").length());
-      ASSERT_EQ(L"日本語", UTF8ToUTF16LE("日本語"));
-    }
-
-  }
-}
-
-#endif
