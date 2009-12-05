@@ -86,7 +86,7 @@ namespace Shrimp {
       for (Observers::const_iterator it = this->observers.begin();
            it != this->observers.end();
            ++it) {
-        (*it)->MapCollection_ItemUpdated(id);
+        (*it)->MapCollection_ItemNameUpdated(id);
       }
     }
 
@@ -139,8 +139,8 @@ namespace Shrimp {
         this->calledHandler = "MapCollection_ItemRemoved";
         this->intValues["id"] = id;
       }
-      void MapCollection_ItemUpdated(int id) {
-        this->calledHandler = "MapCollection_ItemUpdated";
+      void MapCollection_ItemNameUpdated(int id) {
+        this->calledHandler = "MapCollection_ItemNameUpdated";
         this->intValues["id"] = id;
       }
       std::string calledHandler;
@@ -275,7 +275,7 @@ namespace Shrimp {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
         map.SetName("foo");
-        ASSERT_EQ("MapCollection_ItemUpdated", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemNameUpdated", observer.calledHandler);
         ASSERT_EQ(2, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
@@ -284,7 +284,7 @@ namespace Shrimp {
         MockMapCollectionObserver observer;
         mapCollection.AddObserver(observer);
         map.SetName("bar");
-        ASSERT_EQ("MapCollection_ItemUpdated", observer.calledHandler);
+        ASSERT_EQ("MapCollection_ItemNameUpdated", observer.calledHandler);
         ASSERT_EQ(3, observer.intValues["id"]);
         mapCollection.RemoveObserver(observer);
       }
