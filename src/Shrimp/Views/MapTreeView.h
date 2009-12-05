@@ -24,8 +24,8 @@ namespace Shrimp {
     public:
       MapTreeView(HWND parent);
       ~MapTreeView();
-      void AddItem(int id, int parentId, std::string text);
-      void AddItemAsRoot(int id, std::string text);
+      void AddItem(int id, int parentId, const std::string& text);
+      void AddItemAsRoot(int id, const std::string& text);
       void RemoveItem(int id);
       inline void SetPresenter(Presenter& presenter) {
         assert(!this->presenter);
@@ -36,6 +36,8 @@ namespace Shrimp {
       void Show();
       void UpdateItem(int, std::string) { }
     private:
+      void AddItem(int id, HTREEITEM parent, const std::string& text);
+      void RemoveTreeItem(int id);
       HTREEITEM GetTreeItem(int id);
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);
       HWND handle;

@@ -56,18 +56,25 @@ namespace Shrimp {
       this->AddItemAsRoot(0, "ほげ");
       this->AddItemAsRoot(1, "ふが");
       this->AddItem(2, 0, "ぴよ");
-      //this->RemoveItem(1);
+      this->AddItem(3, 1, "ぴよぴよ");
+      this->AddItem(4, 0, "ああああ");
+      this->RemoveItem(0);
+      this->AddItemAsRoot(2, "ぴよ");
     }
 
     MapTreeView::~MapTreeView() {
       ::DestroyWindow(this->handle);
     }
 
-    void MapTreeView::AddItem(int id, int parentId, std::string text) {
+    void MapTreeView::AddItem(int id, int parentId, const std::string& text) {
+      this->AddItem(id, this->GetTreeItem(parentId), text);
+    }
+
+    void MapTreeView::AddItem(int id, HTREEITEM parent, const std::string& text) {
       TV_INSERTSTRUCT tvInsertStruct;
       ::ZeroMemory(&tvInsertStruct, sizeof(tvInsertStruct));
       tvInsertStruct.hInsertAfter = TVI_LAST;
-      tvInsertStruct.hParent = this->GetTreeItem(parentId);
+      tvInsertStruct.hParent = parent;
       tvInsertStruct.item.mask = TVIF_TEXT;
       std::wstring wText = UTF8ToUTF16LE(text);
       WCHAR* wText2 = new WCHAR[wText.length() + 1];
@@ -75,24 +82,17 @@ namespace Shrimp {
       tvInsertStruct.item.pszText = wText2;
       HTREEITEM treeItem = TreeView_InsertItem(this->handle, &tvInsertStruct);
       delete[] wText2;
+      TVITEM tvItem;
+      tvItem.hItem = treeItem;
+      tvItem.mask = TVIF_PARAM;
+      tvItem.lParam = id;
+      TreeView_SetItem(this->handle, &tvItem);
       assert(this->treeItems.find(id) == this->treeItems.end());
       this->treeItems.insert(TreeItems::value_type(id, treeItem));
     }
 
-    void MapTreeView::AddItemAsRoot(int id, std::string text) {
-      TV_INSERTSTRUCT tvInsertStruct;
-      ::ZeroMemory(&tvInsertStruct, sizeof(tvInsertStruct));
-      tvInsertStruct.hInsertAfter = TVI_LAST;
-      tvInsertStruct.hParent = TVI_ROOT;
-      tvInsertStruct.item.mask = TVIF_TEXT;
-      std::wstring wText = UTF8ToUTF16LE(text);
-      WCHAR* wText2 = new WCHAR[wText.length() + 1];
-      ::CopyMemory(wText2, wText.c_str(), (wText.length() + 1) * sizeof(wText2[0]));
-      tvInsertStruct.item.pszText = wText2;
-      HTREEITEM treeItem = TreeView_InsertItem(this->handle, &tvInsertStruct);
-      delete[] wText2;
-      assert(this->treeItems.find(id) == this->treeItems.end());
-      this->treeItems.insert(TreeItems::value_type(id, treeItem));
+    void MapTreeView::AddItemAsRoot(int id, const std::string& text) {
+      this->AddItem(id, TVI_ROOT, text);
     }
 
     HTREEITEM MapTreeView::GetTreeItem(int id) {
@@ -102,11 +102,24 @@ namespace Shrimp {
     }
 
     void MapTreeView::RemoveItem(int id) {
-      TreeItems::iterator it = this->treeItems.find(id);
-      assert(it != this->treeItems.end());
-      // TODO: fix it!
-      TreeView_DeleteItem(this->handle, it->second);
-      this->treeItems.erase(it);
+      // Get HTREEITEM value before deleting nodes.
+      HTREEITEM treeItem = this->GetTreeItem(id);
+      this->RemoveTreeItem(id);
+      TreeView_DeleteItem(this->handle, treeItem);
+    }
+
+    void MapTreeView::RemoveTreeItem(int id) {
+      HTREEITEM treeItem = this->GetTreeItem(id);
+      for (HTREEITEM t = TreeView_GetChild(this->handle, treeItem);
+           t != 0;
+           t = TreeView_GetNextSibling(this->handle, t)) {
+        TVITEM tvItem;
+        tvItem.hItem = t;
+        tvItem.mask = TVIF_PARAM;
+        TreeView_GetItem(this->handle, &tvItem);
+        this->RemoveTreeItem(tvItem.lParam);
+      }
+      this->treeItems.erase(id);
     }
 
     void MapTreeView::Show() {
