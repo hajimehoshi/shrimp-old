@@ -34,7 +34,7 @@ namespace Shrimp {
       template<class TItems>
         void ResetItems(const TItems& items);
       void Show();
-      void UpdateItem(int, std::string) { }
+      void UpdateItem(int, const std::string&) { }
     private:
       void AddItem(int id, HTREEITEM parent, const std::string& text);
       void RemoveTreeItem(int id);
