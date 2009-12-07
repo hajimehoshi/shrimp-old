@@ -38,14 +38,6 @@ namespace Shrimp {
       std::map<std::string, const Models::MapCollection*> mapCollectionValues;
     };
 
-    TEST(MapTreeViewPresenterTest, MapTreeViewPresenter) {
-      Models::MapCollection mapCollection;
-      MockMapTreeView view;
-      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
-      ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
-      ASSERT_EQ(&view, &presenter.GetView());
-    }
-
     TEST(MapTreeViewPresenterTest, Reset) {
       Models::MapCollection mapCollection;
       MockMapTreeView view;
