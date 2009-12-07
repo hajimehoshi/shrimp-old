@@ -36,17 +36,25 @@ namespace Shrimp {
                        this);
       // this->handle is set on processing WM_NCCREATE in WndProc
       assert(this->handle);
-      this->AddItemAsRoot(0, "ほげ");
-      this->AddItemAsRoot(1, "ふが");
-      this->AddItem(2, 0, "ぴよ");
-      this->AddItem(3, 1, "ぴよぴよ");
-      this->AddItem(4, 0, "ああああ");
-      this->RemoveItem(0);
-      this->AddItemAsRoot(2, "ぴよ");
     }
 
     MapTreeView::~MapTreeView() throw() {
       ::DestroyWindow(this->handle);
+    }
+
+    void MapTreeView::AddChildItems(const Models::MapCollection& mapCollection,
+                                    int id) {
+      const Models::MapCollection::ChildIds& childIds =
+        mapCollection.GetChildIds(id);
+      for (Models::MapCollection::ChildIds::const_iterator it = childIds.begin();
+           it != childIds.end();
+           ++it) {
+        const int childId = *it;
+        const int parentId = mapCollection.GetParentId(childId);
+        const Models::Map& map = mapCollection.GetMap(childId);
+        this->AddItem(childId, parentId, map.GetName());
+        this->AddChildItems(mapCollection, childId);
+      }
     }
 
     void MapTreeView::AddItem(int id, int parentId, const std::string& text) {
@@ -103,8 +111,13 @@ namespace Shrimp {
       this->treeItems.erase(id);
     }
 
-    void MapTreeView::Reset(const Models::MapCollection&) {
+    void MapTreeView::Reset(const Models::MapCollection& mapCollection) {
       this->Clear();
+      this->AddItemAsRoot(mapCollection.GetProjectNodeId(), "Project");
+      this->AddChildItems(mapCollection, mapCollection.GetProjectNodeId());
+      this->AddItemAsRoot(mapCollection.GetRecycleBinNodeId(), "Recycle Bin");
+      this->AddChildItems(mapCollection, mapCollection.GetRecycleBinNodeId());
+      
     }
 
     void MapTreeView::Show() {

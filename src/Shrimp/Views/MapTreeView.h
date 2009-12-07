@@ -38,6 +38,7 @@ namespace Shrimp {
       void Show();
       void UpdateItem(int, const std::string&) { }
     private:
+      void AddChildItems(const Models::MapCollection& mapCollection, int it);
       void AddItem(int id, HTREEITEM parent, const std::string& text);
       void RemoveTreeItem(int id);
       HTREEITEM GetTreeItem(int id);
