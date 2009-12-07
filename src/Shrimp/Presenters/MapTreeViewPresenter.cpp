@@ -21,6 +21,9 @@ namespace Shrimp {
         this->calledMethod = "RemoveItem";
         this->intValues["id"] = id;
       }
+      void Reset() {
+        this->calledMethod = "Reset";
+      }
       void SetPresenter(MapTreeViewPresenter<MockMapTreeView>&) {
       }
       void UpdateItem(int id, std::string text) {
@@ -39,6 +42,13 @@ namespace Shrimp {
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
       ASSERT_EQ(&mapCollection, &presenter.GetMapCollection());
       ASSERT_EQ(&view, &presenter.GetView());
+    }
+
+    TEST(MapTreeViewPresenterTest, Reset) {
+      Models::MapCollection mapCollection;
+      MockMapTreeView view;
+      MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
+      ASSERT_EQ("Reset", view.calledMethod);
     }
 
     TEST(MapTreeViewPresenterTest, AddItem) {

@@ -98,6 +98,9 @@ namespace Shrimp {
       this->treeItems.erase(id);
     }
 
+    void MapTreeView::Reset() {
+    }
+
     void MapTreeView::Show() {
       ::ShowWindow(this->handle, SW_SHOW);
       ::UpdateWindow(this->handle);

@@ -30,6 +30,7 @@ namespace Shrimp {
       : mapCollection(mapCollection), view(view) {
       this->mapCollection.AddObserver(*this);
       this->view.SetPresenter(*this);
+      this->view.Reset();
     }
 
     template<class TView>
