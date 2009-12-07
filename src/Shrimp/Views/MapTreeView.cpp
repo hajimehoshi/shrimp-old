@@ -98,8 +98,7 @@ namespace Shrimp {
       this->treeItems.erase(id);
     }
 
-    void MapTreeView::Reset() {
-      
+    void MapTreeView::Reset(const Models::MapCollection&) {
     }
 
     void MapTreeView::Show() {

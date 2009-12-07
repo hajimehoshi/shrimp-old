@@ -27,7 +27,7 @@ namespace Shrimp {
       void AddItem(int id, int parentId, const std::string& text);
       void AddItemAsRoot(int id, const std::string& text);
       void RemoveItem(int id);
-      void Reset();
+      void Reset(const Models::MapCollection& mapCollection);
       inline void SetPresenter(Presenter& presenter) {
         assert(!this->presenter);
         this->presenter = &presenter;
