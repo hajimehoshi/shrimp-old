@@ -11,7 +11,7 @@ namespace Shrimp {
 
     class MockMapTreeView : private Util::Uncopyable {
     public:
-      void AddItem(int id, int parentId, std::string text) {
+      void AddItem(int id, int parentId, const std::string& text) {
         this->calledMethod = "AddItem";
         this->intValues["id"] = id;
         this->intValues["parentId"] = parentId;
@@ -21,12 +21,13 @@ namespace Shrimp {
         this->calledMethod = "RemoveItem";
         this->intValues["id"] = id;
       }
-      void Reset() {
+      void Reset(/*const MapCollection& mapCollection*/) {
         this->calledMethod = "Reset";
+        //this->mapCollectionValues["mapCollection"] = &mapCollection;
       }
       void SetPresenter(MapTreeViewPresenter<MockMapTreeView>&) {
       }
-      void UpdateItem(int id, std::string text) {
+      void UpdateItem(int id, const std::string& text) {
         this->calledMethod = "UpdateItem";
         this->intValues["id"] = id;
         this->stringValues["text"] = text;
@@ -34,6 +35,7 @@ namespace Shrimp {
       std::string calledMethod;
       std::map<std::string, int> intValues;
       std::map<std::string, std::string> stringValues;
+      std::map<std::string, Models::MapCollection*> mapCollectionValues;
     };
 
     TEST(MapTreeViewPresenterTest, MapTreeViewPresenter) {
@@ -49,6 +51,7 @@ namespace Shrimp {
       MockMapTreeView view;
       MapTreeViewPresenter<MockMapTreeView> presenter(mapCollection, view);
       ASSERT_EQ("Reset", view.calledMethod);
+      //ASSERT_EQ(&mapCollection, view.mapCollectionValues["mapCollection"]);
     }
 
     TEST(MapTreeViewPresenterTest, AddItem) {

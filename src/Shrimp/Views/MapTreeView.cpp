@@ -99,6 +99,7 @@ namespace Shrimp {
     }
 
     void MapTreeView::Reset() {
+      
     }
 
     void MapTreeView::Show() {
