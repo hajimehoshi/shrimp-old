@@ -11,7 +11,7 @@ namespace Shrimp {
     class Uncopyable {
     protected:
       Uncopyable() { }
-      ~Uncopyable() { }
+      ~Uncopyable() throw() { }
     private:
       Uncopyable(const Uncopyable&);
       Uncopyable& operator=(const Uncopyable&);

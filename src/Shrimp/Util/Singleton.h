@@ -14,7 +14,7 @@ namespace Shrimp {
       class Singleton : private Uncopyable {
     protected:
       Singleton() { }
-      ~Singleton() { }
+      ~Singleton() throw() { }
     public:
       inline static T& GetInstance() {
         static T instance;

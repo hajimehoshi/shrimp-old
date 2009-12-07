@@ -23,7 +23,7 @@ namespace Shrimp {
       static WNDPROC defaultWndProc;
     public:
       MapTreeView(HWND parent);
-      ~MapTreeView();
+      ~MapTreeView() throw();
       void AddItem(int id, int parentId, const std::string& text);
       void AddItemAsRoot(int id, const std::string& text);
       void Clear();

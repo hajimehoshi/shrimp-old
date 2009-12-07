@@ -45,7 +45,7 @@ namespace Shrimp {
       this->AddItemAsRoot(2, "ぴよ");
     }
 
-    MapTreeView::~MapTreeView() {
+    MapTreeView::~MapTreeView() throw() {
       ::DestroyWindow(this->handle);
     }
 

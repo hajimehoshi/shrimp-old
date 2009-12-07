@@ -37,7 +37,7 @@ namespace Shrimp {
       };
     public:
       MapCollection();
-      ~MapCollection();
+      ~MapCollection() throw();
       void Add(int parentId);
       inline void AddObserver(IMapCollectionObserver& observer) {
         this->observers.Add(&observer);
@@ -68,7 +68,7 @@ namespace Shrimp {
 
     class IMapCollectionObserver : private Util::Uncopyable {
     public:
-      virtual ~IMapCollectionObserver() { }
+      virtual ~IMapCollectionObserver() throw() { }
       virtual void MapCollection_ItemAdded(MapCollection& mapCollection, int id) = 0;
       virtual void MapCollection_ItemNameUpdated(MapCollection& mapCollection, int id) = 0;
       virtual void MapCollection_ItemRemoved(MapCollection& mapCollection, int id) = 0;

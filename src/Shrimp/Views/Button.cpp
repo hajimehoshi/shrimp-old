@@ -36,7 +36,7 @@ namespace Shrimp {
       assert(this->handle);
     }
 
-    Button::~Button() {
+    Button::~Button() throw() {
       ::DestroyWindow(this->handle);
     }
 

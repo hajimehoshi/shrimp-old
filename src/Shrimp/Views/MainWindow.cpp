@@ -57,7 +57,7 @@ namespace Shrimp {
       mapTreeView->Show();
     }
 
-    MainWindow::~MainWindow() {
+    MainWindow::~MainWindow() throw() {
       ::DestroyWindow(this->handle);
     }
 

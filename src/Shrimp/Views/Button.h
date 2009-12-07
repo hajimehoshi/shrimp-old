@@ -18,7 +18,7 @@ namespace Shrimp {
       static WNDPROC defaultWndProc;
     public:
       Button(HWND parent);
-      ~Button();
+      ~Button() throw();
       void Show();
     private:
       LRESULT ProcessWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam);

@@ -10,7 +10,7 @@ namespace Shrimp {
     class WideCharArray : private Uncopyable {
     public:
       WideCharArray(const std::string& str);
-      ~WideCharArray();
+      ~WideCharArray() throw();
       wchar_t* GetPtr();
     private:
       wchar_t* wchars;

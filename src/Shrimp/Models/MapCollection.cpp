@@ -26,7 +26,7 @@ namespace Shrimp {
       this->recycleBinNodeId = id;
     }
 
-    MapCollection::~MapCollection() {
+    MapCollection::~MapCollection() throw() {
       for (std::map<int, Node*>::iterator it = this->nodes.begin();
            it != this->nodes.end();
            ++it) {
@@ -135,6 +135,7 @@ namespace Shrimp {
 
     class MockMapCollectionObserver : public IMapCollectionObserver {
     public:
+      ~MockMapCollectionObserver() throw() { }
       void MapCollection_ItemAdded(MapCollection& mapCollection, int id) {
         this->calledHandler = "MapCollection_ItemAdded";
         this->mapCollectionValues["mapCollection"] = &mapCollection;

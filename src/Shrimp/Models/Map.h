@@ -18,7 +18,7 @@ namespace Shrimp {
       static const int LayerCount = 2;
     public:
       Map(int id, const std::string& name = "", int width = 20, int height = 15);
-      ~Map();
+      ~Map() throw();
       inline void AddObserver(IMapObserver& observer) {
         this->observers.Add(&observer);
       }
@@ -62,7 +62,7 @@ namespace Shrimp {
 
     class IMapObserver : private Util::Uncopyable {
     public:
-      virtual ~IMapObserver() { }
+      virtual ~IMapObserver() throw() { }
       virtual void Map_HeightUpdated(Map& map) = 0;
       virtual void Map_NameUpdated(Map& map) = 0;
       virtual void Map_TileUpdated(Map& map) = 0;

@@ -11,7 +11,7 @@ namespace Shrimp {
     public:
       MapTreeViewPresenter(Models::MapCollection& mapCollection,
                            TView& view);
-      ~MapTreeViewPresenter();
+      ~MapTreeViewPresenter() throw();
       void MapCollection_ItemAdded(Models::MapCollection& mapCollection, int id);
       void MapCollection_ItemNameUpdated(Models::MapCollection& mapCollection, int id);
       void MapCollection_ItemRemoved(Models::MapCollection& mapCollection, int id);
@@ -32,7 +32,7 @@ namespace Shrimp {
     }
 
     template<class TView>
-      MapTreeViewPresenter<TView>::~MapTreeViewPresenter() {
+      MapTreeViewPresenter<TView>::~MapTreeViewPresenter() throw() {
       this->mapCollection.RemoveObserver(*this);
     }
 

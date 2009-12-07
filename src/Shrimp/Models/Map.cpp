@@ -12,7 +12,7 @@ namespace Shrimp {
       }
     }
 
-    Map::~Map() {
+    Map::~Map() throw() {
       for (int i = 0; i < LayerCount; ++i) {
         delete[] this->layers[i];
       }
@@ -83,7 +83,7 @@ namespace Shrimp {
 
     class MockMapObserver : public IMapObserver {
     public:
-      virtual ~MockMapObserver() { }
+      virtual ~MockMapObserver() throw() { }
       virtual void Map_HeightUpdated(Map& map) {
         this->calledHandler = "Map_HeightUpdated";
         this->mapValues["map"] = &map;

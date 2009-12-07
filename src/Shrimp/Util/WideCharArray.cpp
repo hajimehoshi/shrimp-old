@@ -27,7 +27,7 @@ namespace Shrimp {
       }
     }
 
-    WideCharArray::~WideCharArray() {
+    WideCharArray::~WideCharArray() throw() {
       delete[] this->wchars;
     }
 
