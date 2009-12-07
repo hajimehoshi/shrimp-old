@@ -71,6 +71,11 @@ namespace Shrimp {
       this->AddItem(id, TVI_ROOT, text);
     }
 
+    void MapTreeView::Clear() {
+      TreeView_DeleteAllItems(this->handle);
+      this->treeItems.clear();
+    }
+
     HTREEITEM MapTreeView::GetTreeItem(int id) {
       TreeItems::iterator it = this->treeItems.find(id);
       assert(it != this->treeItems.end());
@@ -99,6 +104,7 @@ namespace Shrimp {
     }
 
     void MapTreeView::Reset(const Models::MapCollection&) {
+      this->Clear();
     }
 
     void MapTreeView::Show() {

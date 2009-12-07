@@ -26,6 +26,7 @@ namespace Shrimp {
       ~MapTreeView();
       void AddItem(int id, int parentId, const std::string& text);
       void AddItemAsRoot(int id, const std::string& text);
+      void Clear();
       void RemoveItem(int id);
       void Reset(const Models::MapCollection& mapCollection);
       inline void SetPresenter(Presenter& presenter) {
