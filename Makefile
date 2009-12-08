@@ -2,16 +2,17 @@ CXX = g++
 
 CXXFLAGS = -Isrc -mno-cygwin -mwindows
 CXXFLAGS += -DUNICODE -D_UNICODE
-CXXFLAGS += -W -Wall -Wpointer-arith
+CXXFLAGS += -W -Wall -Wpointer-arith -fno-exceptions
 CXXFLAGS += -DWINVER=(0x0500) -D_WIN32_WINNT=(0x0500) -D_WIN32_IE=(0x600)
 CXXFLAGS_TEST    = -D__TEST $(shell gtest-config --cppflags --cxxflags) -mconsole
 CXXFLAGS_DEBUG   = -D__DEBUG -fno-rtti
 CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -fno-rtti -finline-functions -O3
 
-LDFLAGS = -W -Wall -mno-cygwin -mwindows -lcomctl32
+LDFLAGS = -W -Wall -fno-exceptions
+LDFLAGS = -mno-cygwin -mwindows -lcomctl32
 LDFLAGS_TEST    = $(shell gtest-config --ldflags --libs) -mconsole
-LDFLAGS_DEBUG   =
-LDFLAGS_RELEASE = -O3
+LDFLAGS_DEBUG   = -fno-rtti
+LDFLAGS_RELEASE = -fno-rtti -finline-functions -O3
 
 PROGRAM_NAME = Shrimp
 
