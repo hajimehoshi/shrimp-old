@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Isrc -mno-cygwin -mwindows
 CXXFLAGS += -DUNICODE -D_UNICODE
 CXXFLAGS += -W -Wall -Wpointer-arith -fno-exceptions
-CXXFLAGS += -DWINVER=(0x0500) -D_WIN32_WINNT=(0x0500) -D_WIN32_IE=(0x600)
+CXXFLAGS += -DWINVER=\(0x0500\) -D_WIN32_WINNT=\(0x0500\) -D_WIN32_IE=\(0x600\)
 CXXFLAGS_TEST    = -D__TEST $(shell gtest-config --cppflags --cxxflags) -mconsole
 CXXFLAGS_DEBUG   = -D__DEBUG -fno-rtti
 CXXFLAGS_RELEASE = -D__RELEASE -DNDEBUG -fno-rtti -finline-functions -O3
@@ -40,8 +40,7 @@ release: $(PROGRAM_RELEASE)
 
 depend:
 	$(CXX) -Isrc -MM -MG $(shell find src -name "*.cpp") | \
-	sed -e 's/^.*\.o: src\/\(.*\)\.cpp/build\/test\/obj\/\1.o \
-	build\/debug\/obj\/\1.o build\/release\/obj\/\1.o: src\/\1.cpp/' > makefile.depend
+	sed -e 's/^.*\.o: src\/\(.*\)\.cpp/build\/test\/obj\/\1.o build\/debug\/obj\/\1.o build\/release\/obj\/\1.o: src\/\1.cpp/' > makefile.depend
 
 $(PROGRAM_TEST): $(OBJS_TEST)
 	$(CXX) $(OBJS_TEST) $(LDFLAGS) $(LDFLAGS_TEST) -o $@
